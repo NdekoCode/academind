@@ -7,3 +7,4 @@ setTimeout(async () => {
   const response = await fetchData();
   console.log(response);
 }, 2000);
+console.log("Lol");
