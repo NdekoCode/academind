@@ -24,7 +24,6 @@ const server = createServer(async (req, res) => {
     <body>
         <p>Content ${file.toString()}</p>
         <form action="/message" method="POST">
-            <input type="text" name="name" />
             <input type="text" name="message" />
             <button type="submit">Valider</button>
         </form>
@@ -33,26 +32,30 @@ const server = createServer(async (req, res) => {
     res.write(mainPage);
     return res.end();
   } else if (url.pathname === "/message" && req.method === "POST") {
-    let content = [];
     let body = [];
     req.on("data", (chuck) => {
       body.push(chuck);
     });
     req.on("end", async () => {
-      await writeFile(
-        messagesFile,
-        JSON.stringify(
-          {
-            id: Date.now(),
-            ...body,
-          },
-          null,
-          2
-        )
-      );
-      res.statusCode = 302;
+      const data = Buffer.concat(body).toString();
+      const message = data.split("=")[1];
+      try {
+        await writeFile(
+          messagesFile,
+          JSON.stringify(
+            {
+              id: Date.now(),
+              message,
+            },
+            null,
+            2
+          )
+        );
+      } catch (e) {
+        return consolelog(e);
+      }
     });
-
+    res.statusCode = 302;
     res.setHeader("Location", "/");
     return res.end();
   }
