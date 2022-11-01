@@ -3,11 +3,7 @@ const fetchData = () => {
     setTimeout(() => resolve("Done"), 2000);
   });
 };
-setTimeout(() => {
-  fetchData()
-    .then((text) => {
-      console.log(text);
-      return fetchData();
-    })
-    .then((text) => console.log(text));
+setTimeout(async () => {
+  const response = await fetchData();
+  console.log(response);
 }, 2000);
