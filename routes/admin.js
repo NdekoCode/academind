@@ -4,7 +4,7 @@ const router = Router();
 router.get("/add-product", (req, res, next) => {
   console.log("In an other middleware");
   const formProduct = `
-    <form action="/product    " method="POST">
+    <form action="/admin/add-product" method="POST">
       <input type="text" name="product" />
       <button type="submit">Add product</button>
     </form>
@@ -12,7 +12,7 @@ router.get("/add-product", (req, res, next) => {
   res.send(formProduct);
 });
 
-router.post("/product", (req, res, next) => {
+router.post("/add-product", (req, res, next) => {
   console.log(req.body);
   res.redirect("/");
 });
