@@ -4,6 +4,8 @@ import adminrouter from "./routes/admin.js";
 import shopRouter from "./routes/shop.js";
 const app = express();
 
+// Template engine : === Moteur de template
+
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/admin", adminrouter);
