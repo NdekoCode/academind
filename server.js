@@ -6,9 +6,12 @@ const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use(adminrouter);
+app.use("/admin", adminrouter);
 
 app.use(shopRouter);
+app.use((req, res) => {
+  res.status(404).send("<h1>Page 404</h1>");
+});
 
 const port = process.env.PORT || 3500;
 
