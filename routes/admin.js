@@ -1,20 +1,13 @@
 import { Router } from "express";
+import { loadFile } from "../utils/utils.js";
 const router = Router();
 
 router.get("/add-product", (req, res, next) => {
-  console.log("In an other middleware");
-  const formProduct = `
-    <form action="/admin/add-product" method="POST">
-      <input type="text" name="product" />
-      <button type="submit">Add product</button>
-    </form>
-    `;
-  res.send(formProduct);
+  return res.sendFile(loadFile("views/add-product.html"));
 });
 
 router.post("/add-product", (req, res, next) => {
-  console.log(req.body);
-  res.redirect("/");
+  return res.redirect("/");
 });
 
 export default router;

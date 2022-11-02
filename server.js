@@ -1,18 +1,17 @@
 import { createServer } from "node:http";
+// Template engine : === Moteur de template
 import express from "express";
 import adminrouter from "./routes/admin.js";
 import shopRouter from "./routes/shop.js";
+import { loadFile } from "./utils/utils.js";
 const app = express();
-
-// Template engine : === Moteur de template
-
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/admin", adminrouter);
 
 app.use(shopRouter);
 app.use((req, res) => {
-  res.status(404).send("<h1>Page 404</h1>");
+  return res.status(404).sendFile(loadFile("views/404.html"));
 });
 
 const port = process.env.PORT || 3500;

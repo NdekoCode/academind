@@ -1,7 +1,7 @@
 import { Router } from "express";
+import { loadFile } from "../utils/utils.js";
 const router = Router();
 router.get("/", (req, res, next) => {
-  console.log("In the first middleware");
-  res.send("<h1>Page d'acceuil</h1>");
+  return res.sendFile(loadFile("views/shop.html"));
 });
 export default router;
