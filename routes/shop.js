@@ -1,7 +1,10 @@
 import { Router } from "express";
-import { loadFile } from "../utils/utils.js";
+import { products } from "./admin.js";
+
 const router = Router();
 router.get("/", (req, res, next) => {
-  return res.sendFile(loadFile("views/shop.html"));
+  console.log(products);
+
+  return res.render("pages/shop", { title: "My products" });
 });
 export default router;
