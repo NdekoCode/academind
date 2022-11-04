@@ -4,7 +4,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 export const rootDir = path.dirname(__dirname) + path.sep;
 export const numberRand = parseFloat(Math.random() * 200).toFixed(2);
-export const ratingRand = parseInt(Math.random() * 6) + 1;
+export const ratingRand = parseInt(Math.random() * 5) + 1;
 export const indexRand = parseInt(Math.random() * 100);
 /**
  * @description Permettra de charger un fichier en partant du dossier dans lequel il se trourve

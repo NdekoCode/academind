@@ -9,7 +9,7 @@ const productRT = Router();
 // /admin/add-product => GET
 productRT.get("/add-product", AdminCTRL.getAddProduct);
 // /admin/product => GET
-productRT.get("/products", AdminCTRL.getAddProduct);
+productRT.get("/products", AdminCTRL.getProducts);
 
 productRT.post("/add-product", AdminCTRL.postAddProduct);
 

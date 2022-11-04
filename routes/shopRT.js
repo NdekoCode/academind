@@ -1,10 +1,10 @@
 import { Router } from "express";
-import ProductFileCTRL from "../controllers/ProductFileCTRL.js";
+import ShopFileCTRL from "../controllers/ShopFileCTRL.js";
 
-const productCTRL = new ProductFileCTRL();
+const shopCTRL = new ShopFileCTRL();
 const router = Router();
-router.get("/", productCTRL.getProducts);
-router.get("/products", productCTRL.getProducts);
-router.get("/cart", productCTRL.getProducts);
-router.get("/checkout", productCTRL.getProducts);
+router.get("/", shopCTRL.getIndex);
+router.get("/products", shopCTRL.getProducts);
+router.get("/cart", shopCTRL.getCart);
+router.get("/checkout", shopCTRL.getCheckout);
 export default router;
