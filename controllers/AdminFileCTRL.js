@@ -15,6 +15,7 @@ export default class AdminFileCTRL {
     return res.render("pages/admin/add-product", {
       pageTitle: "Add a product",
       path: "/admin/add-product",
+      layout: "layouts/insert",
       activeLink,
     });
   }
@@ -28,7 +29,8 @@ export default class AdminFileCTRL {
    * @memberof AdminFileCTRL
    */
   postAddProduct(req, res, _) {
-    const productMDL = new ProductFileMDL(req.body.title);
+    const product = { ...req.body };
+    const productMDL = new ProductFileMDL(product);
     productMDL.save();
     res.redirect("/");
   }

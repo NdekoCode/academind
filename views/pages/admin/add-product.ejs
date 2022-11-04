@@ -1,9 +1,47 @@
-<h1 class="px-8 text-4xl font-bold text-gray-700 mb-5">Administration</h1>
+<div class="max-w-2xl mx-auto bg-white p-16">
 
-<form action="/admin/add-product" method="POST" class="flex items-center p-8 shadow rounded-md">
-    <input type="text" name="title"
-        class="px-3 outline-none shadow-sm py-2.5 border focus:right-4 focus:ring-blue-600" />
-    <button type="submit"
-        class="rounded-l-none text-white bg-blue-700  hover:bg-gray-100 border border-transparent hover:border-blue-700 hover:text-blue-700 focus:ring-4 focus:ring-blue-300 transition font-medium rounded-lg text-sm px-5 py-3 text-center">Add
-        product</button>
-</form>
+    <form method="POST" action="/admin/add-product">
+        <div class="grid gap-6 mb-6 lg:grid-cols-2">
+            <div>
+                <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Title</label>
+                <input type="text" id="title"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
+                    placeholder="Title" name="title" required>
+            </div>
+
+            <div>
+                <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Price</label>
+                <input type="number" id="price"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500  outline-none"
+                    placeholder="Price" name="price" required>
+            </div>
+
+            <div>
+                <label for="rating"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Rating</label>
+                <input type="number" id="rating"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500  outline-none"
+                    placeholder="Rating" maxlength="5" max="5" name="rating" required>
+            </div>
+
+            <div>
+                <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Image
+                    URL</label>
+                <input type="url" id="image" name="imageUrl"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
+                    placeholder="image" required>
+            </div>
+        </div>
+
+        <div class="mb-8 w-full">
+            <label class="text-xl text-gray-600">Description <span class="text-red-500">*</span></label></br>
+            <textarea name="description" rows="5" style="max-height:200px"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none">
+
+            </textarea>
+        </div>
+        <button type="submit"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add
+            product</button>
+    </form>
+</div>

@@ -14,10 +14,17 @@
     "rating": 1
   },
   {
-    "title": "DC Comics",
-    "price": "110.28",
-    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=61",
-    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    "rating": 1
+    "title": "Bottle",
+    "price": "200",
+    "description": "Nulla itaque sed nih",
+    "rating": "3",
+    "imageUrl": "https://loremflickr.com/g/500/320/product,bottle?lock=5"
+  },
+  {
+    "title": "Iphone",
+    "price": "271",
+    "description": "Voluptas sit sint ",
+    "rating": "4",
+    "imageUrl": "https://loremflickr.com/g/500/320/product,phone?lock=5"
   }
 ]

@@ -7,7 +7,7 @@ import { readFile, writeFile } from "node:fs";
  * @property {string} title Titre de l'article
  * @property {number} price Le prix de l'article
  * @property {string} description description de l'article
- * @property {string} imageUrl image de l'article
+ * @property {string} [imageUrl="https://loremflickr.com/g/500/320/product,book?lock=5"] image de l'article
  * @property {number} rating La note de l'article
  */
 
@@ -27,19 +27,22 @@ export const products = [
  * Represente le produit à vendre lui-meme
  */
 export default class ProductFileMDL {
-  constructor(title) {
-    const index = indexRand + 1;
-    this.product = {
-      title,
-      price: numberRand,
-      imageUrl: `https://loremflickr.com/g/500/320/product,book?lock=${index}`,
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      rating: ratingRand,
-    };
+  /**
+   * Creates an instance of ProductFileMDL.
+   * @author NdekoCode
+   * @param {Product} product
+   * @memberof ProductFileMDL
+   */
+  constructor(product) {
+    this.title = product.title;
+    this.price = product.price;
+    this.description = product.description;
+    this.rating = product.rating;
+    this.imageUrl = product.imageUrl;
   }
 
   save() {
-    ProductFileMDL.insertProductsInFile(this.product);
+    ProductFileMDL.insertProductsInFile(this);
   }
 
   static getProductFromFile(cb) {
