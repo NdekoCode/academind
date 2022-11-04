@@ -39,12 +39,21 @@ export default class ProductFileMDL {
   }
 
   save() {
+    ProductFileMDL.insertProductsInFile(this.product);
+  }
+
+  static getProductFromFile(cb) {
     readFile(loadFile("data/products.json"), (err, content) => {
-      let products = [];
-      if (!err) {
-        products = JSON.parse(content);
+      if (err) {
+        cb([]);
+      } else {
+        cb(JSON.parse(content));
       }
-      products.push(this.product);
+    });
+  }
+  static insertProductsInFile(newProduct) {
+    ProductFileMDL.getProductFromFile((products) => {
+      products.push(newProduct);
       writeFile(
         loadFile("data/products.json"),
         JSON.stringify(products, null, 2),
@@ -58,9 +67,6 @@ export default class ProductFileMDL {
    * @returns {Product[]}
    */
   static fetchAll(cb) {
-    readFile(loadFile("data/products.json"), (err, content) => {
-      if (err) return cb([]);
-      cb(JSON.parse(content));
-    });
+    return ProductFileMDL.getProductFromFile(cb);
   }
 }

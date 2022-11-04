@@ -7,17 +7,59 @@
     "rating": 3
   },
   {
-    "title": "Inventore sequi ut v",
-    "price": "101.77",
-    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=83",
+    "title": "DC Comics",
+    "price": "106.49",
+    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=24",
     "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
     "rating": 6
   },
   {
-    "title": "Impedit perspiciati",
-    "price": "33.61",
-    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=98",
+    "title": "Omnis quo recusandae",
+    "price": "18.66",
+    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=88",
     "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    "rating": 5
+    "rating": 1
+  },
+  {
+    "title": "DC comics",
+    "price": "58.27",
+    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=94",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    "rating": 2
+  },
+  {
+    "title": "Marvel comic",
+    "price": "58.83",
+    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=65",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    "rating": 1
+  },
+  {
+    "title": "Comment",
+    "price": "2.50",
+    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=48",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    "rating": 2
+  },
+  {
+    "title": "Itaque odit commodi ",
+    "price": "175.01",
+    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=18",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    "rating": 4
+  },
+  {
+    "title": "Mollitia officia ali",
+    "price": "140.37",
+    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=59",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    "rating": 1
+  },
+  {
+    "title": "Mollitia aliquip pro",
+    "price": "37.77",
+    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=49",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    "rating": 6
   }
 ]

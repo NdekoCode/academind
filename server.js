@@ -11,15 +11,15 @@ import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 
-// On definit les configuration des notre moteur de template et des views
-app.set("view engine", "ejs");
-app.use(ejsLayouts);
-app.set("layout", "layouts/layout");
-app.set("views", rootDir + "views");
-
 // On fait la configuration des fichiers static: Pour le styles, les scripts et les images lors des upload
 app.use(express.static(path.join(rootDir, "public")));
 app.use("/images", express.static(path.join(rootDir, "public/img")));
+
+// On definit les configuration des notre moteur de template et des views
+app.set("view engine", "ejs");
+app.use(ejsLayouts);
+app.set("views", rootDir + "views");
+app.set("layout", "layouts/layout");
 
 // Nos routes et nos middleware
 app.use("/admin", adminrouter);
