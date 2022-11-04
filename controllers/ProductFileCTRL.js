@@ -33,7 +33,7 @@ export default class ProductFileCTRL {
   postAddProduct(req, res, next) {
     const productMDL = new ProductFileMDL(req.body.title);
     productMDL.save();
-    return res.redirect("/");
+    res.redirect("/");
   }
   /**
    * @description Recupère tous les produits et les envois à la vues
@@ -45,15 +45,16 @@ export default class ProductFileCTRL {
    * @memberof ProductFileCTRL
    */
   getProducts(req, res, next) {
-    const products = ProductFileMDL.fetchAll();
-    return res.render("pages/shop", {
-      pageTitle: "My products",
-      prods: products,
-      path: "/",
-      hasProducts: products.length > 0,
-      activeShop: true,
-      productCSS: true,
-      activeLink,
+    return ProductFileMDL.fetchAll((product) => {
+      return res.render("pages/shop", {
+        pageTitle: "My products",
+        prods: product,
+        path: "/",
+        hasProducts: product.length > 0,
+        activeShop: true,
+        productCSS: true,
+        activeLink,
+      });
     });
   }
 }

@@ -1,4 +1,5 @@
-import { indexRand, numberRand, ratingRand } from "../utils/utils.js";
+import { indexRand, loadFile, numberRand, ratingRand } from "../utils/utils.js";
+import { readFile, writeFile } from "node:fs";
 
 /**
  * Le produit à vendre
@@ -38,14 +39,28 @@ export default class ProductFileMDL {
   }
 
   save() {
-    products.push(this);
+    readFile(loadFile("data/products.json"), (err, content) => {
+      let products = [];
+      if (!err) {
+        products = JSON.parse(content);
+      }
+      products.push(this.product);
+      writeFile(
+        loadFile("data/products.json"),
+        JSON.stringify(products, null, 2),
+        (err) => console.log(err)
+      );
+    });
   }
 
   /**
    *
    * @returns {Product[]}
    */
-  static fetchAll() {
-    return products;
+  static fetchAll(cb) {
+    readFile(loadFile("data/products.json"), (err, content) => {
+      if (err) return cb([]);
+      cb(JSON.parse(content));
+    });
   }
 }

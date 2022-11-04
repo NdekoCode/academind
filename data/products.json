@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Voluptate ut corrupt",
+    "price": "37.69",
+    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=77",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    "rating": 3
+  },
+  {
+    "title": "Inventore sequi ut v",
+    "price": "101.77",
+    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=83",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    "rating": 6
+  },
+  {
+    "title": "Impedit perspiciati",
+    "price": "33.61",
+    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=98",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    "rating": 5
+  }
+]
