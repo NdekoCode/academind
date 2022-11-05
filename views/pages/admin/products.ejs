@@ -17,6 +17,7 @@
                 <a href="#" class="block font-medium text-gray-500 dark:text-gray-300 hover:underline">Underwear</a>
             </div>
 
+            <% if(hasProducts){%>
             <div class="mt-6 lg:mt-0 lg:px-2 lg:w-4/5 ">
                 <div class="flex items-center justify-between text-sm tracking-widest uppercase ">
                     <p class="text-gray-500 dark:text-gray-300"><%=prods.length%> Items</p>
@@ -37,7 +38,8 @@
                         <header>
                             <img class="object-cover w-full rounded-md h-72 xl:h-80" src="<%=imageUrl%>"
                                 alt="<%=title%>">
-                            <h4 class="mt-2 text-lg text-center font-medium text-gray-700 dark:text-gray-200"><%=title%>
+                            <h4 class="mt-2 text-lg text-center font-medium text-gray-700 dark:text-gray-200"><a
+                                    href="/products/<%=title%>" class="block w-full"><%=title%></a>
                             </h4>
                         </header>
                         <div class="flex items-center mt-2.5 mb-5">
@@ -74,6 +76,7 @@
                     <%}%>
                 </div>
             </div>
-        </div>
-    </div>
+            <% }%>
+                </div>
+            </div>
 </section>
