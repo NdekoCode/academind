@@ -31,11 +31,8 @@
             </div>
 
             <span class="block text-3xl font-bold text-gray-900 dark:text-white mb-2">$ <%=price%></span>
-            <div class="flex items-center justify-between space-x-2">
-                <a href="/products/<%=slug%>"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-10 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Details</a>
-
-                <%-include("../../components/add-to-cart.ejs",{id})-%>
+            <div class="flex items-center justify-center space-x-2">
+                <%-include("../../components/add-to-cart.ejs",{id,className:false})-%>
             </div>
         </div>
     </article>

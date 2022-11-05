@@ -3,9 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 .active {
-  @apply text-blue-700;
+  @apply bg-gray-900 text-white;
 }
-
+.not-active {
+  @apply text-gray-400 hover:bg-gray-700 hover:text-white;
+}
 .form-radio {
   -webkit-appearance: none;
   -moz-appearance: none;

@@ -1,6 +1,9 @@
 const backdrop = document.querySelector(".backdrop");
 const sideDrawer = document.querySelector(".mobile-nav");
 const menuToggle = document.querySelector("#side-menu-toggle");
+function isNotEmpty(item) {
+  return item !== undefined && item !== null;
+}
 
 function backdropClickHandler() {
   backdrop.style.display = "none";
@@ -12,5 +15,7 @@ function menuToggleClickHandler() {
   sideDrawer.classList.add("open");
 }
 
-backdrop.addEventListener("click", backdropClickHandler);
-menuToggle.addEventListener("click", menuToggleClickHandler);
+if (isNotEmpty(backdrop) || isNotEmpty(sideDrawer)) {
+  backdrop.addEventListener("click", backdropClickHandler);
+  menuToggle.addEventListener("click", menuToggleClickHandler);
+}

@@ -1,4 +1,4 @@
-<form action="/cart" method="POST" class="ml-auto">
+<form action="/cart" method="POST" class="<%=locals.className && locals.className%>">
     <input type="hidden" name="productId" value="<%=id%>">
     <button type="submit"
         class="flex items-center text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-10 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"><svg

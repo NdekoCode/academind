@@ -17,6 +17,7 @@ export default class AdminFileCTRL {
       path: "/admin/add-product",
       layout: "layouts/insert",
       activeLink,
+      layout: "layouts/admin",
     });
   }
   /**
@@ -47,6 +48,7 @@ export default class AdminFileCTRL {
         activeShop: true,
         productCSS: true,
         activeLink,
+        layout: "layouts/admin",
       });
     });
   }

@@ -28,5 +28,5 @@ export function loadFile(filePath) {
  * @return {string}
  */
 export function activeLink(pathVerify) {
-  return pathVerify ? "active" : "text-gray-700";
+  return pathVerify ? "active" : "not-active";
 }
