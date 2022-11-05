@@ -4,6 +4,7 @@ import { readFile, writeFile } from "node:fs";
 /**
  * Le produit à vendre
  * @typedef {object} Product
+ * @property {number} [id=Date.now()] L'identifiant de l'article
  * @property {string} title Titre de l'article
  * @property {number} price Le prix de l'article
  * @property {string} description description de l'article
@@ -16,6 +17,7 @@ import { readFile, writeFile } from "node:fs";
  */
 export const products = [
   {
+    id: Date.now(),
     title: "Une belle chaussure",
     imageUrl: `https://loremflickr.com/g/500/320/product,book?lock=${indexRand}`,
     price: numberRand,
@@ -34,6 +36,7 @@ export default class ProductFileMDL {
    * @memberof ProductFileMDL
    */
   constructor(product) {
+    this.id = Date.now();
     this.title = product.title;
     this.price = product.price;
     this.description = product.description;

@@ -12,7 +12,6 @@ export default class ProductFileCTRL {
    * @memberof ProductFileCTRL
    */
   async getProducts(_, res, next) {
-    console.log(next);
     return ProductFileMDL.fetchAll((product) => {
       return res.render("pages/shop/product-list", {
         pageTitle: "My products",
@@ -26,7 +25,6 @@ export default class ProductFileCTRL {
     });
   }
   getIndex(req, res, _) {
-    console.log(res);
     return ProductFileMDL.fetchAll((product) => {
       return res.render("pages/shop/index", {
         pageTitle: "Ours products",
@@ -51,6 +49,14 @@ export default class ProductFileCTRL {
     return res.render("pages/shop/checkout", {
       pageTitle: "Checkout",
       path: "/checkout",
+      activeLink,
+    });
+  }
+
+  getOrders(req, res, _) {
+    return res.render("pages/shop/orders", {
+      pageTitle: "Your Orders",
+      path: "/orders",
       activeLink,
     });
   }

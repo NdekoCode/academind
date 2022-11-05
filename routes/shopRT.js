@@ -7,4 +7,5 @@ router.get("/", shopCTRL.getIndex);
 router.get("/products", shopCTRL.getProducts);
 router.get("/cart", shopCTRL.getCart);
 router.get("/checkout", shopCTRL.getCheckout);
+router.get("/orders", shopCTRL.getOrders);
 export default router;
