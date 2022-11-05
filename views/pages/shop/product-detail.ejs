@@ -1,38 +1,85 @@
-<div class="2xl:container 2xl:mx-auto md:py-12 lg:px-20 md:px-6 py-9 px-4">
+<section class="text-gray-700 body-font overflow-hidden bg-white">
+    <div class="container px-5 py-24 mx-auto">
+        <div class="lg:w-4/5 mx-auto flex flex-wrap">
+            <img alt="<%=prod.title%>" class="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200"
+                src="<%=prod.imageUrl%>">
+            <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+                <h2 class="text-sm title-font text-gray-500 tracking-widest">BRAND NAME</h2>
+                <h1 class="text-gray-900 text-3xl title-font font-medium mb-1"><%=prod.title%></h1>
 
-    <div id="viewerBox" class="lg:p-10 md:p-6 p-4 bg-white dark:bg-gray-900">
-        <div class="mt-3 md:mt-4 lg:mt-0 flex flex-col lg:flex-row items-strech justify-center lg:space-x-8">
-            <div class="lg:w-1/2 flex justify-between items-strech bg-gray-50  px-2 py-20 md:py-6 md:px-6 lg:py-24">
-                <div class="slider">
-                    <div class="slide-ana lg:relative">
-                        <div class="flex" style="transform: translateX(-100%)">
-                            <img src="https://i.ibb.co/fMGD6ZC/eugene-chystiakov-3ne-Swyntb-Q8-unsplash-1-removebg-preview-3-1.png"
-                                alt="A black chair with wooden legs" class="w-full h-full" />
-                        </div>
-                    </div>
+                <div class="flex mb-4">
+                    <span class="flex items-center">
+                        <%if(prod.rating < 5)  {%>
+                        <% for(let i=0;i<prod.rating;i++){%>
+                        <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                            </path>
+                        </svg>
+                        <%}%>
+                        <% for(let i=0 ;i<(5 - prod.rating);i++){%>
+                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                            </path>
+                        </svg>
+                        <% 
+                    }%>
+                        <%} else {%>
+                        <% for(let i=0;i<prod.rating;i++){%>
+                        <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                            </path>
+                        </svg>
+                        <%}
+                        }%>
+                        <span class="text-gray-600 ml-3"><%=prod.rating%> Reviews</span>
+                    </span>
+                    <span class="flex ml-3 pl-3 py-2 border-l-2 border-gray-200">
+                        <a class="text-gray-500">
+                            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                class="w-5 h-5" viewBox="0 0 24 24">
+                                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
+                            </svg>
+                        </a>
+                        <a class="ml-2 text-gray-500">
+                            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                class="w-5 h-5" viewBox="0 0 24 24">
+                                <path
+                                    d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z">
+                                </path>
+                            </svg>
+                        </a>
+                        <a class="ml-2 text-gray-500">
+                            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                class="w-5 h-5" viewBox="0 0 24 24">
+                                <path
+                                    d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z">
+                                </path>
+                            </svg>
+                        </a>
+                    </span>
                 </div>
-            </div>
-            <div class="lg:w-1/2 flex flex-col justify-center mt-7 md:mt-8 lg:mt-0 pb-8 lg:pb-0">
-                <h1 class="text-3xl lg:text-4xl font-semibold text-gray-800 dark:text-white">Bar Stool</h1>
-                <p class="text-base leading-normal text-gray-600 dark:text-white mt-2">You don't just want to be
-                    comfortable sitting in a bar stool—you want to be comfortable shimmying it up to the bar, closer to
-                    your lover, or back slightly to include a third person in the conversation.</p>
-                <p class="text-3xl font-medium text-gray-600 dark:text-white mt-8 md:mt-10"></p>
-                <div
-                    class="flex items-center flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 lg:space-x-8 mt-8 md:mt-16">
-                    <button
-                        class="w-full md:w-3/5 border border-gray-800 text-base font-medium leading-none text-white uppercase py-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 bg-gray-800  dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200">Add
-                        to Cart</button>
-                    <button
-                        class="w-full md:w-2/5 border border-gray-800 text-base font-medium leading-none text-gray-800 dark:text-white uppercase py-6 bg-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 dark:bg-transparent dark:border-white  focus:ring-gray-800 hover:bg-gray-800 hover:text-white dark:hover:bg-gray-800 ">View
-                        Details</button>
-                </div>
-                <div class="mt-6">
-                    <button
-                        class="text-xl underline text-gray-800 dark:text-white dark:hover:text-gray-200 capitalize hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800">add
-                        to wishlist</button>
+                <p class="leading-relaxed"><%=prod.description%></p>
+                <div class="flex items-center">
+                    <span class="title-font font-medium text-2xl text-gray-900">$<%=prod.price%></span>
+                    <%-include("../../components/add-to-cart.ejs",{id:prod.id,className:"ml-auto"})-%>
+
+                    <!-- <button
+                        class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
+                        <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            class="w-5 h-5" viewBox="0 0 24 24">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z">
+                            </path>
+                        </svg>
+                    </button> -->
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>

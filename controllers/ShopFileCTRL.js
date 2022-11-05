@@ -1,5 +1,6 @@
 import ProductFileMDL from "../models/ProductFileMDL.js";
 import { activeLink } from "../utils/utils.js";
+import ErrorsCTRL from "./ErrorsCTRL.js";
 
 export default class ProductFileCTRL {
   /**
@@ -11,30 +12,40 @@ export default class ProductFileCTRL {
    * @return {HTML}
    * @memberof ProductFileCTRL
    */
-  async getProducts(_, res, next) {
-    console.log(next);
+  getProducts(_, res, next) {
     return ProductFileMDL.fetchAll((product) => {
       return res.render("pages/shop/product-list", {
         pageTitle: "My products",
         prods: product,
         path: "/products",
         hasProducts: product.length > 0,
-        activeShop: true,
-        productCSS: true,
+        activeLink,
+      });
+    });
+  }
+  getProduct(req, res, _) {
+    console.log(req.params.productTitle);
+    // On va verifier le produit qui correctement au slug du qui se trouve dans l'URL
+    const params = { key: "slug", value: req.params.productTitle };
+    return ProductFileMDL.fetchOneBy(params, (product) => {
+      if (!product) {
+        return new ErrorsCTRL().getError404(req, res);
+      }
+      return res.render("pages/shop/product-detail", {
+        pageTitle: product.title,
+        prod: product,
+        path: "/products",
         activeLink,
       });
     });
   }
   getIndex(req, res, _) {
-    console.log(res);
     return ProductFileMDL.fetchAll((product) => {
       return res.render("pages/shop/index", {
         pageTitle: "Ours products",
         prods: product,
         path: "/",
         hasProducts: product.length > 0,
-        activeShop: true,
-        productCSS: true,
         activeLink,
       });
     });
@@ -47,10 +58,23 @@ export default class ProductFileCTRL {
       activeLink,
     });
   }
+  postCart(req, res, _) {
+    const prodId = parseInt(req.body.productId);
+    console.log(prodId);
+    return res.redirect("/cart");
+  }
   getCheckout(req, res, _) {
     return res.render("pages/shop/checkout", {
       pageTitle: "Checkout",
       path: "/checkout",
+      activeLink,
+    });
+  }
+
+  getOrders(req, res, _) {
+    return res.render("pages/shop/orders", {
+      pageTitle: "Your Orders",
+      path: "/orders",
       activeLink,
     });
   }

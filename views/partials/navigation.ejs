@@ -1,7 +1,9 @@
 <%locals.navLinks = [ 
-    {link:"/",name:"Shop"}, {link:"/products",name:"Products"}, {link:"/cart",name:'Cart'},
+    {link:"/",name:"Shop"}, {link:"/products",name:"Products"}, 
+    {link:"/cart",name:'Cart'},
+    {link:"/orders",name:'Orders'},
     {link:"/admin/add-product",name:"Add product"},
-    {link:"/checkout",name:"Checkout"},
+    // {link:"/checkout",name:"Checkout"},
     {link:"/admin/products",name:"Admin Product"}
     ]%>
 
@@ -27,10 +29,11 @@
                 <% for(let {link,name} of locals.navLinks) {%>
                 <li>
                     <a href="<%=link%>"
-                        class="block py-2 pr-4 pl-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 md:dark:hover:bg-transparent <%= activeLink(path===link)%>"
+                        class="cursor-pointer block px-3 py-2 rounded-md font-medium md:border-0 transition md:dark:hover:bg-transparent <%= activeLink(path===link)%>"
                         aria-current="page">
                         <%=name%>
                     </a>
+
                 </li>
                 <%}%>
                 </ul>

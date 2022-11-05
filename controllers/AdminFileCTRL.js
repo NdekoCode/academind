@@ -1,5 +1,5 @@
 import ProductFileMDL from "../models/ProductFileMDL.js";
-
+import slugify from "slugify";
 import { activeLink } from "../utils/utils.js";
 export default class AdminFileCTRL {
   /**
@@ -17,6 +17,7 @@ export default class AdminFileCTRL {
       path: "/admin/add-product",
       layout: "layouts/insert",
       activeLink,
+      layout: "layouts/admin",
     });
   }
   /**
@@ -29,7 +30,10 @@ export default class AdminFileCTRL {
    * @memberof AdminFileCTRL
    */
   postAddProduct(req, res, _) {
-    const product = { ...req.body };
+    const product = {
+      ...req.body,
+      slug: slugify(req.body.title, { lower: true }),
+    };
     const productMDL = new ProductFileMDL(product);
     productMDL.save();
     res.redirect("/");
@@ -44,6 +48,7 @@ export default class AdminFileCTRL {
         activeShop: true,
         productCSS: true,
         activeLink,
+        layout: "layouts/admin",
       });
     });
   }
