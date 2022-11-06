@@ -1,7 +1,8 @@
+import CartFileMDL from "../models/CartFileMDL.js";
 import ProductFileMDL from "../models/ProductFileMDL.js";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
-
+const cartMDL = new CartFileMDL();
 export default class ProductFileCTRL {
   /**
    * @description Recupère tous les produits et les envois à la vues
@@ -24,7 +25,6 @@ export default class ProductFileCTRL {
     });
   }
   getProduct(req, res, _) {
-    console.log(req.params.productTitle);
     // On va verifier le produit qui correctement au slug du qui se trouve dans l'URL
     const params = { key: "slug", value: req.params.productTitle };
     return ProductFileMDL.fetchOneBy(params, (product) => {
@@ -60,8 +60,10 @@ export default class ProductFileCTRL {
   }
   postCart(req, res, _) {
     const prodId = parseInt(req.body.productId);
-    console.log(prodId);
-    return res.redirect("/cart");
+    ProductFileMDL.findById(prodId, (product) => {
+      CartFileMDL.addProduct(prodId, product.price);
+      return res.redirect("/cart");
+    });
   }
   getCheckout(req, res, _) {
     return res.render("pages/shop/checkout", {

@@ -5002,6 +5002,10 @@ video {
     display: none;
   }
 
+  .md\:h-10{
+    height: 2.5rem;
+  }
+
   .md\:w-6\/12{
     width: 50%;
   }
@@ -5020,6 +5024,10 @@ video {
 
   .md\:w-7\/12{
     width: 58.333333%;
+  }
+
+  .md\:w-10{
+    width: 2.5rem;
   }
 
   .md\:grid-cols-2{

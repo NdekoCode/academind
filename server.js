@@ -9,17 +9,18 @@ import ejsLayouts from "express-ejs-layouts";
 import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
 
 const app = express();
-app.use(express.urlencoded({ extended: false }));
-
 // On fait la configuration des fichiers static: Pour le styles, les scripts et les images lors des upload
-app.use(express.static(path.join(rootDir, "public")));
-app.use("/images", express.static(path.join(rootDir, "public/img")));
-
 // On definit les configuration des notre moteur de template et des views
 app.set("view engine", "ejs");
 app.use(ejsLayouts);
 app.set("views", rootDir + "views");
 app.set("layout", "layouts/layout");
+app.use(express.static(path.join(rootDir, "public")));
+
+app.use("/images", express.static(path.join(rootDir, "public/img")));
+
+// On definit la configuration pour que les requetes de l'utilisateur soit transmises dans le corps de la requete
+app.use(express.urlencoded({ extended: false }));
 
 // Nos routes et nos middleware
 app.use("/admin", adminrouter);
@@ -32,7 +33,6 @@ app.use(errorsCTRL.getError404);
 const port = process.env.PORT || 3500;
 
 /** @type {*http.Server} */
-const server = createServer(app);
-server.listen(port, () => {
+app.listen(port, () => {
   console.log("Running server at " + port);
 });

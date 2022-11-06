@@ -8,6 +8,7 @@ const productRT = Router();
 
 // /admin/add-product => GET
 productRT.get("/add-product", AdminCTRL.getAddProduct);
+productRT.get("/edit-product/:productId", AdminCTRL.getEditProduct);
 // /admin/product => GET
 productRT.get("/products", AdminCTRL.getProducts);
 

@@ -1,5 +1,6 @@
+import { writeFile } from "node:fs";
 import { indexRand, loadFile, numberRand, ratingRand } from "../utils/utils.js";
-import { readFile, writeFile } from "node:fs";
+import MDLFile from "./MDLFile.js";
 
 /**
  * Le produit à vendre
@@ -32,7 +33,7 @@ export const products = [
 /**
  * Represente le produit à vendre lui-meme
  */
-export default class ProductFileMDL {
+export default class ProductFileMDL extends MDLFile {
   /**
    * Creates an instance of ProductFileMDL.
    * @author NdekoCode
@@ -40,39 +41,14 @@ export default class ProductFileMDL {
    * @memberof ProductFileMDL
    */
   constructor(product) {
+    super();
     this.id = Date.now();
     this.title = product.title;
-    this.price = product.price;
+    this.price = parseFloat(product.price);
     this.slug = product.slug;
     this.description = product.description;
-    this.rating = product.rating;
+    this.rating = parseInt(product.rating);
     this.imageUrl = product.imageUrl;
-  }
-
-  save() {
-    ProductFileMDL.insertProductsInFile(this);
-  }
-
-  static getProductFromFile(cb, file = "products.json") {
-    readFile(loadFile("data/" + file), (err, content) => {
-      if (err) {
-        cb([]);
-        return [];
-      } else {
-        cb(JSON.parse(content));
-        return JSON.parse(content);
-      }
-    });
-  }
-  static insertProductsInFile(newProduct, file = "products.json") {
-    ProductFileMDL.getProductFromFile((products) => {
-      products.push(newProduct);
-      writeFile(
-        loadFile("data/" + file),
-        JSON.stringify(products, null, 2),
-        (err) => console.log(err)
-      );
-    });
   }
 
   /**
@@ -91,8 +67,25 @@ export default class ProductFileMDL {
   }
   static findById(id, cb) {
     ProductFileMDL.getProductFromFile((products) => {
-      const product = products.find((item) => id === item.id);
+      const product = products.find((item) => {
+        return item.id === id;
+      });
       return cb(product);
+    });
+  }
+
+  save() {
+    ProductFileMDL.insertProductsInFile(this);
+  }
+
+  static insertProductsInFile(newProduct, file = "products.json") {
+    ProductFileMDL.getProductFromFile((products) => {
+      products.push(newProduct);
+      writeFile(
+        loadFile("data/" + file),
+        JSON.stringify(products, null, 2),
+        (err) => console.log(err)
+      );
     });
   }
 }

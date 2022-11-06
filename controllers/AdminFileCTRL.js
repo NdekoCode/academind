@@ -12,12 +12,35 @@ export default class AdminFileCTRL {
    * @memberof AdminFileCTRL
    */
   getAddProduct(_, res) {
-    return res.render("pages/admin/add-product", {
+    return res.render("pages/admin/edit-product", {
       pageTitle: "Add a product",
       path: "/admin/add-product",
       layout: "layouts/insert",
       activeLink,
-      layout: "layouts/admin",
+    });
+  }
+  /**
+   * @description Formulaire de modification d'un produit
+   * @author NdekoCode
+   * @param {IncomingMessage} req L'objet requete
+   * @param {ServerResponse} res L'objet reponse
+   * @return {HTML}
+   * @memberof AdminFileCTRL
+   */
+  getEditProduct(req, res) {
+    const editMode = Boolean(req.query.edit);
+    if (!editMode) return res.redirect("/");
+    const prodId = parseInt(req.params.produdctId);
+    ProductFileMDL.findById(prodId, (product) => {
+      return res.render("pages/admin/edit-product", {
+        pageTitle: "Edit a product",
+        path: "/admin/edit-product",
+        layout: "layouts/insert",
+        editing: editMode,
+        prodId,
+        product,
+        activeLink,
+      });
     });
   }
   /**
