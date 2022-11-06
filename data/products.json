@@ -1,47 +1,29 @@
 [
   {
-    "id": 1667672812800,
-    "title": "Booster",
-    "price": 636,
-    "slug": "Booster",
-    "description": "Vel in et culpa opti",
-    "rating": "3",
-    "imageUrl": "https://loremflickr.com/g/500/320/product,beer?lock=5"
-  },
-  {
     "id": 1667672863657,
     "title": "NIke Air jordan 4",
     "price": 127,
-    "slug": "NIke-Air-jordan-4",
-    "description": "Belle chaussure",
-    "rating": "2",
-    "imageUrl": "https://loremflickr.com/g/500/320/product,shoes?lock=10"
+    "slug": "nike-air-jordan-4",
+    "description": "Belle chaussure\r\n\r\n            ",
+    "rating": 2,
+    "imageUrl": "https://loremflickr.com/g/500/320/product,jordan?lock=10"
   },
   {
     "id": 1667672941551,
-    "title": "Elit sequi voluptat",
+    "title": "Livre de Super sayan",
     "price": 854,
-    "slug": "elit-sequi-voluptat",
-    "description": "Reprehenderit adipis",
-    "rating": "5",
+    "slug": "livre-de-super-sayan",
+    "description": "Un livre pour les manganèse\r\n            ",
+    "rating": 4,
     "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=20"
   },
   {
-    "id": 1667752338493,
-    "title": "Rerum sit beatae co",
-    "price": 986,
-    "slug": "rerum-sit-beatae-co",
-    "description": "Et eos est omnis do",
-    "rating": 3,
-    "imageUrl": "https://www.horofonicitobi.info"
-  },
-  {
-    "id": 1667752801726,
-    "title": "Voluptas ut sapiente",
-    "price": 239,
-    "slug": "voluptas-ut-sapiente",
-    "description": "Eveniet nemo veniam",
-    "rating": 5,
-    "imageUrl": "https://www.tysuvun.ws"
+    "id": 1667754097500,
+    "title": "Iphone",
+    "price": 939,
+    "slug": "iphone",
+    "description": "Telephone apple",
+    "rating": 4,
+    "imageUrl": "https://loremflickr.com/g/500/320/product,iphone?lock=5"
   }
 ]
