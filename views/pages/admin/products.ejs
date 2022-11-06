@@ -33,13 +33,13 @@
 
                 <div class="w-full grid grid-cols-1 gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 ">
 
-                    <% for(let {id,title,price,description,rating,imageUrl} of prods){%>
+                    <% for(let {id,title,price,slug,description,rating,imageUrl} of prods){%>
                     <article class=" flex flex-col items-center justify-center w-full max-w-lg mx-auto">
                         <header>
                             <img class="object-cover w-full rounded-md h-72 xl:h-80" src="<%=imageUrl%>"
                                 alt="<%=title%>">
                             <h4 class="mt-2 text-lg text-center font-medium text-gray-700 dark:text-gray-200"><a
-                                    href="/products/<%=title%>" class="block w-full"><%=title%></a>
+                                    href="/products/<%=slug%>" class="block w-full"><%=title%></a>
                             </h4>
                         </header>
                         <div class="flex items-center mt-2.5 mb-5">
@@ -58,13 +58,13 @@
                         <p class="text-blue-500">$<%=price%></p>
                         <div class="flex items-center justify-between w-full space-x-2">
 
-                            <a href="/admin/edit-product/<%=id%>"
+                            <a href="/admin/edit-product/<%=id%>?edit=true"
                                 class="cursor-pointer flex items-center justify-center w-full px-2 py-2 mt-4 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
                                 <span class="mx-1">Edit</span>
                             </a>
-                            <form action="/admin/delete-product/<%=id%>" method="POST" class="w-full"
+                            <form action="/admin/delete-product" method="POST" class="w-full"
                                 onsubmit="(e)=>confimr('Voulez-vous vraiment supprimer ce produit ?') ? true : e.preventDefault();">
-
+                                <input type="hidden" name="productId" value="<%=id%>">
                                 <button type="submit"
                                     class="cursor-pointer flex items-center justify-center w-full px-2 py-2 mt-4 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-red-800 rounded-md hover:bg-red-700 focus:outline-none focus:bg-gray-700">
                                     <span class="mx-1">Delete</span>

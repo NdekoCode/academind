@@ -1,5 +1,6 @@
+import { writeFile } from "node:fs";
 import { indexRand, loadFile, numberRand, ratingRand } from "../utils/utils.js";
-import { readFile, writeFile } from "node:fs";
+import MDLFile from "./MDLFile.js";
 
 /**
  * Le produit à vendre
@@ -32,7 +33,7 @@ export const products = [
 /**
  * Represente le produit à vendre lui-meme
  */
-export default class ProductFileMDL {
+export default class ProductFileMDL extends MDLFile {
   /**
    * Creates an instance of ProductFileMDL.
    * @author NdekoCode
@@ -40,39 +41,14 @@ export default class ProductFileMDL {
    * @memberof ProductFileMDL
    */
   constructor(product) {
-    this.id = Date.now();
+    super();
+    this.id = product.id;
     this.title = product.title;
-    this.price = product.price;
+    this.price = parseFloat(product.price);
     this.slug = product.slug;
     this.description = product.description;
-    this.rating = product.rating;
+    this.rating = parseInt(product.rating);
     this.imageUrl = product.imageUrl;
-  }
-
-  save() {
-    ProductFileMDL.insertProductsInFile(this);
-  }
-
-  static getProductFromFile(cb, file = "products.json") {
-    readFile(loadFile("data/" + file), (err, content) => {
-      if (err) {
-        cb([]);
-        return [];
-      } else {
-        cb(JSON.parse(content));
-        return JSON.parse(content);
-      }
-    });
-  }
-  static insertProductsInFile(newProduct, file = "products.json") {
-    ProductFileMDL.getProductFromFile((products) => {
-      products.push(newProduct);
-      writeFile(
-        loadFile("data/" + file),
-        JSON.stringify(products, null, 2),
-        (err) => console.log(err)
-      );
-    });
   }
 
   /**
@@ -91,8 +67,50 @@ export default class ProductFileMDL {
   }
   static findById(id, cb) {
     ProductFileMDL.getProductFromFile((products) => {
-      const product = products.find((item) => id === item.id);
+      const product = products.find((item) => {
+        return item.id === id;
+      });
       return cb(product);
+    });
+  }
+
+  save() {
+    this.insertProductsInFile(this);
+  }
+
+  static deleteById(id) {
+    console.log(id);
+    this.getProductFromFile((products) => {
+      const newProduct = products.filter((item) => item.id !== id);
+      writeFile(
+        loadFile("data/products.json"),
+        JSON.stringify(newProduct, null, 2),
+        (err) => console.log(err)
+      );
+    });
+  }
+  insertProductsInFile(newProduct, file = "products.json") {
+    ProductFileMDL.getProductFromFile((products) => {
+      if (this.id) {
+        const existingProductIndex = products.findIndex(
+          (prod) => prod.id === this.id
+        );
+        const updatedProducts = [...products];
+        updatedProducts[existingProductIndex] = this;
+        writeFile(
+          loadFile("data/" + file),
+          JSON.stringify(updatedProducts, null, 2),
+          (err) => console.log(err)
+        );
+      } else {
+        newProduct.id = Date.now();
+        products.push(newProduct);
+        writeFile(
+          loadFile("data/" + file),
+          JSON.stringify(products, null, 2),
+          (err) => console.log(err)
+        );
+      }
     });
   }
 }
