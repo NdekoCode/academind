@@ -59,21 +59,19 @@ export default class ProductCTRL {
 
   getCart(req, res, _) {
     const cartMDL = new CartMDL();
-    cartMDL.getProducts((products) => {
-      return res.render("pages/shop/cart", {
-        path: "/cart",
-        pageTitle: "Your cart",
-        activeLink,
-        products,
-      });
+
+    return res.render("pages/shop/cart", {
+      path: "/cart",
+      pageTitle: "Your cart",
+      activeLink,
+      products: [],
     });
   }
   postCart(req, res, _) {
     const prodId = parseInt(req.body.productId);
-    ProductMDL.findById(prodId, (product) => {
-      CartMDL.addProduct(prodId, product.price);
-      return res.redirect("/cart");
-    });
+    console.log(prodId);
+
+    return res.redirect("/cart");
   }
   getCheckout(req, res, _) {
     return res.render("pages/shop/checkout", {
