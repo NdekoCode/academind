@@ -25,23 +25,5 @@
     "description": "Une marque superbe",
     "rating": 4,
     "imageUrl": "https://loremflickr.com/g/500/320/product,samsung?lock=5"
-  },
-  {
-    "id": 1667812907304,
-    "title": "Un super livre",
-    "price": 758,
-    "slug": "un-super-livre",
-    "description": "a good lecture for readers",
-    "rating": 4,
-    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=5"
-  },
-  {
-    "id": 1667812962558,
-    "title": "X BIKE",
-    "price": 977,
-    "slug": "x-bike",
-    "description": "Run very fast",
-    "rating": 4,
-    "imageUrl": "https://loremflickr.com/g/500/320/product,bike?lock=5"
   }
 ]
