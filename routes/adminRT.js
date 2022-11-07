@@ -1,19 +1,19 @@
 import { Router } from "express";
-import AdminFileCTRL from "../controllers/AdminFileCTRL.js";
-const AdminCTRL = new AdminFileCTRL();
+import AdminCTRL from "../controllers/AdminCTRL.js";
+const adminCTRL = new AdminCTRL();
 // CTRL
 // MDL
 // RT
 const productRT = Router();
 
 // /admin/add-product => GET
-productRT.get("/add-product", AdminCTRL.getAddProduct);
-productRT.get("/edit-product/:productId", AdminCTRL.getEditProduct);
-productRT.post("/edit-product", AdminCTRL.postEditProduct);
-productRT.post("/delete-product", AdminCTRL.postDeleteProduct);
+productRT.get("/add-product", adminCTRL.getAddProduct);
+productRT.get("/edit-product/:productId", adminCTRL.getEditProduct);
+productRT.post("/edit-product", adminCTRL.postEditProduct);
+productRT.post("/delete-product", adminCTRL.postDeleteProduct);
 // /admin/product => GET
-productRT.get("/products", AdminCTRL.getProducts);
+productRT.get("/products", adminCTRL.getProducts);
 
-productRT.post("/add-product", AdminCTRL.postAddProduct);
+productRT.post("/add-product", adminCTRL.postAddProduct);
 
 export default productRT;

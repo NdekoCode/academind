@@ -1,8 +1,8 @@
-import ProductFileMDL from "../models/ProductFileMDL.js";
+import ProductMDL from "../models/ProductMDL.js";
 import slugify from "slugify";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
-export default class AdminFileCTRL {
+export default class AdminCTRL {
   /**
    * @description Nous amène vers le formulaire d'ajout d l'article
    * @author NdekoCode
@@ -10,7 +10,7 @@ export default class AdminFileCTRL {
    * @param {ServerResponse} res L'objet reponse
    * @param {Function} next La methode pour passer au middleware suivant
    * @return {HTML}
-   * @memberof AdminFileCTRL
+   * @memberof AdminCTRL
    */
   getAddProduct(_, res) {
     return res.render("pages/admin/edit-product", {
@@ -26,21 +26,21 @@ export default class AdminFileCTRL {
    * @param {IncomingMessage} req L'objet requete
    * @param {ServerResponse} res L'objet reponse
    * @return {HTML}
-   * @memberof AdminFileCTRL
+   * @memberof AdminCTRL
    */
   getEditProduct(req, res) {
     const editMode = Boolean(req.query.edit);
     if (!editMode) return res.redirect("/");
     const prodId = parseInt(req.params.productId);
-    ProductFileMDL.findById(prodId, (product) => {
-      if (!product) return new ErrorsCTRL().getError404(req, res);
+    ProductMDL.findById(prodId).then(([product]) => {
+      if (!product[0]) return new ErrorsCTRL().getError404(req, res);
       return res.render("pages/admin/edit-product", {
         pageTitle: "Edit a product",
         path: "/products",
         layout: "layouts/insert",
         editing: editMode,
         prodId,
-        product,
+        product: product[0],
         activeLink,
       });
     });
@@ -52,7 +52,7 @@ export default class AdminFileCTRL {
    * @param {IncomingMessage} req L'objet requete
    * @param {ServerResponse} res L'objet reponse
    * @return {HTML}
-   * @memberof AdminFileCTRL
+   * @memberof AdminCTRL
    */
   postEditProduct(req, res, _) {
     const prodId = parseInt(req.body.productId);
@@ -61,9 +61,15 @@ export default class AdminFileCTRL {
       id: prodId,
       slug: slugify(req.body.title, { lower: true }),
     };
-    const product = new ProductFileMDL(updateProduct);
-    product.save();
-    res.redirect("/admin/products");
+    const product = new ProductMDL(updateProduct);
+    product
+      .update()
+      .then(() => {
+        res.redirect("/admin/products");
+      })
+      .catch(() => {
+        return new ErrorsCTRL().error500(req, res);
+      });
   }
   /**
    * @description Enregistre le produit entrer dans le formulaire
@@ -72,7 +78,7 @@ export default class AdminFileCTRL {
    * @param {ServerResponse} res L'objet reponse
    * @param {callback} next La methode pour passer au middleware suivant
    * @return {HTML}
-   * @memberof AdminFileCTRL
+   * @memberof AdminCTRL
    */
   postAddProduct(req, res, _) {
     const product = {
@@ -80,27 +86,30 @@ export default class AdminFileCTRL {
       id: null,
       slug: slugify(req.body.title, { lower: true }),
     };
-    const productMDL = new ProductFileMDL(product);
+    const productMDL = new ProductMDL(product);
     productMDL.save();
     res.redirect("/");
   }
   getProducts(req, res, _) {
-    return ProductFileMDL.fetchAll((product) => {
-      return res.render("pages/admin/products", {
-        pageTitle: "administration products",
-        prods: product,
-        path: "/admin/products",
-        hasProducts: product.length > 0,
-        activeShop: true,
-        productCSS: true,
-        activeLink,
-        layout: "layouts/admin",
-      });
-    });
+    ProductMDL.fetchAll()
+      .then(([products]) => {
+        return res.render("pages/admin/products", {
+          pageTitle: "administration products",
+          prods: products,
+          path: "/admin/products",
+          hasProducts: products.length > 0,
+          activeLink,
+          layout: "layouts/admin",
+        });
+      })
+      .catch((err) => console.log(err));
   }
   postDeleteProduct(req, res, next) {
     const prodId = parseInt(req.body.productId);
-    ProductFileMDL.deleteById(prodId);
-    res.redirect("/admin/products");
+    ProductMDL.deleteById(prodId)
+      .then(() => {
+        res.redirect("/admin/products");
+      })
+      .catch((err) => console.log(err));
   }
 }

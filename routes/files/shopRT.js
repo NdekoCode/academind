@@ -1,7 +1,7 @@
 import { Router } from "express";
-import ShopCTRL from "../controllers/ShopCTRL.js";
+import ShopFileCTRL from "../controllers/ShopFileCTRL.js";
 
-const shopCTRL = new ShopCTRL();
+const shopCTRL = new ShopFileCTRL();
 const router = Router();
 router.get("/", shopCTRL.getIndex);
 router.get("/products", shopCTRL.getProducts);
