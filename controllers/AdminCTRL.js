@@ -32,15 +32,15 @@ export default class AdminCTRL {
     const editMode = Boolean(req.query.edit);
     if (!editMode) return res.redirect("/");
     const prodId = parseInt(req.params.productId);
-    ProductMDL.findById(prodId, (product) => {
-      if (!product) return new ErrorsCTRL().getError404(req, res);
+    ProductMDL.findById(prodId).then(([product]) => {
+      if (!product[0]) return new ErrorsCTRL().getError404(req, res);
       return res.render("pages/admin/edit-product", {
         pageTitle: "Edit a product",
         path: "/products",
         layout: "layouts/insert",
         editing: editMode,
         prodId,
-        product,
+        product: product[0],
         activeLink,
       });
     });
@@ -62,8 +62,14 @@ export default class AdminCTRL {
       slug: slugify(req.body.title, { lower: true }),
     };
     const product = new ProductMDL(updateProduct);
-    product.save();
-    res.redirect("/admin/products");
+    product
+      .update()
+      .then(() => {
+        res.redirect("/admin/products");
+      })
+      .catch(() => {
+        return new ErrorsCTRL().error500(req, res);
+      });
   }
   /**
    * @description Enregistre le produit entrer dans le formulaire
@@ -85,22 +91,25 @@ export default class AdminCTRL {
     res.redirect("/");
   }
   getProducts(req, res, _) {
-    return ProductMDL.fetchAll((product) => {
-      return res.render("pages/admin/products", {
-        pageTitle: "administration products",
-        prods: product,
-        path: "/admin/products",
-        hasProducts: product.length > 0,
-        activeShop: true,
-        productCSS: true,
-        activeLink,
-        layout: "layouts/admin",
-      });
-    });
+    ProductMDL.fetchAll()
+      .then(([products]) => {
+        return res.render("pages/admin/products", {
+          pageTitle: "administration products",
+          prods: products,
+          path: "/admin/products",
+          hasProducts: products.length > 0,
+          activeLink,
+          layout: "layouts/admin",
+        });
+      })
+      .catch((err) => console.log(err));
   }
   postDeleteProduct(req, res, next) {
     const prodId = parseInt(req.body.productId);
-    ProductMDL.deleteById(prodId);
-    res.redirect("/admin/products");
+    ProductMDL.deleteById(prodId)
+      .then(() => {
+        res.redirect("/admin/products");
+      })
+      .catch((err) => console.log(err));
   }
 }

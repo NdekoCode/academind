@@ -13,40 +13,47 @@ export default class ProductCTRL {
    * @memberof ProductCTRL
    */
   getProducts(_, res, next) {
-    return ProductMDL.fetchAll((product) => {
-      return res.render("pages/shop/product-list", {
-        pageTitle: "My products",
-        prods: product,
-        path: "/products",
-        hasProducts: product.length > 0,
-        activeLink,
-      });
-    });
+    return ProductMDL.fetchAll()
+      .then(([rows, fieldData]) => {
+        console.log(rows);
+        return res.render("pages/shop/product-list", {
+          pageTitle: "My products",
+          prods: rows,
+          path: "/products",
+          hasProducts: rows.length > 0,
+          activeLink,
+        });
+      })
+      .catch((err) => console.log(err));
   }
-  getProduct(req, res, _) {
+
+  getIndex(req, res, _) {
+    return ProductMDL.fetchAll()
+      .then(([rows, fieldData]) => {
+        console.log(rows);
+        return res.render("pages/shop/product-list", {
+          pageTitle: "Ours products",
+          prods: rows,
+          path: "/",
+          hasProducts: rows.length > 0,
+          activeLink,
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+  async getProduct(req, res, _) {
     // On va verifier le produit qui correctement au slug du qui se trouve dans l'URL
     const params = { key: "slug", value: req.params.productTitle };
-    return ProductMDL.fetchOneBy(params, (product) => {
-      if (!product) {
-        return new ErrorsCTRL().getError404(req, res);
-      }
-      return res.render("pages/shop/product-detail", {
-        pageTitle: product.title,
-        prod: product,
-        path: "/products",
-        activeLink,
-      });
-    });
-  }
-  getIndex(req, res, _) {
-    return ProductMDL.fetchAll((product) => {
-      return res.render("pages/shop/index", {
-        pageTitle: "Ours products",
-        prods: product,
-        path: "/",
-        hasProducts: product.length > 0,
-        activeLink,
-      });
+    const [product] = await ProductMDL.fetchOneBy(params);
+    console.log(product);
+    if (!product) {
+      return new ErrorsCTRL().getError404(req, res);
+    }
+    return res.render("pages/shop/product-detail", {
+      pageTitle: product[0].title,
+      prod: product[0],
+      path: "/products",
+      activeLink,
     });
   }
 

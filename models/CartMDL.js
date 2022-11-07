@@ -1,13 +1,5 @@
-import { read, readFile, writeFile } from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-import { loadFile } from "../utils/utils.js";
 import MDL from "./MDL.js";
-import ProductFileMDL from "./ProductMDL.js";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const cartFile = loadFile("data/cart.json");
-const productFile = loadFile("data/products.json");
+import ProductMDL from "./ProductMDL.js";
 export default class CartMDL extends MDL {
   /**
    * @description Add a new product in the cart
@@ -71,7 +63,7 @@ export default class CartMDL extends MDL {
   getProducts(cb) {
     this.getCart((cart) => {
       const cartProducts = [];
-      ProductFileMDL.fetchAll((products) => {
+      ProductMDL.fetchAll((products) => {
         for (let product of products) {
           const productInCart = cart.products.find((p) => p.id === product.id);
           if (productInCart) {

@@ -1,12 +1,12 @@
 // Template engine : === Moteur de template
 import express from "express";
-import db from "./utils/database.js";
 import adminrouter from "./routes/adminRT.js";
 import shopRouter from "./routes/shopRT.js";
 import { rootDir } from "./utils/utils.js";
 import path from "node:path";
 import ejsLayouts from "express-ejs-layouts";
 import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
+import fakeData from "./utils/fakeData.js";
 
 const app = express();
 // On fait la configuration des fichiers static: Pour le styles, les scripts et les images lors des upload
@@ -16,14 +16,8 @@ app.use(ejsLayouts);
 app.set("views", rootDir + "views");
 app.set("layout", "layouts/layout");
 app.use(express.static(path.join(rootDir, "public")));
-db.execute("SELECT * FROM products")
-  .then((data) => {
-    const [result] = data;
-    console.log(result);
-  })
-  .catch((err) => console.log(err));
 app.use("/images", express.static(path.join(rootDir, "public/img")));
-
+// await fakeData();
 // On definit la configuration pour que les requetes de l'utilisateur soit transmises dans le corps de la requete
 app.use(express.urlencoded({ extended: false }));
 // Nos routes et nos middleware

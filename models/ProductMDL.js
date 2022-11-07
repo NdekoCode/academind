@@ -1,6 +1,6 @@
-import { writeFile } from "node:fs";
-import { indexRand, loadFile, numberRand, ratingRand } from "../utils/utils.js";
 import CartMDL from "./CartMDL.js";
+import slugify from "slugify";
+import db from "../utils/database.js";
 import MDL from "./MDL.js";
 
 /**
@@ -15,22 +15,6 @@ import MDL from "./MDL.js";
  * @property {number} rating La note de l'article
  */
 
-/**
- *@type {Product[]}
- */
-export const products = [
-  {
-    id: Date.now(),
-    title: "Une belle chaussure",
-    slug: function () {
-      return slugify(this.title);
-    },
-    imageUrl: `https://loremflickr.com/g/500/320/product,book?lock=${indexRand}`,
-    price: numberRand,
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    rating: ratingRand,
-  },
-];
 /**
  * Represente le produit à vendre lui-meme
  */
@@ -56,59 +40,50 @@ export default class ProductMDL extends MDL {
    *
    * @returns {Product[]}
    */
-  static fetchAll(cb) {
-    return ProductMDL.getProductFromFile(cb);
+  static async fetchAll() {
+    return db.execute("SELECT * FROM products");
   }
-  static fetchOneBy({ key, value }, cb) {
-    ProductMDL.getProductFromFile((prods) =>
-      cb(prods.find((item) => item[key] === value))
+  static async fetchOneBy({ key, value }) {
+    return db.execute(`SELECT * FROM products WHERE ${key}=?`, [value]);
+  }
+  static findById(id) {
+    return db.execute(`SELECT * FROM products WHERE id=?`, [id]);
+  }
+  update() {
+    return db.execute(
+      "UPDATE products SET title=?,description=?,price=?,imageUrl=?,rating=?,slug=? WHERE id=?",
+      [
+        this.title,
+        this.description,
+        this.price,
+        this.imageUrl,
+        this.rating,
+        slugify(this.title, { lower: true }),
+        this.id,
+      ]
     );
   }
-  static findById(id, cb) {
-    ProductMDL.getProductFromFile((products) =>
-      cb(products.find((item) => item.id === id))
-    );
-  }
-
   save() {
-    this.insertProductsInFile(this);
+    return db.execute(
+      "INSERT INTO products(title,description,price,imageUrl,rating,slug) VALUES(?,?,?,?,?,?)",
+      [
+        this.title,
+        this.description,
+        this.price,
+        this.imageUrl,
+        this.rating,
+        slugify(this.title, { lower: true }),
+      ]
+    );
   }
 
   static deleteById(id) {
-    console.log(id);
-    this.getProductFromFile((products) => {
-      const productPrice = products.find((item) => item.id === id);
-      const newProduct = products.filter((item) => item.id !== id);
-      writeFile(
-        loadFile("data/products.json"),
-        JSON.stringify(newProduct, null, 2),
-        (err) => console.log(err)
-      );
-      CartMDL.deleteProduct(id, productPrice.price);
-    });
-  }
-  insertProductsInFile(newProduct, file = "products.json") {
-    ProductMDL.getProductFromFile((products) => {
-      if (this.id) {
-        const existingProductIndex = products.findIndex(
-          (prod) => prod.id === this.id
-        );
-        const updatedProducts = [...products];
-        updatedProducts[existingProductIndex] = this;
-        writeFile(
-          loadFile("data/" + file),
-          JSON.stringify(updatedProducts, null, 2),
-          (err) => console.log(err)
-        );
-      } else {
-        newProduct.id = Date.now();
-        products.push(newProduct);
-        writeFile(
-          loadFile("data/" + file),
-          JSON.stringify(products, null, 2),
-          (err) => console.log(err)
-        );
-      }
-    });
+    return ProductMDL.findById(id)
+      .then(([data]) => {
+        if (data) {
+          return db.execute("DELETE FROM products WHERE id=?", [data[0].id]);
+        }
+      })
+      .catch((err) => console.log(err));
   }
 }
