@@ -60,19 +60,14 @@ export default class ProductFileMDL extends MDLFile {
     return ProductFileMDL.getProductFromFile(cb);
   }
   static fetchOneBy({ key, value }, cb) {
-    ProductFileMDL.getProductFromFile((prods) => {
-      const product = prods.find((item) => item[key] === value);
-
-      return cb(product);
-    });
+    ProductFileMDL.getProductFromFile((prods) =>
+      cb(prods.find((item) => item[key] === value))
+    );
   }
   static findById(id, cb) {
-    ProductFileMDL.getProductFromFile((products) => {
-      const product = products.find((item) => {
-        return item.id === id;
-      });
-      return cb(product);
-    });
+    ProductFileMDL.getProductFromFile((products) =>
+      cb(products.find((item) => item.id === id))
+    );
   }
 
   save() {

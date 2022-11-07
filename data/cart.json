@@ -1,17 +1,17 @@
 {
   "products": [
     {
+      "id": 1667812962558,
+      "quantity": 1
+    },
+    {
       "id": 1667812815111,
       "quantity": 1
     },
     {
       "id": 1667672863657,
-      "quantity": 2
-    },
-    {
-      "id": 1667812962558,
       "quantity": 1
     }
   ],
-  "totalPrice": 1654
+  "totalPrice": 1527
 }

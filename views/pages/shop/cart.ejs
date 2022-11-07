@@ -27,8 +27,9 @@
                         <td>
                             <a href="#">
                                 <p class="mb-2 md:ml-4"><%=productData.title%></p>
-                                <form action="" method="POST">
-                                    <button type="submit" class="text-gray-700 md:ml-4">
+                                <form action="/cart-delete-item" method="POST">
+                                    <input type="hidden" name="productId" value="<%=productData.id%>">
+                                    <button type="submit" class="text-red-500 md:ml-4">
                                         <small>(Remove item)</small>
                                     </button>
                                 </form>

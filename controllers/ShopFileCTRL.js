@@ -84,4 +84,11 @@ export default class ProductFileCTRL {
       activeLink,
     });
   }
+  postCartDelete(req, res, _) {
+    const prodId = parseInt(req.body.productId);
+    ProductFileMDL.findById(prodId, (product) => {
+      CartFileMDL.deleteProduct(prodId, product.price);
+      return res.redirect("/cart");
+    });
+  }
 }

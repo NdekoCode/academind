@@ -43,14 +43,5 @@
     "description": "Run very fast",
     "rating": 4,
     "imageUrl": "https://loremflickr.com/g/500/320/product,bike?lock=5"
-  },
-  {
-    "id": 1667813010442,
-    "title": "Taxi",
-    "price": 932,
-    "slug": "taxi",
-    "description": "A beautiful car",
-    "rating": 3,
-    "imageUrl": "https://loremflickr.com/g/500/320/product,car?lock=5"
   }
 ]
