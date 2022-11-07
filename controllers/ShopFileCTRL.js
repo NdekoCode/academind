@@ -52,10 +52,14 @@ export default class ProductFileCTRL {
   }
 
   getCart(req, res, _) {
-    return res.render("pages/shop/cart", {
-      path: "/cart",
-      pageTitle: "Your cart",
-      activeLink,
+    const cartMDL = new CartFileMDL();
+    cartMDL.getProducts((products) => {
+      return res.render("pages/shop/cart", {
+        path: "/cart",
+        pageTitle: "Your cart",
+        activeLink,
+        products,
+      });
     });
   }
   postCart(req, res, _) {
@@ -78,6 +82,13 @@ export default class ProductFileCTRL {
       pageTitle: "Your Orders",
       path: "/orders",
       activeLink,
+    });
+  }
+  postCartDelete(req, res, _) {
+    const prodId = parseInt(req.body.productId);
+    ProductFileMDL.findById(prodId, (product) => {
+      CartFileMDL.deleteProduct(prodId, product.price);
+      return res.redirect("/cart");
     });
   }
 }

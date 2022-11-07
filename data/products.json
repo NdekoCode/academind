@@ -9,21 +9,39 @@
     "imageUrl": "https://loremflickr.com/g/500/320/product,jordan?lock=10"
   },
   {
-    "id": 1667672941551,
-    "title": "Livre de Super sayan",
-    "price": 854,
-    "slug": "livre-de-super-sayan",
-    "description": "Un livre pour les manganèse\r\n            ",
-    "rating": 4,
-    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=20"
+    "id": 1667812815111,
+    "title": "Iphone X",
+    "price": 423,
+    "slug": "iphone-x",
+    "description": "Super téléphone de Apple",
+    "rating": 5,
+    "imageUrl": "https://loremflickr.com/g/500/320/product,iphone?lock=5"
   },
   {
-    "id": 1667754097500,
-    "title": "Iphone",
-    "price": 939,
-    "slug": "iphone",
-    "description": "Telephone apple",
+    "id": 1667812851474,
+    "title": "Samsung",
+    "price": 74,
+    "slug": "samsung",
+    "description": "Une marque superbe",
     "rating": 4,
-    "imageUrl": "https://loremflickr.com/g/500/320/product,iphone?lock=5"
+    "imageUrl": "https://loremflickr.com/g/500/320/product,samsung?lock=5"
+  },
+  {
+    "id": 1667812907304,
+    "title": "Un super livre",
+    "price": 758,
+    "slug": "un-super-livre",
+    "description": "a good lecture for readers",
+    "rating": 4,
+    "imageUrl": "https://loremflickr.com/g/500/320/product,book?lock=5"
+  },
+  {
+    "id": 1667812962558,
+    "title": "X BIKE",
+    "price": 977,
+    "slug": "x-bike",
+    "description": "Run very fast",
+    "rating": 4,
+    "imageUrl": "https://loremflickr.com/g/500/320/product,bike?lock=5"
   }
 ]
