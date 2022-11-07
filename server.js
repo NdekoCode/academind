@@ -1,6 +1,6 @@
-import { createServer } from "node:http";
 // Template engine : === Moteur de template
 import express from "express";
+import db from "./utils/database.js";
 import adminrouter from "./routes/adminRT.js";
 import shopRouter from "./routes/shopRT.js";
 import { rootDir } from "./utils/utils.js";
@@ -16,12 +16,16 @@ app.use(ejsLayouts);
 app.set("views", rootDir + "views");
 app.set("layout", "layouts/layout");
 app.use(express.static(path.join(rootDir, "public")));
-
+db.execute("SELECT * FROM products")
+  .then((data) => {
+    const [result] = data;
+    console.log(result);
+  })
+  .catch((err) => console.log(err));
 app.use("/images", express.static(path.join(rootDir, "public/img")));
 
 // On definit la configuration pour que les requetes de l'utilisateur soit transmises dans le corps de la requete
 app.use(express.urlencoded({ extended: false }));
-
 // Nos routes et nos middleware
 app.use("/admin", adminrouter);
 app.use(shopRouter);

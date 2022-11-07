@@ -1,0 +1,114 @@
+import { writeFile } from "node:fs";
+import { indexRand, loadFile, numberRand, ratingRand } from "../utils/utils.js";
+import CartMDL from "./CartMDL.js";
+import MDL from "./MDL.js";
+
+/**
+ * Le produit à vendre
+ * @typedef {object} Product
+ * @property {number} [id=Date.now()] L'identifiant de l'article
+ * @property {string} title Titre de l'article
+ * @property {string} slug Le slug pour l'URL descriptif de l'article
+ * @property {number} price Le prix de l'article
+ * @property {string} description description de l'article
+ * @property {string} [imageUrl="https://loremflickr.com/g/500/320/product,book?lock=5"] image de l'article
+ * @property {number} rating La note de l'article
+ */
+
+/**
+ *@type {Product[]}
+ */
+export const products = [
+  {
+    id: Date.now(),
+    title: "Une belle chaussure",
+    slug: function () {
+      return slugify(this.title);
+    },
+    imageUrl: `https://loremflickr.com/g/500/320/product,book?lock=${indexRand}`,
+    price: numberRand,
+    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    rating: ratingRand,
+  },
+];
+/**
+ * Represente le produit à vendre lui-meme
+ */
+export default class ProductMDL extends MDL {
+  /**
+   * Creates an instance of ProductMDL.
+   * @author NdekoCode
+   * @param {Product} product
+   * @memberof ProductMDL
+   */
+  constructor(product) {
+    super();
+    this.id = product.id;
+    this.title = product.title;
+    this.price = parseFloat(product.price);
+    this.slug = product.slug;
+    this.description = product.description;
+    this.rating = parseInt(product.rating);
+    this.imageUrl = product.imageUrl;
+  }
+
+  /**
+   *
+   * @returns {Product[]}
+   */
+  static fetchAll(cb) {
+    return ProductMDL.getProductFromFile(cb);
+  }
+  static fetchOneBy({ key, value }, cb) {
+    ProductMDL.getProductFromFile((prods) =>
+      cb(prods.find((item) => item[key] === value))
+    );
+  }
+  static findById(id, cb) {
+    ProductMDL.getProductFromFile((products) =>
+      cb(products.find((item) => item.id === id))
+    );
+  }
+
+  save() {
+    this.insertProductsInFile(this);
+  }
+
+  static deleteById(id) {
+    console.log(id);
+    this.getProductFromFile((products) => {
+      const productPrice = products.find((item) => item.id === id);
+      const newProduct = products.filter((item) => item.id !== id);
+      writeFile(
+        loadFile("data/products.json"),
+        JSON.stringify(newProduct, null, 2),
+        (err) => console.log(err)
+      );
+      CartMDL.deleteProduct(id, productPrice.price);
+    });
+  }
+  insertProductsInFile(newProduct, file = "products.json") {
+    ProductMDL.getProductFromFile((products) => {
+      if (this.id) {
+        const existingProductIndex = products.findIndex(
+          (prod) => prod.id === this.id
+        );
+        const updatedProducts = [...products];
+        updatedProducts[existingProductIndex] = this;
+        writeFile(
+          loadFile("data/" + file),
+          JSON.stringify(updatedProducts, null, 2),
+          (err) => console.log(err)
+        );
+      } else {
+        newProduct.id = Date.now();
+        products.push(newProduct);
+        writeFile(
+          loadFile("data/" + file),
+          JSON.stringify(products, null, 2),
+          (err) => console.log(err)
+        );
+      }
+    });
+  }
+}
