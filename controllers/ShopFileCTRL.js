@@ -52,10 +52,14 @@ export default class ProductFileCTRL {
   }
 
   getCart(req, res, _) {
-    return res.render("pages/shop/cart", {
-      path: "/cart",
-      pageTitle: "Your cart",
-      activeLink,
+    const cartMDL = new CartFileMDL();
+    cartMDL.getProducts((products) => {
+      return res.render("pages/shop/cart", {
+        path: "/cart",
+        pageTitle: "Your cart",
+        activeLink,
+        products,
+      });
     });
   }
   postCart(req, res, _) {

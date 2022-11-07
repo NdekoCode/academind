@@ -1,5 +1,6 @@
 import { writeFile } from "node:fs";
 import { indexRand, loadFile, numberRand, ratingRand } from "../utils/utils.js";
+import CartFileMDL from "./CartFileMDL.js";
 import MDLFile from "./MDLFile.js";
 
 /**
@@ -81,12 +82,14 @@ export default class ProductFileMDL extends MDLFile {
   static deleteById(id) {
     console.log(id);
     this.getProductFromFile((products) => {
+      const productPrice = products.find((item) => item.id === id);
       const newProduct = products.filter((item) => item.id !== id);
       writeFile(
         loadFile("data/products.json"),
         JSON.stringify(newProduct, null, 2),
         (err) => console.log(err)
       );
+      CartFileMDL.deleteProduct(id, productPrice.price);
     });
   }
   insertProductsInFile(newProduct, file = "products.json") {
