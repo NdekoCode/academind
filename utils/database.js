@@ -10,4 +10,10 @@ const sequelize = new Sequelize(...paramsConnexion, {
   dialect: "mysql",
   host: process.env.DB_HOST,
 });
+try {
+  await sequelize.authenticate();
+  console.log("Connection has been established successfully.");
+} catch (err) {
+  console.log("Unable to connect to the database: ", err.message);
+}
 export default sequelize;

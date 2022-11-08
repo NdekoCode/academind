@@ -83,12 +83,13 @@ export default class AdminCTRL {
   postAddProduct(req, res, _) {
     const product = {
       ...req.body,
-      id: null,
       slug: slugify(req.body.title, { lower: true }),
     };
-    const productMDL = new ProductMDL(product);
-    productMDL.save();
-    res.redirect("/");
+    ProductMDL.create(product)
+      .then(() => {
+        return res.status(201).redirect("/");
+      })
+      .catch((err) => console.log(err));
   }
   getProducts(req, res, _) {
     ProductMDL.fetchAll()

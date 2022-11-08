@@ -3,7 +3,9 @@ import express from "express";
 import adminrouter from "./routes/adminRT.js";
 import shopRouter from "./routes/shopRT.js";
 import { rootDir } from "./utils/utils.js";
+import sequelize from "./utils/database.js";
 import path from "node:path";
+
 import ejsLayouts from "express-ejs-layouts";
 import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
 import fakeData from "./utils/fakeData.js";
@@ -26,11 +28,18 @@ app.use(shopRouter);
 const errorsCTRL = new ErrorsCTRL();
 // Le middleware par defaut pour les requetes 404
 app.use(errorsCTRL.getError404);
-
 // Notre port
-const port = process.env.PORT || 3500;
-
-/** @type {*http.Server} */
-app.listen(port, () => {
-  console.log("Running server at " + port);
-});
+const PORT = process.env.PORT || 3500;
+app.set("port", PORT);
+sequelize
+  .sync()
+  .then((result) => {
+    /** @type {*http.Server} */
+    // fakeData();
+    app.listen(PORT, () => {
+      console.log("Running server at " + PORT);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
