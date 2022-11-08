@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import sequelize from "../utils/database";
+import sequelize from "../utils/database.js";
 const UserMDL = sequelize.define("user", {
   id: {
     type: Sequelize.INTEGER,
