@@ -33,15 +33,15 @@ export default class AdminCTRL {
     const editMode = Boolean(req.query.edit);
     if (!editMode) return res.redirect("/");
     const prodId = parseInt(req.params.productId);
-    ProductMDL.findById(prodId).then(([product]) => {
-      if (!product[0]) return new ErrorsCTRL().getError404(req, res);
+    ProductMDL.findByPk(prodId).then((product) => {
+      if (!product) return new ErrorsCTRL().getError404(req, res);
       return res.render("pages/admin/edit-product", {
         pageTitle: "Edit a product",
         path: "/products",
         layout: "layouts/insert",
         editing: editMode,
         prodId,
-        product: product[0],
+        product: product,
         activeLink,
       });
     });
@@ -58,15 +58,17 @@ export default class AdminCTRL {
   postEditProduct(req, res, _) {
     const prodId = parseInt(req.body.productId);
     const updateProduct = {
-      ...req.body,
       id: prodId,
+      ...req.body,
       slug: slugify(req.body.title, { lower: true }),
     };
-    const product = new ProductMDL(updateProduct);
-    product
-      .update()
-      .then(() => {
-        res.redirect("/admin/products");
+    ProductMDL.findByPk(prodId)
+      .then((product) => {
+        if (product) {
+          product.update(updateProduct);
+          return res.status(201).redirect("/admin/products");
+        }
+        return new ErrorsCTRL().getError404(req, res);
       })
       .catch(() => {
         return new ErrorsCTRL().error500(req, res);
@@ -110,9 +112,13 @@ export default class AdminCTRL {
   }
   postDeleteProduct(req, res, next) {
     const prodId = parseInt(req.body.productId);
-    ProductMDL.deleteById(prodId)
-      .then(() => {
-        res.redirect("/admin/products");
+    ProductMDL.findByPk(prodId)
+      .then((product) => {
+        if (product) {
+          product.destroy();
+          return res.status(201).redirect("/admin/products");
+        }
+        return new ErrorsCTRL().getError404(req, res);
       })
       .catch((err) => console.log(err));
   }

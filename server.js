@@ -9,7 +9,8 @@ import path from "node:path";
 import ejsLayouts from "express-ejs-layouts";
 import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
 import fakeData from "./utils/fakeData.js";
-
+import ProductMDL from "./models/ProductMDL.js";
+import UserMDL from "./models/UserMDL.js";
 const app = express();
 // On fait la configuration des fichiers static: Pour le styles, les scripts et les images lors des upload
 // On definit les configuration des notre moteur de template et des views
@@ -31,6 +32,12 @@ app.use(errorsCTRL.getError404);
 // Notre port
 const PORT = process.env.PORT || 3500;
 app.set("port", PORT);
+ProductMDL.belongsTo(UserMDL, {
+  constraints: true,
+  onDelete: "CASCADE",
+});
+UserMDL.hasMany(ProductMDL);
+// { force: true }
 sequelize
   .sync()
   .then((result) => {
