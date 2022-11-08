@@ -116,7 +116,7 @@ export default class AdminCTRL {
       .then((product) => {
         if (product) {
           product.destroy();
-          return res.redirect("/admin/products");
+          return res.status(201).redirect("/admin/products");
         }
         return new ErrorsCTRL().getError404(req, res);
       })
