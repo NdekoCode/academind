@@ -2,6 +2,7 @@ import ProductMDL from "../models/ProductMDL.js";
 import slugify from "slugify";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
+import Product from "../data/Product.js";
 export default class AdminCTRL {
   /**
    * @description Nous amène vers le formulaire d'ajout d l'article
@@ -87,13 +88,15 @@ export default class AdminCTRL {
     };
     ProductMDL.create(product)
       .then(() => {
+        console.log("Created product");
         return res.status(201).redirect("/");
       })
       .catch((err) => console.log(err));
   }
   getProducts(req, res, _) {
-    ProductMDL.fetchAll()
-      .then(([products]) => {
+    ProductMDL.findAll()
+      .then((products) => {
+        products = products.map((p) => new Product(p));
         return res.render("pages/admin/products", {
           pageTitle: "administration products",
           prods: products,

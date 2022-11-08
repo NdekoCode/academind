@@ -1,3 +1,4 @@
+import Product from "../data/Product.js";
 import CartMDL from "../models/CartMDL.js";
 import ProductMDL from "../models/ProductMDL.js";
 import { activeLink } from "../utils/utils.js";
@@ -13,14 +14,14 @@ export default class ProductCTRL {
    * @memberof ProductCTRL
    */
   getProducts(_, res, next) {
-    return ProductMDL.fetchAll()
-      .then(([rows, fieldData]) => {
-        console.log(rows);
+    return ProductMDL.findAll()
+      .then((products) => {
+        products = products.map((p) => new Product(p));
         return res.render("pages/shop/product-list", {
           pageTitle: "My products",
-          prods: rows,
+          prods: products,
           path: "/products",
-          hasProducts: rows.length > 0,
+          hasProducts: products.length > 0,
           activeLink,
         });
       })
@@ -28,14 +29,14 @@ export default class ProductCTRL {
   }
 
   getIndex(req, res, _) {
-    return ProductMDL.fetchAll()
-      .then(([rows, fieldData]) => {
-        console.log(rows);
+    return ProductMDL.findAll({ order: [["createdAt", "DESC"]] })
+      .then((products) => {
+        products = products.map((p) => new Product(p));
         return res.render("pages/shop/product-list", {
           pageTitle: "Ours products",
-          prods: rows,
+          prods: products,
           path: "/",
-          hasProducts: rows.length > 0,
+          hasProducts: products.length > 0,
           activeLink,
         });
       })
@@ -43,15 +44,14 @@ export default class ProductCTRL {
   }
   async getProduct(req, res, _) {
     // On va verifier le produit qui correctement au slug du qui se trouve dans l'URL
-    const params = { key: "slug", value: req.params.productTitle };
-    const [product] = await ProductMDL.fetchOneBy(params);
-    console.log(product);
+    const params = { slug: req.params.productTitle };
+    const product = await ProductMDL.findOne({ where: params });
     if (!product) {
       return new ErrorsCTRL().getError404(req, res);
     }
     return res.render("pages/shop/product-detail", {
-      pageTitle: product[0].title,
-      prod: product[0],
+      pageTitle: product.title,
+      prod: new Product(product),
       path: "/products",
       activeLink,
     });
@@ -69,7 +69,6 @@ export default class ProductCTRL {
   }
   postCart(req, res, _) {
     const prodId = parseInt(req.body.productId);
-    console.log(prodId);
 
     return res.redirect("/cart");
   }

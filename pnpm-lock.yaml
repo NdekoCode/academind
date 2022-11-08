@@ -5,6 +5,7 @@ specifiers:
   ejs: ^3.1.8
   express: ^4.18.2
   express-ejs-layouts: ^2.5.1
+  moment: ^2.29.4
   mysql2: ^2.3.3
   nodemon: ^2.0.20
   sequelize: ^6.25.5
@@ -16,6 +17,7 @@ dependencies:
   ejs: 3.1.8
   express: 4.18.2
   express-ejs-layouts: 2.5.1
+  moment: 2.29.4
   mysql2: 2.3.3
   sequelize: 6.25.5_mysql2@2.3.3
   slugify: 1.6.5
