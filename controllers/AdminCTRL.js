@@ -113,7 +113,8 @@ export default class AdminCTRL {
       .catch((err) => console.log(err));
   }
   getProducts(req, res, _) {
-    ProductMDL.findAll()
+    req.user
+      .getProducts()
       .then((products) => {
         products = products.map((p) => new Product(p));
         return res.render("pages/admin/products", {
