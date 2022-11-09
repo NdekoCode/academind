@@ -23,6 +23,13 @@ app.use("/images", express.static(path.join(rootDir, "public/img")));
 // await fakeData();
 // On definit la configuration pour que les requetes de l'utilisateur soit transmises dans le corps de la requete
 app.use(express.urlencoded({ extended: false }));
+
+app.use((req, res, next) => {
+  UserMDL.findByPk(1).then((user) => {
+    req.user = user;
+    next();
+  });
+});
 // Nos routes et nos middleware
 app.use("/admin", adminrouter);
 app.use(shopRouter);
@@ -43,6 +50,24 @@ sequelize
   .then((result) => {
     /** @type {*http.Server} */
     // fakeData();
+    return UserMDL.findByPk(1);
+  })
+  .then((user) => {
+    if (!user) {
+      return UserMDL.create({
+        username: "Ndekocode",
+        email: "arickbulakali@gmail.com",
+        firstname: "Arick",
+        lastname: "Bulakali",
+        password: "Ndekocode",
+        address: `Goma / Virunga No. 078`,
+        slug: slugify("Ndekocode", { lower: true }),
+      });
+    }
+    return user;
+  })
+  .then((user) => {
+    console.log(user.dataValues);
     app.listen(PORT, () => {
       console.log("Running server at " + PORT);
     });

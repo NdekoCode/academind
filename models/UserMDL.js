@@ -1,4 +1,5 @@
 import Sequelize from "sequelize";
+import slugify from "slugify";
 import sequelize from "../utils/database.js";
 const UserMDL = sequelize.define("user", {
   id: {
@@ -7,11 +8,25 @@ const UserMDL = sequelize.define("user", {
     autoIncrement: true,
     allowNull: false,
   },
-  name: {
+  username: Sequelize.STRING,
+  email: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  email: {
+  firstname: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  lastname: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  address: Sequelize.STRING,
+  slug: {
     type: Sequelize.STRING,
     allowNull: false,
   },

@@ -3,6 +3,7 @@ import slugify from "slugify";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
 import Product from "../data/Product.js";
+import { Sequelize } from "sequelize";
 export default class AdminCTRL {
   /**
    * @description Nous amène vers le formulaire d'ajout d l'article
@@ -33,18 +34,25 @@ export default class AdminCTRL {
     const editMode = Boolean(req.query.edit);
     if (!editMode) return res.redirect("/");
     const prodId = parseInt(req.params.productId);
-    ProductMDL.findByPk(prodId).then((product) => {
-      if (!product) return new ErrorsCTRL().getError404(req, res);
-      return res.render("pages/admin/edit-product", {
-        pageTitle: "Edit a product",
-        path: "/products",
-        layout: "layouts/insert",
-        editing: editMode,
-        prodId,
-        product: product,
-        activeLink,
+    req.user
+      .getProducts({
+        where: {
+          userId: parseInt(req.user.id),
+        },
+      })
+      .then((product) => {
+        console.log(product);
+        if (!product) return new ErrorsCTRL().getError404(req, res);
+        return res.render("pages/admin/edit-product", {
+          pageTitle: "Edit a product",
+          path: "/products",
+          layout: "layouts/insert",
+          editing: editMode,
+          prodId,
+          product: product[0],
+          activeLink,
+        });
       });
-    });
   }
 
   /**
@@ -62,10 +70,17 @@ export default class AdminCTRL {
       ...req.body,
       slug: slugify(req.body.title, { lower: true }),
     };
-    ProductMDL.findByPk(prodId)
+
+    // getProducts : est une methode créer par sequelize lorsque l'on a fait un ProductMDL.belongsTo(UserMDL) à fin de récuperer tous les produits appartenant à cet utilisateur
+    req.user
+      .getProducts({
+        where: {
+          id: prodId,
+        },
+      })
       .then((product) => {
-        if (product) {
-          product.update(updateProduct);
+        if (product[0]) {
+          product[0].update(updateProduct);
           return res.status(201).redirect("/admin/products");
         }
         return new ErrorsCTRL().getError404(req, res);
@@ -88,7 +103,9 @@ export default class AdminCTRL {
       ...req.body,
       slug: slugify(req.body.title, { lower: true }),
     };
-    ProductMDL.create(product)
+    // createProduct : est une methode créer par sequelize lorsque l'on a fait un ProductMDL.belongsTo(UserMDL)
+    req.user
+      .createProduct(product)
       .then(() => {
         console.log("Created product");
         return res.status(201).redirect("/");
