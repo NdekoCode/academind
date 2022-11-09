@@ -129,10 +129,11 @@ export default class AdminCTRL {
   }
   postDeleteProduct(req, res, next) {
     const prodId = parseInt(req.body.productId);
-    ProductMDL.findByPk(prodId)
+    req.user
+      .getProducts({ where: { id: prodId } })
       .then((product) => {
-        if (product) {
-          product.destroy();
+        if (product[0]) {
+          product[0].destroy();
           return res.status(201).redirect("/admin/products");
         }
         return new ErrorsCTRL().getError404(req, res);
