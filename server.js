@@ -83,7 +83,6 @@ UserMDL.hasMany(OrderMDL);
 // Une commande appartient à plusieurs produits càd une produit peut avoir plusieurs commande et un produit a plusieur commande : through represente la table pivot
 OrderMDL.belongsToMany(ProductMDL, { through: OrderItem });
 
-// { force: true }
 sequelize
   // .sync({ force: true })
   .sync()

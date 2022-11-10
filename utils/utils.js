@@ -30,3 +30,11 @@ export function loadFile(filePath) {
 export function activeLink(pathVerify) {
   return pathVerify ? "active" : "not-active";
 }
+export function myRandomId(quantity, max) {
+  const setter = new Set();
+
+  while (setter.size < quantity) {
+    setter.add(Math.floor(Math.random() * max) + 1);
+  }
+  return Array.from(setter);
+}
