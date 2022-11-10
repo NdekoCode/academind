@@ -1,1 +1,37 @@
 <h1 class="text-4xl font-bold my-3"><%=pageTitle%></h1>
+<% if(orders.length >0) {%>
+
+<div>
+    <ul>
+
+        <% orders.forEach(order=>{%>
+        <ul>
+            <li class="shadow p-5 m-3">
+                <h3 class="text-3xl"># <%=order.id%></h3>
+                <ul class="relative">
+                    <%order.products.forEach(product=>{%>
+
+                    <li>
+                        <div class="flex item-center justify-between">
+
+                            <p class="m-3">
+                                <%=product.title%>
+                            </p>
+                            <p class="text-base font-bold">Quantity: <%=product.orderItem.quantity%></p>
+
+                        </div>
+                    </li>
+                    <%})%>
+                </ul>
+            </li>
+        </ul>
+
+        <%})%>
+    </ul>
+
+</div>
+<%}else {%>
+<div>
+    <h2 class="text-4xl font-bold my-3">Not command yet</h2>
+</div>
+<%}%>

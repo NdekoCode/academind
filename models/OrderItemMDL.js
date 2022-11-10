@@ -8,6 +8,7 @@ const OrderItemMDL = sequelize.define("orderItem", {
     primaryKey: true,
     autoIncrement: true,
   },
+  quantity: Sequelize.INTEGER,
   address: Sequelize.STRING,
 });
 export default OrderItemMDL;

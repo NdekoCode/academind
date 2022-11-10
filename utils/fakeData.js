@@ -60,24 +60,11 @@ async function fakeData() {
     });
   }
 
-  for (let prod of responseData) {
-    await CartItemMDL.create({
-      quantity: parseInt(Math.random() * 4 + 1),
-      cartId: parseInt(Math.random() * 5 + 1),
-      productId: parseInt(Math.random() * 19 + 1),
-    });
-  }
-
-  for (let i = 1; i < 6; i++) {
+  for (let i = 1; i < 7; i++) {
     await OrderMDL.create({
       userId: i,
     });
   }
-  for (let i = 1; i < 6; i++) {
-    await OrderItemMDL.create({
-      orderId: parseInt(Math.random() * 5 + 1),
-      productId: parseInt(Math.random() * 19 + 1),
-    });
-  }
 }
+
 export default fakeData;
