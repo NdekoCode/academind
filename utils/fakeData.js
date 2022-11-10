@@ -1,4 +1,6 @@
 import slugify from "slugify";
+import CartItemMDL from "../models/CartItemMDL.js";
+import CartMDL from "../models/CartMDL.js";
 import ProductMDL from "../models/ProductMDL.js";
 import UserMDL from "../models/UserMDL.js";
 async function fakeData() {
@@ -9,7 +11,7 @@ async function fakeData() {
   const responseUser = await fetch("https://fakestoreapi.com/users");
   const responseUserData = await responseUser.json();
 
-  UserMDL.create({
+  await UserMDL.create({
     username: "Ndekocode",
     email: "arickbulakali@gmail.com",
     firstname: "Arick",
@@ -18,15 +20,8 @@ async function fakeData() {
     address: `Goma / Virunga No. 078`,
     slug: slugify("Ndekocode", { lower: true }),
   });
-  for (let {
-    id,
-    email,
-    username,
-    password,
-    name,
-    address,
-  } of responseUserData) {
-    UserMDL.create({
+  for (let { email, username, password, name, address } of responseUserData) {
+    await UserMDL.create({
       username,
       email,
       firstname: name.firstname,
@@ -36,7 +31,7 @@ async function fakeData() {
       slug: slugify(username, { lower: true }),
     });
   }
-  UserMDL.create({
+  await UserMDL.create({
     username: "Golla golla",
     email: "golagola@gmail.com",
     firstname: "Gloire",
@@ -46,14 +41,27 @@ async function fakeData() {
     slug: slugify("Golla golla", { lower: true }),
   });
   for (let { title, price, description, image, rating } of responseData) {
-    ProductMDL.create({
+    await ProductMDL.create({
       title,
       price,
       description,
       imageUrl: image,
       rating: parseInt(rating.rate),
       slug: slugify(title, { lower: true }),
-      userId: parseInt(Math.random() * 10),
+      userId: parseInt(Math.random() * 9 + 1),
+    });
+  }
+
+  for (let i = 1; i < 6; i++) {
+    await CartMDL.create({
+      userId: i,
+    });
+  }
+  for (let prod of responseData) {
+    await CartItemMDL.create({
+      quantity: parseInt(Math.random() * 4 + 1),
+      cartId: parseInt(Math.random() * 5 + 1),
+      productId: parseInt(Math.random() * 19 + 1),
     });
   }
 }

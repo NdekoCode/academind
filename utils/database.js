@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import Sequelize from "sequelize";
+import { Sequelize } from "sequelize";
 const paramsConnexion = [
   process.env.DB_NAME,
   process.env.DB_USER,

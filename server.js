@@ -11,6 +11,9 @@ import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
 import fakeData from "./utils/fakeData.js";
 import ProductMDL from "./models/ProductMDL.js";
 import UserMDL from "./models/UserMDL.js";
+import CartMDL from "./models/CartMDL.js";
+import CartItemMDL from "./models/CartItemMDL.js";
+import slugify from "slugify";
 const app = express();
 // On fait la configuration des fichiers static: Pour le styles, les scripts et les images lors des upload
 // On definit les configuration des notre moteur de template et des views
@@ -43,9 +46,15 @@ ProductMDL.belongsTo(UserMDL, {
   constraints: true,
   onDelete: "CASCADE",
 });
+
 UserMDL.hasMany(ProductMDL);
+UserMDL.hasOne(CartMDL);
+CartMDL.belongsTo(UserMDL);
+CartMDL.belongsToMany(ProductMDL, { through: CartItemMDL });
+ProductMDL.belongsToMany(CartMDL, { through: CartItemMDL });
 // { force: true }
 sequelize
+  // .sync({ force: true })
   .sync()
   .then((result) => {
     /** @type {*http.Server} */

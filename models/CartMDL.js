@@ -1,7 +1,12 @@
-import Sequelize, { define } from "sequelize";
+import { Sequelize } from "sequelize";
 import sequelize from "../utils/database.js";
-
-const CartMDL = define("cart", {
+/**
+ * @typedef {object} CartModel La carte model de l'UTILISATEUR
+ * @property {number} id l'identifiant de la carte
+ *
+ */
+/** @type {CartModel} */
+const CartMDL = sequelize.define("cart", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,

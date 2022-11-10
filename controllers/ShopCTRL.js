@@ -57,20 +57,47 @@ export default class ProductCTRL {
     });
   }
 
-  getCart(req, res, _) {
-    const cartMDL = new CartMDL();
-
-    return res.render("pages/shop/cart", {
-      path: "/cart",
-      pageTitle: "Your cart",
-      activeLink,
-      products: [],
-    });
+  async getCart(req, res, _) {
+    try {
+      const cart = await req.user.getCart();
+      const products = await cart.getProducts();
+      return res.render("pages/shop/cart", {
+        path: "/cart",
+        pageTitle: "Your cart",
+        activeLink,
+        products,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
-  postCart(req, res, _) {
+  async postCart(req, res, _) {
     const prodId = parseInt(req.body.productId);
+    let product;
+    let newQuantity = 1;
+    try {
+      const cart = await req.user.getCart();
+      const products = await cart.getProducts({ where: { id: prodId } });
+      if (products && products.length > 0) {
+        product = products[0];
+      }
+      if (product) {
+        const oldQuantity = product.cartItem.quantity;
+        newQuantity = oldQuantity + 1;
+        // ...
+      }
+      const postProduct = await ProductMDL.findByPk(prodId);
+      console.log(postProduct);
+      // addProduct est une methode magique qui est ajouter avec la relation que nous avont definit entre la carte (Panier) et les produit
+      await cart.addProduct(postProduct, {
+        // Si le produit existe déjà dans la carte alors on va juste augmenter la quantité
+        through: { quantity: newQuantity },
+      });
 
-    return res.redirect("/cart");
+      return res.redirect("/cart");
+    } catch (err) {
+      console.log(err);
+    }
   }
   getCheckout(req, res, _) {
     return res.render("pages/shop/checkout", {
@@ -87,11 +114,18 @@ export default class ProductCTRL {
       activeLink,
     });
   }
-  postCartDelete(req, res, _) {
-    const prodId = parseInt(req.body.productId);
-    ProductMDL.findById(prodId, (product) => {
-      CartMDL.deleteProduct(prodId, product.price);
-      return res.redirect("/cart");
-    });
+  async postCartDelete(req, res, _) {
+    try {
+      const prodId = parseInt(req.body.productId);
+      const cart = await req.user.getCart();
+      const products = await cart.getProducts({ where: { id: prodId } });
+      if (products && products.length > 0) {
+        const product = products[0];
+        await product.cartItem.destroy();
+        return res.redirect("/cart");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
