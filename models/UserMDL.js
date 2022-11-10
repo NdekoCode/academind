@@ -12,7 +12,7 @@ import sequelize from "../utils/database.js";
  * @property {string} slug Le lien d'URL de l'utilisateur
  *
  */
-/** @type {UserModel} */
+/** @type {Model} */
 const UserMDL = sequelize.define("user", {
   id: {
     type: Sequelize.INTEGER,

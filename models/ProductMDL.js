@@ -14,7 +14,7 @@ import sequelize from "../utils/database.js";
  */
 
 /**
- *@type {ProductModel}
+ *@type {Model}
  */
 const ProductMDL = sequelize.define("product", {
   id: {

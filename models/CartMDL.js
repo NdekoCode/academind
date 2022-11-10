@@ -5,7 +5,7 @@ import sequelize from "../utils/database.js";
  * @property {number} id l'identifiant de la carte
  *
  */
-/** @type {CartModel} */
+/** @type {  Model} */
 const CartMDL = sequelize.define("cart", {
   id: {
     type: Sequelize.INTEGER,
