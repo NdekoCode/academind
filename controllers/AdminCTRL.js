@@ -3,7 +3,6 @@ import slugify from "slugify";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
 import Product from "../data/Product.js";
-import { Sequelize } from "sequelize";
 export default class AdminCTRL {
   /**
    * @description Nous amène vers le formulaire d'ajout d l'article
@@ -23,6 +22,45 @@ export default class AdminCTRL {
     });
   }
   /**
+   * @description Enregistre le produit entrer dans le formulaire
+   * @author NdekoCode
+   * @param {IncomingMessage} req L'objet requete
+   * @param {ServerResponse} res L'objet reponse
+   * @param {callback} next La methode pour passer au middleware suivant
+   * @return {HTML}
+   * @memberof AdminCTRL
+   */
+  postAddProduct(req, res, _) {
+    const product = {
+      ...req.body,
+      slug: slugify(req.body.title, { lower: true }),
+    };
+    const prodMDL = new ProductMDL(product);
+    prodMDL
+      .save()
+      .then(() => {
+        console.log("Created product");
+        return res.status(201).redirect("/");
+      })
+      .catch((err) => console.log(err));
+  }
+  /* getProducts(req, res, _) {
+    req.user
+      .getProducts()
+      .then((products) => {
+        products = products.map((p) => new Product(p));
+        return res.render("pages/admin/products", {
+          pageTitle: "administration products",
+          prods: products,
+          path: "/admin/products",
+          hasProducts: products.length > 0,
+          activeLink,
+          layout: "layouts/admin",
+        });
+      })
+      .catch((err) => console.log(err));
+  } */
+  /**
    * @description Formulaire de modification d'un produit
    * @author NdekoCode
    * @param {IncomingMessage} req L'objet requete
@@ -30,7 +68,7 @@ export default class AdminCTRL {
    * @return {HTML}
    * @memberof AdminCTRL
    */
-  getEditProduct(req, res) {
+  /* getEditProduct(req, res) {
     const editMode = Boolean(req.query.edit);
     if (!editMode) return res.redirect("/");
     const prodId = parseInt(req.params.productId);
@@ -53,7 +91,7 @@ export default class AdminCTRL {
           activeLink,
         });
       });
-  }
+  } */
 
   /**
    * @description Fait les modification d'un produit
@@ -63,7 +101,7 @@ export default class AdminCTRL {
    * @return {HTML}
    * @memberof AdminCTRL
    */
-  postEditProduct(req, res, _) {
+  /* postEditProduct(req, res, _) {
     const prodId = parseInt(req.body.productId);
     const updateProduct = {
       id: prodId,
@@ -88,47 +126,9 @@ export default class AdminCTRL {
       .catch(() => {
         return new ErrorsCTRL().error500(req, res);
       });
-  }
-  /**
-   * @description Enregistre le produit entrer dans le formulaire
-   * @author NdekoCode
-   * @param {IncomingMessage} req L'objet requete
-   * @param {ServerResponse} res L'objet reponse
-   * @param {callback} next La methode pour passer au middleware suivant
-   * @return {HTML}
-   * @memberof AdminCTRL
-   */
-  postAddProduct(req, res, _) {
-    const product = {
-      ...req.body,
-      slug: slugify(req.body.title, { lower: true }),
-    };
-    // createProduct : est une methode créer par sequelize lorsque l'on a fait un ProductMDL.belongsTo(UserMDL)
-    req.user
-      .createProduct(product)
-      .then(() => {
-        console.log("Created product");
-        return res.status(201).redirect("/");
-      })
-      .catch((err) => console.log(err));
-  }
-  getProducts(req, res, _) {
-    req.user
-      .getProducts()
-      .then((products) => {
-        products = products.map((p) => new Product(p));
-        return res.render("pages/admin/products", {
-          pageTitle: "administration products",
-          prods: products,
-          path: "/admin/products",
-          hasProducts: products.length > 0,
-          activeLink,
-          layout: "layouts/admin",
-        });
-      })
-      .catch((err) => console.log(err));
-  }
-  postDeleteProduct(req, res, next) {
+  } */
+
+  /*  postDeleteProduct(req, res, next) {
     const prodId = parseInt(req.body.productId);
     req.user
       .getProducts({ where: { id: prodId } })
@@ -140,5 +140,5 @@ export default class AdminCTRL {
         return new ErrorsCTRL().getError404(req, res);
       })
       .catch((err) => console.log(err));
-  }
+  } */
 }

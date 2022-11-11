@@ -1,3 +1,4 @@
+import MDL from "./MDL.js";
 /**
  * Le produit à vendre
  * @typedef {object} Product
@@ -43,5 +44,12 @@ export default class ProductMDL extends MDL {
     this.rating = parseInt(product.rating);
     this.imageUrl = product.imageUrl;
   }
-  save() {}
+  async save() {
+    try {
+      // collection() permet de dire quelle est la collection à laquelle on doit se connecter et faire des opération dessus, si cette collection n'existe pas elle sera créer
+      await this.db.collection("products").insertOne(this);
+    } catch (error) {
+      return console.log(error);
+    }
+  }
 }

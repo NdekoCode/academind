@@ -18,7 +18,8 @@ export default function mongoConnect(cb) {
  * Va nous permettre d'avoir qu'une seule connexion à la base de donnéé grace au Mongodb connection pooling
  * @returns {Pooling}
  */
-export function getD() {
+export function getDB() {
+  console.log(_db);
   if (_db) {
     return _db;
   }
