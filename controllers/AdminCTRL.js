@@ -44,9 +44,8 @@ export default class AdminCTRL {
       })
       .catch((err) => console.log(err));
   }
-  /* getProducts(req, res, _) {
-    req.user
-      .getProducts()
+  async getProducts(req, res, _) {
+    ProductMDL.fetchAll()
       .then((products) => {
         products = products.map((p) => new Product(p));
         return res.render("pages/admin/products", {
@@ -59,7 +58,7 @@ export default class AdminCTRL {
         });
       })
       .catch((err) => console.log(err));
-  } */
+  }
   /**
    * @description Formulaire de modification d'un produit
    * @author NdekoCode
@@ -68,30 +67,23 @@ export default class AdminCTRL {
    * @return {HTML}
    * @memberof AdminCTRL
    */
-  /* getEditProduct(req, res) {
+  getEditProduct(req, res) {
     const editMode = Boolean(req.query.edit);
     if (!editMode) return res.redirect("/");
-    const prodId = parseInt(req.params.productId);
-    req.user
-      .getProducts({
-        where: {
-          userId: parseInt(req.user.id),
-        },
-      })
-      .then((product) => {
-        console.log(product);
-        if (!product) return new ErrorsCTRL().getError404(req, res);
-        return res.render("pages/admin/edit-product", {
-          pageTitle: "Edit a product",
-          path: "/products",
-          layout: "layouts/insert",
-          editing: editMode,
-          prodId,
-          product: product[0],
-          activeLink,
-        });
+    const prodId = req.params.productId;
+    ProductMDL.findById(prodId).then((product) => {
+      if (!product) return new ErrorsCTRL().getError404(req, res);
+      return res.render("pages/admin/edit-product", {
+        pageTitle: "Edit a product",
+        path: "/products",
+        layout: "layouts/insert",
+        editing: editMode,
+        prodId,
+        product: product,
+        activeLink,
       });
-  } */
+    });
+  }
 
   /**
    * @description Fait les modification d'un produit
