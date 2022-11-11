@@ -20,6 +20,7 @@ export default class ProductMDL extends MDL {
     this.description = product.description;
     this.rating = parseInt(product.rating);
     this.imageUrl = product.imageUrl;
+    this.userId = product.userId;
     if (product.id) {
       this._id = new ObjectId(product.id);
     }

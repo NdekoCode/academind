@@ -55,9 +55,13 @@ export default class UserMDL extends MDL {
     }
   }
   static async findById(userId) {
-    const user = await UserMDL.makeQueryOn("users").findOne({
-      _id: new ObjectId(userId),
-    });
-    return user;
+    try {
+      const user = await UserMDL.makeQueryOn("users").findOne({
+        _id: new ObjectId(userId),
+      });
+      return user;
+    } catch (error) {
+      return console.log(error);
+    }
   }
 }
