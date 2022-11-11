@@ -2,31 +2,6 @@ import { ObjectId } from "mongodb";
 import ErrorsCTRL from "../controllers/ErrorsCTRL.js";
 import MDL from "./MDL.js";
 /**
- * Le produit à vendre
- * @typedef {object} Product
- * @property {number} [id=Date.now()] L'identifiant de l'article
- * @property {string} title Titre de l'article
- * @property {string} slug Le slug pour l'URL descriptif de l'article
- * @property {number} price Le prix de l'article
- * @property {string} description description de l'article
- * @property {string} [imageUrl="https://loremflickr.com/g/500/320/product,book?lock=5"] image de l'article
- * @property {number} rating La note de l'article
- */
-
-/**
- * Le produit à vendre
- * @typedef {object} ProductModel
- * @property {number} [id=Date.now()] L'identifiant de l'article
- * @property {string} title Titre de l'article
- * @property {string} slug Le slug pour l'URL descriptif de l'article
- * @property {number} price Le prix de l'article
- * @property {string} description description de l'article
- * @property {string} [imageUrl="https://loremflickr.com/g/500/320/product,book?lock=5"] image de l'article
- * @property {number} rating La note de l'article
- * @property {string} slug L'URL vers l'article
- */
-
-/**
  * Represente le produit à vendre lui-meme
  */
 export default class ProductMDL extends MDL {
@@ -35,7 +10,8 @@ export default class ProductMDL extends MDL {
    * @author NdekoCode
    * @param {Product} product
    * @memberof ProductMDL
-   */ static collection = "products";
+   */
+  collection = "products";
   constructor(product) {
     super("products");
     this.title = product.title;
@@ -67,9 +43,7 @@ export default class ProductMDL extends MDL {
 
   static async fetchAll() {
     try {
-      const products = await ProductMDL.makeQueryOn("products")
-        .find()
-        .toArray();
+      const products = await ProductMDL.makeQueryOn().find().toArray();
       return products;
     } catch (err) {
       return console.log(err);
@@ -77,9 +51,7 @@ export default class ProductMDL extends MDL {
   }
   static async findOneBy(params) {
     try {
-      const product = await ProductMDL.makeQueryOn("products")
-        .find(params)
-        .next();
+      const product = await ProductMDL.makeQueryOn().find(params).next();
       return product;
     } catch (err) {
       return console.log(err);
@@ -87,7 +59,7 @@ export default class ProductMDL extends MDL {
   }
   static async findById(id) {
     try {
-      const product = await ProductMDL.makeQueryOn("products")
+      const product = await ProductMDL.makeQueryOn()
         .find({
           _id: new ObjectId(id),
         })
@@ -99,7 +71,7 @@ export default class ProductMDL extends MDL {
   }
   static async deleteById(prodId) {
     try {
-      return ProductMDL.makeQueryOn("products").deleteOne({
+      return ProductMDL.makeQueryOn().deleteOne({
         _id: new ObjectId(prodId),
       });
     } catch (error) {

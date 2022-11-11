@@ -1,7 +1,7 @@
-import { Sequelize } from "sequelize";
-import sequelize from "../utils/database.js";
+import { ObjectId } from "mongodb";
+import MDL from "./MDL.js";
 /**
- * @typedef {object} UserModel Le model de l'UTILISATEUR
+ * @typedef {object} User Le model de l'UTILISATEUR
  * @property {number} id l'identifiant de l'utilisateur
  * @property {string} username le username de l'utilisateur
  * @property {string} email l'email de l'utilisateur
@@ -12,35 +12,52 @@ import sequelize from "../utils/database.js";
  * @property {string} slug Le lien d'URL de l'utilisateur
  *
  */
-/** @type {Model} */
-const UserMDL = sequelize.define("user", {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-    allowNull: false,
-  },
-  username: Sequelize.STRING,
-  email: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  firstname: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  lastname: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  password: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  address: Sequelize.STRING,
-  slug: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-});
-export default UserMDL;
+export default class UserMDL extends MDL {
+  /**
+   * Creates an instance of UserMDL.
+   * @author NdekoCode
+   * @param {User} user
+   * @memberof UserMDL
+   */
+  constructor(user) {
+    super("users");
+    this.username = user.username;
+    this.email = user.email;
+    this.password = user.password;
+    this.firstname = user.firstname;
+    this.lastname = user.lastname;
+    this.address = user.address;
+    this.slug = user.slug;
+    if (user.id) {
+      this._id = new ObjectId(user.id);
+    }
+  }
+  async save() {
+    try {
+      if (this._id) {
+        await UserMDL.query.updateOne({
+          _id: new ObjectId(this._id),
+          $set: this,
+        });
+      } else {
+        await UserMDL.query.insertOne(this);
+      }
+    } catch (error) {
+      return console.log(error);
+    }
+  }
+  static async findOneBy(params) {
+    try {
+      const user = await UserMDL.makeQueryOn("users").find(params).next();
+      return user;
+    } catch (error) {
+      return console.log(error);
+    }
+  }
+  async findById(userId) {
+    const user = await UserMDL.makeQueryOn("users")
+      .find({ _id: new ObjectId(userId) })
+      .next();
+    return user;
+  }
+}
