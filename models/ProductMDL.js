@@ -1,4 +1,4 @@
-import { getDB } from "../utils/database.js";
+import { ObjectId } from "mongodb";
 import MDL from "./MDL.js";
 /**
  * Le produit à vendre
@@ -68,6 +68,18 @@ export default class ProductMDL extends MDL {
     try {
       const product = await ProductMDL.makeQueryOn("products")
         .find(params)
+        .next();
+      return product;
+    } catch (err) {
+      return console.log(err);
+    }
+  }
+  static async findById(id) {
+    try {
+      const product = await ProductMDL.makeQueryOn("products")
+        .find({
+          _id: new ObjectId(id),
+        })
         .next();
       return product;
     } catch (err) {
