@@ -1,19 +1,19 @@
 import slugify from "slugify";
-import CartItemMDL from "../models/CartItemMDL.js";
+/* import CartItemMDL from "../models/CartItemMDL.js";
 import CartMDL from "../models/CartMDL.js";
 import OrderItemMDL from "../models/OrderItemMDL.js";
-import OrderMDL from "../models/OrderMDL.js";
+import OrderMDL from "../models/OrderMDL.js"; */
 import ProductMDL from "../models/ProductMDL.js";
-import UserMDL from "../models/UserMDL.js";
+// import UserMDL from "../models/UserMDL.js";
 async function fakeData() {
   // UserMDL.truncate({ cascade: true, restartIdentity: true });
   // ProductMDL.truncate({ cascade: true, restartIdentity: true });
   const response = await fetch("https://fakestoreapi.com/products");
   const responseData = await response.json();
-  const responseUser = await fetch("https://fakestoreapi.com/users");
-  const responseUserData = await responseUser.json();
+  /*  const responseUser = await fetch("https://fakestoreapi.com/users");
+  const responseUserData = await responseUser.json(); */
 
-  await UserMDL.create({
+  /*  await UserMDL.create({
     username: "Ndekocode",
     email: "arickbulakali@gmail.com",
     firstname: "Arick",
@@ -41,9 +41,9 @@ async function fakeData() {
     password: "Gola123",
     address: `Goma / Himbi No. 078`,
     slug: slugify("Golla golla", { lower: true }),
-  });
+  }); */
   for (let { title, price, description, image, rating } of responseData) {
-    await ProductMDL.create({
+    const product = new ProductMDL({
       title,
       price,
       description,
@@ -52,8 +52,9 @@ async function fakeData() {
       slug: slugify(title, { lower: true }),
       userId: parseInt(Math.random() * 9 + 1),
     });
+    await product.save();
   }
-
+  /* 
   for (let i = 1; i < 6; i++) {
     await CartMDL.create({
       userId: i,
@@ -64,7 +65,7 @@ async function fakeData() {
     await OrderMDL.create({
       userId: i,
     });
-  }
+  } */
 }
 
 export default fakeData;

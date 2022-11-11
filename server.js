@@ -8,6 +8,7 @@ import ejsLayouts from "express-ejs-layouts";
 import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
 // import fakeData from "./utils/fakeData.js";
 import mongoConnect from "./utils/database.js";
+import fakeData from "./utils/fakeData.js";
 const app = express();
 // On fait la configuration des fichiers static: Pour le styles, les scripts et les images lors des upload
 // On definit les configuration des notre moteur de template et des views
@@ -21,12 +22,13 @@ app.use("/images", express.static(path.join(rootDir, "public/img")));
 // On definit la configuration pour que les requetes de l'utilisateur soit transmises dans le corps de la requete
 app.use(express.urlencoded({ extended: false }));
 
-// app.use((req, res, next) => {
-//   UserMDL.findByPk(1).then((user) => {
-//     req.user = user;
-//     next();
-//   });
-// });
+app.use((req, res, next) => {
+  // UserMDL.findByPk(1).then((user) => {
+  //   req.user = user;
+  // });
+
+  next();
+});
 // Nos routes et nos middleware
 app.use("/admin", adminrouter);
 // app.use(shopRouter);
@@ -39,6 +41,7 @@ app.set("port", PORT);
 
 mongoConnect(() => {
   // Ainsi on ne va se connecter à la base de donnée qu'une seule fois, au moment où le serveur est lancer: => !GOOD PATTERN
+  // fakeData();
   app.listen(PORT, () => {
     console.log("Running server at " + PORT);
   });
