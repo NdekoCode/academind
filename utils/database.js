@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import mongodb, { MongoClient } from "mongodb";
+import { MongoClient } from "mongodb";
 let _db;
 export default function mongoConnect(cb) {
   MongoClient.connect(process.env.DB_URL)
@@ -19,7 +19,6 @@ export default function mongoConnect(cb) {
  * @returns {Pooling}
  */
 export function getDB() {
-  console.log(_db);
   if (_db) {
     return _db;
   }
