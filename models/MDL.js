@@ -3,6 +3,12 @@ import { getDB } from "../utils/database.js";
 export default class MDL {
   static collection;
   static query;
+  /**
+   * @param {any} newCollection
+   */
+  set collection(newCollection) {
+    DML.collection = newCollection;
+  }
   constructor(collection = "") {
     if (collection) {
       MDL.collection = collection;
@@ -22,7 +28,7 @@ export default class MDL {
   getDB() {
     return getDB();
   }
-  static makeQueryOn(collection) {
+  static makeQueryOn(collection = "products") {
     return getDB().collection(collection);
   }
 }
