@@ -9,6 +9,7 @@ import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
 // import fakeData from "./utils/fakeData.js";
 import mongoConnect from "./utils/database.js";
 import fakeData from "./utils/fakeData.js";
+import UserMDL from "./models/UserMDL.js";
 const app = express();
 // On fait la configuration des fichiers static: Pour le styles, les scripts et les images lors des upload
 // On definit les configuration des notre moteur de template et des views
@@ -23,9 +24,11 @@ app.use("/images", express.static(path.join(rootDir, "public/img")));
 app.use(express.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
-  // UserMDL.findByPk(1).then((user) => {
-  //   req.user = user;
-  // });
+  UserMDL.findById("636e8a5cd34b1b05392d227d").then((user) => {
+    req.user = user;
+    next();
+    console.log(req.user);
+  });
 
   next();
 });
