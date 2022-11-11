@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import MDL from "./MDL.js";
 /**
  * Le produit à vendre
@@ -33,7 +34,7 @@ export default class ProductMDL extends MDL {
    * @author NdekoCode
    * @param {Product} product
    * @memberof ProductMDL
-   */
+   */ static collection = "products";
   constructor(product) {
     super("products");
     this.title = product.title;
@@ -50,6 +51,39 @@ export default class ProductMDL extends MDL {
       await ProductMDL.query.insertOne(this);
     } catch (error) {
       return console.log(error.message);
+    }
+  }
+
+  static async fetchAll() {
+    try {
+      const products = await ProductMDL.makeQueryOn("products")
+        .find()
+        .toArray();
+      return products;
+    } catch (err) {
+      return console.log(err);
+    }
+  }
+  static async findOneBy(params) {
+    try {
+      const product = await ProductMDL.makeQueryOn("products")
+        .find(params)
+        .next();
+      return product;
+    } catch (err) {
+      return console.log(err);
+    }
+  }
+  static async findById(id) {
+    try {
+      const product = await ProductMDL.makeQueryOn("products")
+        .find({
+          _id: new ObjectId(id),
+        })
+        .next();
+      return product;
+    } catch (err) {
+      return console.log(err);
     }
   }
 }

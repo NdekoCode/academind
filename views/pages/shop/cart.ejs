@@ -32,7 +32,7 @@
                             <a href="#">
                                 <p class="mb-2 md:ml-4"><%=productData.title%></p>
                                 <form action="/cart-delete-item" method="POST">
-                                    <input type="hidden" name="productId" value="<%=productData.id%>">
+                                    <input type="hidden" name="productId" value="<%=productData._id%>">
                                     <button type="submit" class="text-red-500 md:ml-4">
                                         <small>(Remove item)</small>
                                     </button>

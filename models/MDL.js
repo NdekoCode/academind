@@ -3,8 +3,13 @@ import { getDB } from "../utils/database.js";
 export default class MDL {
   static collection;
   static query;
-  constructor(collection) {
-    MDL.collection = collection;
+  constructor(collection = "") {
+    if (collection) {
+      MDL.collection = collection;
+    }
+    /**
+     * @type {TSchema}
+     */
     MDL.query = this.getDB().collection(MDL.collection);
   }
   /**
@@ -15,5 +20,8 @@ export default class MDL {
    */
   getDB() {
     return getDB();
+  }
+  static makeQueryOn(collection) {
+    return getDB().collection(collection);
   }
 }

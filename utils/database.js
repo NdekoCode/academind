@@ -22,5 +22,5 @@ export function getDB() {
   if (_db) {
     return _db;
   }
-  throw "No database Found";
+  throw new Error("No database Found");
 }

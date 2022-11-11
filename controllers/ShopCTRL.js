@@ -1,5 +1,5 @@
 import Product from "../data/Product.js";
-import CartMDL from "../models/CartMDL.js";
+// import CartMDL from "../models/CartMDL.js";
 import ProductMDL from "../models/ProductMDL.js";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
@@ -14,7 +14,7 @@ export default class ProductCTRL {
    * @memberof ProductCTRL
    */
   getProducts(_, res, next) {
-    return ProductMDL.findAll()
+    return ProductMDL.fetchAll()
       .then((products) => {
         products = products.map((p) => new Product(p));
         return res.render("pages/shop/product-list", {
@@ -45,7 +45,7 @@ export default class ProductCTRL {
   async getProduct(req, res, _) {
     // On va verifier le produit qui correctement au slug du qui se trouve dans l'URL
     const params = { slug: req.params.productTitle };
-    const product = await ProductMDL.findOne({ where: params });
+    const product = await ProductMDL.findOneBy(params);
     if (!product) {
       return new ErrorsCTRL().getError404(req, res);
     }

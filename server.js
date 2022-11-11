@@ -1,6 +1,6 @@
 // Template engine : === Moteur de templateimport express from "express";
 import adminrouter from "./routes/adminRT.js";
-// import shopRouter from "./routes/shopRT.js";
+import shopRouter from "./routes/shopRT.js";
 import { rootDir } from "./utils/utils.js";
 import path from "node:path";
 import express from "express";
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 });
 // Nos routes et nos middleware
 app.use("/admin", adminrouter);
-// app.use(shopRouter);
+app.use(shopRouter);
 const errorsCTRL = new ErrorsCTRL();
 // Le middleware par defaut pour les requetes 404
 app.use(errorsCTRL.getError404);

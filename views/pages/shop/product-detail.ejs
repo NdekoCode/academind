@@ -1,7 +1,7 @@
 <section class="text-gray-700 body-font overflow-hidden bg-white">
     <div class="container px-5 py-24 mx-auto">
         <article class="lg:w-4/5 mx-auto flex flex-wrap">
-            <img alt="<%=prod.title%>" class="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200"
+            <img alt="<%=prod.title%>" class="lg:w-1/2 w-full p-5 object-cover object-center rounded shadow-md"
                 src="<%=prod.imageUrl%>">
             <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                 <h2 class="text-sm title-font text-gray-500 tracking-widest">BRAND NAME</h2>
@@ -67,7 +67,7 @@
                 <p class="leading-relaxed"><%=prod.description%></p>
                 <div class="flex items-center">
                     <span class="title-font font-medium text-2xl text-gray-900">$<%=prod.price%></span>
-                    <%-include("../../components/add-to-cart.ejs",{id:prod.id,className:"ml-auto"})-%>
+                    <%-include("../../components/add-to-cart.ejs",{_id:prod._id,className:"ml-auto"})-%>
 
                     <!-- <button
                         class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
