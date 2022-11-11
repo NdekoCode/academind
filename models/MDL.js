@@ -8,6 +8,7 @@ export default class MDL {
       MDL.collection = collection;
     }
     /**
+     * collection() permet de dire quelle est la collection à laquelle on doit se connecter et faire des opération dessus, si cette collection n'existe pas elle sera créer
      * @type {TSchema}
      */
     MDL.query = this.getDB().collection(MDL.collection);
