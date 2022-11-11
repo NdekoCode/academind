@@ -55,7 +55,22 @@ export default class ProductMDL extends MDL {
   }
 
   static async fetchAll() {
-    const products = await getDB().collection("products").find().toArray();
-    return products;
+    try{
+
+      const products = await ProductMDL.makeQueryOn("products").find().toArray();
+      return products;
+    }catch(err) {
+      return console.log(err)
+    }
+  }
+  static async findOneBy(params) {
+    try {
+      const product = await ProductMDL.makeQueryOn("products")
+        .find(params)
+        .next();
+      return product;
+    } catch (err) {
+      return console.log(err);
+    }
   }
 }

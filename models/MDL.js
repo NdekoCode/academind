@@ -21,4 +21,7 @@ export default class MDL {
   getDB() {
     return getDB();
   }
+  static makeQueryOn(collection) {
+    return getDB().collection(collection);
+  }
 }
