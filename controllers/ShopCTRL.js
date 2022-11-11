@@ -1,5 +1,5 @@
 import Product from "../data/Product.js";
-import CartMDL from "../models/CartMDL.js";
+// import CartMDL from "../models/CartMDL.js";
 import ProductMDL from "../models/ProductMDL.js";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
@@ -14,7 +14,7 @@ export default class ProductCTRL {
    * @memberof ProductCTRL
    */
   getProducts(_, res, next) {
-    return ProductMDL.findAll()
+    return ProductMDL.fetchAll()
       .then((products) => {
         products = products.map((p) => new Product(p));
         return res.render("pages/shop/product-list", {

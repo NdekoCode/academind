@@ -1,3 +1,4 @@
+import { getDB } from "../utils/database.js";
 import MDL from "./MDL.js";
 /**
  * Le produit à vendre
@@ -33,9 +34,9 @@ export default class ProductMDL extends MDL {
    * @author NdekoCode
    * @param {Product} product
    * @memberof ProductMDL
-   */
+   */ static collection = "products";
   constructor(product) {
-    super("products");
+    super();
     this.title = product.title;
     this.price = parseFloat(product.price);
     this.slug = product.slug;
@@ -51,5 +52,10 @@ export default class ProductMDL extends MDL {
     } catch (error) {
       return console.log(error.message);
     }
+  }
+
+  static async fetchAll() {
+    const products = await getDB().collection("products").find().toArray();
+    return products;
   }
 }
