@@ -36,7 +36,6 @@ export default class ProductMDL extends MDL {
    */
   constructor(product) {
     super();
-    this.id = product.id;
     this.title = product.title;
     this.price = parseFloat(product.price);
     this.slug = product.slug;
@@ -44,10 +43,12 @@ export default class ProductMDL extends MDL {
     this.rating = parseInt(product.rating);
     this.imageUrl = product.imageUrl;
   }
+
   async save() {
     try {
       // collection() permet de dire quelle est la collection à laquelle on doit se connecter et faire des opération dessus, si cette collection n'existe pas elle sera créer
-      await this.db.collection("products").insertOne(this);
+      console.log(this);
+      await this.getDB().collection("products").insertOne(this);
     } catch (error) {
       return console.log(error);
     }

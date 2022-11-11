@@ -7,5 +7,7 @@ export default class MDL {
    * @static
    * @memberof MDL
    */
-  db = getDB();
+  getDB() {
+    return getDB();
+  }
 }
