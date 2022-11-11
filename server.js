@@ -1,5 +1,5 @@
 // Template engine : === Moteur de templateimport express from "express";
-// import adminrouter from "./routes/adminRT.js";
+import adminrouter from "./routes/adminRT.js";
 // import shopRouter from "./routes/shopRT.js";
 import { rootDir } from "./utils/utils.js";
 import path from "node:path";
@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 //   });
 // });
 // Nos routes et nos middleware
-// app.use("/admin", adminrouter);
+app.use("/admin", adminrouter);
 // app.use(shopRouter);
 const errorsCTRL = new ErrorsCTRL();
 // Le middleware par defaut pour les requetes 404
@@ -37,7 +37,8 @@ app.use(errorsCTRL.getError404);
 const PORT = process.env.PORT || 3500;
 app.set("port", PORT);
 
-mongoConnect((client) => {
+mongoConnect(() => {
+  // Ainsi on ne va se connecter à la base de donnée qu'une seule fois, au moment où le serveur est lancer: => !GOOD PATTERN
   app.listen(PORT, () => {
     console.log("Running server at " + PORT);
   });
