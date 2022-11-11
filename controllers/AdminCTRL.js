@@ -1,4 +1,5 @@
 import ProductMDL from "../models/ProductMDL.js";
+import { ObjectId } from "mongodb";
 import slugify from "slugify";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
@@ -44,9 +45,8 @@ export default class AdminCTRL {
       })
       .catch((err) => console.log(err));
   }
-  /* getProducts(req, res, _) {
-    req.user
-      .getProducts()
+  async getProducts(req, res, _) {
+    ProductMDL.fetchAll()
       .then((products) => {
         products = products.map((p) => new Product(p));
         return res.render("pages/admin/products", {
@@ -59,7 +59,7 @@ export default class AdminCTRL {
         });
       })
       .catch((err) => console.log(err));
-  } */
+  }
   /**
    * @description Formulaire de modification d'un produit
    * @author NdekoCode
@@ -68,30 +68,23 @@ export default class AdminCTRL {
    * @return {HTML}
    * @memberof AdminCTRL
    */
-  /* getEditProduct(req, res) {
+  getEditProduct(req, res) {
     const editMode = Boolean(req.query.edit);
     if (!editMode) return res.redirect("/");
-    const prodId = parseInt(req.params.productId);
-    req.user
-      .getProducts({
-        where: {
-          userId: parseInt(req.user.id),
-        },
-      })
-      .then((product) => {
-        console.log(product);
-        if (!product) return new ErrorsCTRL().getError404(req, res);
-        return res.render("pages/admin/edit-product", {
-          pageTitle: "Edit a product",
-          path: "/products",
-          layout: "layouts/insert",
-          editing: editMode,
-          prodId,
-          product: product[0],
-          activeLink,
-        });
+    const prodId = req.params.productId;
+    ProductMDL.findById(prodId).then((product) => {
+      if (!product) return new ErrorsCTRL().getError404(req, res);
+      return res.render("pages/admin/edit-product", {
+        pageTitle: "Edit a product",
+        path: "/products",
+        layout: "layouts/insert",
+        editing: editMode,
+        prodId,
+        product: product,
+        activeLink,
       });
-  } */
+    });
+  }
 
   /**
    * @description Fait les modification d'un produit
@@ -101,24 +94,20 @@ export default class AdminCTRL {
    * @return {HTML}
    * @memberof AdminCTRL
    */
-  /* postEditProduct(req, res, _) {
-    const prodId = parseInt(req.body.productId);
+  postEditProduct(req, res, _) {
+    const prodId = req.body.productId;
     const updateProduct = {
-      id: prodId,
+      id: new ObjectId(prodId),
       ...req.body,
       slug: slugify(req.body.title, { lower: true }),
     };
 
-    // getProducts : est une methode créer par sequelize lorsque l'on a fait un ProductMDL.belongsTo(UserMDL) à fin de récuperer tous les produits appartenant à cet utilisateur
-    req.user
-      .getProducts({
-        where: {
-          id: prodId,
-        },
-      })
+    ProductMDL.findById(prodId)
       .then((product) => {
-        if (product[0]) {
-          product[0].update(updateProduct);
+        console.log(product, updateProduct);
+        if (product) {
+          const updateProd = new ProductMDL(updateProduct);
+          updateProd.save();
           return res.status(201).redirect("/admin/products");
         }
         return new ErrorsCTRL().getError404(req, res);
@@ -126,7 +115,7 @@ export default class AdminCTRL {
       .catch(() => {
         return new ErrorsCTRL().error500(req, res);
       });
-  } */
+  }
 
   /*  postDeleteProduct(req, res, next) {
     const prodId = parseInt(req.body.productId);

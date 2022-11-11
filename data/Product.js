@@ -4,8 +4,8 @@ class Product {
   constructor(row) {
     this.row = row;
   }
-  get id() {
-    return this.row.id;
+  get _id() {
+    return this.row._id;
   }
   get title() {
     return this.row.title;

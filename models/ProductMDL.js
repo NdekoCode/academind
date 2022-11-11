@@ -43,12 +43,22 @@ export default class ProductMDL extends MDL {
     this.description = product.description;
     this.rating = parseInt(product.rating);
     this.imageUrl = product.imageUrl;
+    if (product.id) {
+      this._id = product.id;
+    }
   }
 
   async save() {
     try {
-      // collection() permet de dire quelle est la collection à laquelle on doit se connecter et faire des opération dessus, si cette collection n'existe pas elle sera créer
-      await ProductMDL.query.insertOne(this);
+      if (this._id) {
+        // update product
+        await ProductMDL.query.updateOne(
+          { _id: new ObjectId(this._id) },
+          { $set: this }
+        );
+      } else {
+        await ProductMDL.query.insertOne(this);
+      }
     } catch (error) {
       return console.log(error.message);
     }
