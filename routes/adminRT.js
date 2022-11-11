@@ -11,7 +11,7 @@ productRT.get("/add-product", adminCTRL.getAddProduct);
 productRT.post("/add-product", adminCTRL.postAddProduct);
 productRT.get("/edit-product/:productId", adminCTRL.getEditProduct);
 productRT.post("/edit-product", adminCTRL.postEditProduct);
-// productRT.post("/delete-product", adminCTRL.postDeleteProduct);
+productRT.post("/delete-product", adminCTRL.postDeleteProduct);
 // /admin/product => GET
 productRT.get("/products", adminCTRL.getProducts);
 

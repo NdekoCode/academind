@@ -1,5 +1,4 @@
 import ProductMDL from "../models/ProductMDL.js";
-import { ObjectId } from "mongodb";
 import slugify from "slugify";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
@@ -97,7 +96,7 @@ export default class AdminCTRL {
   postEditProduct(req, res, _) {
     const prodId = req.body.productId;
     const updateProduct = {
-      id: new ObjectId(prodId),
+      id: prodId,
       ...req.body,
       slug: slugify(req.body.title, { lower: true }),
     };
@@ -117,17 +116,16 @@ export default class AdminCTRL {
       });
   }
 
-  /*  postDeleteProduct(req, res, next) {
-    const prodId = parseInt(req.body.productId);
-    req.user
-      .getProducts({ where: { id: prodId } })
+  postDeleteProduct(req, res, next) {
+    const prodId = req.body.productId;
+    ProductMDL.findById(prodId)
       .then((product) => {
-        if (product[0]) {
-          product[0].destroy();
+        if (product) {
+          ProductMDL.deleteById(prodId);
           return res.status(201).redirect("/admin/products");
         }
         return new ErrorsCTRL().getError404(req, res);
       })
-      .catch((err) => console.log(err));
-  } */
+      .catch((err) => new ErrorsCTRL().error500(req, res));
+  }
 }

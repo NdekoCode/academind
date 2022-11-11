@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import ErrorsCTRL from "../controllers/ErrorsCTRL.js";
 import MDL from "./MDL.js";
 /**
  * Le produit à vendre
@@ -44,7 +45,7 @@ export default class ProductMDL extends MDL {
     this.rating = parseInt(product.rating);
     this.imageUrl = product.imageUrl;
     if (product.id) {
-      this._id = product.id;
+      this._id = new ObjectId(product.id);
     }
   }
 
@@ -94,6 +95,15 @@ export default class ProductMDL extends MDL {
       return product;
     } catch (err) {
       return console.log(err);
+    }
+  }
+  static async deleteById(prodId) {
+    try {
+      return ProductMDL.makeQueryOn("products").deleteOne({
+        _id: new ObjectId(prodId),
+      });
+    } catch (error) {
+      return console.log(error);
     }
   }
 }
