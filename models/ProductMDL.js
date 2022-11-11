@@ -36,7 +36,7 @@ export default class ProductMDL extends MDL {
    * @memberof ProductMDL
    */ static collection = "products";
   constructor(product) {
-    super();
+    super("products");
     this.title = product.title;
     this.price = parseFloat(product.price);
     this.slug = product.slug;
@@ -55,12 +55,13 @@ export default class ProductMDL extends MDL {
   }
 
   static async fetchAll() {
-    try{
-
-      const products = await ProductMDL.makeQueryOn("products").find().toArray();
+    try {
+      const products = await ProductMDL.makeQueryOn("products")
+        .find()
+        .toArray();
       return products;
-    }catch(err) {
-      return console.log(err)
+    } catch (err) {
+      return console.log(err);
     }
   }
   static async findOneBy(params) {
