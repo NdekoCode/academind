@@ -3,15 +3,16 @@ import Product from "../data/Product.js";
 import ProductMDL from "../models/ProductMDL.js";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
-export default class ProductCTRL {
+export default class ShopCTRL {
   /**
+   *
    * @description Recupère tous les produits et les envois à la vues
    * @author NdekoCode
    * @param {IncomingMessage} req L'objet requete
    * @param {ServerResponse} res L'objet reponse
    * @param {Function} next La methode pour passer au middleware suivant
    * @return {HTML}
-   * @memberof ProductCTRL
+   * @memberof ShopCTRL
    */
   getProducts(_, res, next) {
     return ProductMDL.fetchAll()
@@ -57,58 +58,40 @@ export default class ProductCTRL {
     });
   }
 
-  async getCart(req, res, _) {
-    try {
-      const cart = await req.user.getCart();
-      const products = await cart.getProducts();
-      return res.render("pages/shop/cart", {
-        path: "/cart",
-        pageTitle: "Your cart",
-        activeLink,
-        products,
+  getCart(req, res, _) {
+    req.user
+      .getCart()
+      .then((products) => {
+        return res.render("pages/shop/cart", {
+          path: "/cart",
+          pageTitle: "Your cart",
+          activeLink,
+          products: products,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    } catch (err) {
-      console.log(err);
-    }
   }
   async postCart(req, res, _) {
-    const prodId = parseInt(req.body.productId);
-    let product;
-    let newQuantity = 1;
     try {
-      const cart = await req.user.getCart();
-      const products = await cart.getProducts({ where: { id: prodId } });
-      if (products && products.length > 0) {
-        product = products[0];
-      }
+      const prodId = req.body.productId;
+      const product = await ProductMDL.findById(prodId);
       if (product) {
-        const oldQuantity = product.cartItem.quantity;
-        newQuantity = oldQuantity + 1;
-        // ...
+        req.user.addToCart(product);
+        return res.redirect("/cart");
       }
-      const postProduct = await ProductMDL.findByPk(prodId);
-      console.log(postProduct);
-      // addProduct est une methode magique qui est ajouter avec la relation que nous avont definit entre la carte (Panier) et les produit
-      await cart.addProduct(postProduct, {
-        // Si le produit existe déjà dans la carte alors on va juste augmenter la quantité
-        through: { quantity: newQuantity },
-      });
-
-      return res.redirect("/cart");
-    } catch (err) {
-      console.log(err);
+      return new ErrorsCTRL().getError404(req, res);
+    } catch (error) {
+      return console.log(error);
     }
   }
   async postCartDelete(req, res, _) {
     try {
-      const prodId = parseInt(req.body.productId);
-      const cart = await req.user.getCart();
-      const products = await cart.getProducts({ where: { id: prodId } });
-      if (products && products.length > 0) {
-        const product = products[0];
-        await product.cartItem.destroy();
-        return res.redirect("/cart");
-      }
+      const prodId = req.body.productId;
+      await req.user.deleteItemFromCart(prodId);
+
+      return res.redirect("/cart");
     } catch (error) {
       console.log(error);
     }
@@ -135,7 +118,7 @@ export default class ProductCTRL {
    * @param {Function} next
    * @returns
    */
-  async postOrder(req, res, next) {
+  /*  async postOrder(req, res, next) {
     try {
       // On récupère le panier
       const cart = await req.user.getCart();
@@ -156,5 +139,5 @@ export default class ProductCTRL {
     } catch (error) {
       return console.log(error);
     }
-  }
+  } */
 }
