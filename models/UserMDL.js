@@ -194,6 +194,9 @@ export default class UserMDL extends MDL {
     });
   }
   async getOrders() {
-    const orders = await UserMDL.makeQueryOn("orders").find().toArray();
+    const orders = await UserMDL.makeQueryOn("orders")
+      .find({ "user._id": new ObjectId(this._id) })
+      .toArray();
+    return orders;
   }
 }

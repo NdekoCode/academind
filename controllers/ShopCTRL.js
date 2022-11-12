@@ -100,7 +100,8 @@ export default class ShopCTRL {
   async getOrders(req, res, _) {
     try {
       // On veut recuper les commandes de l'utilisateurs mais aussi les produits qui sont dans la commande
-      const orders = await req.user.getOrders({ include: ["products"] });
+      const orders = await req.user.getOrders();
+      console.log(orders);
       return res.render("pages/shop/orders", {
         pageTitle: "Your Orders",
         path: "/orders",
