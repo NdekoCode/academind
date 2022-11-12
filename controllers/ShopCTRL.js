@@ -100,7 +100,8 @@ export default class ShopCTRL {
   async getOrders(req, res, _) {
     try {
       // On veut recuper les commandes de l'utilisateurs mais aussi les produits qui sont dans la commande
-      const orders = await req.user.getOrders({ include: ["products"] });
+      const orders = await req.user.getOrders();
+      console.log(orders);
       return res.render("pages/shop/orders", {
         pageTitle: "Your Orders",
         path: "/orders",
@@ -118,26 +119,13 @@ export default class ShopCTRL {
    * @param {Function} next
    * @returns
    */
-  /*  async postOrder(req, res, next) {
+  async postOrder(req, res, next) {
     try {
-      // On récupère le panier
-      const cart = await req.user.getCart();
-      // On recupère les produits qui se trouve dans le panier
-      const products = await cart.getProducts();
-      // L'utilisateur va créer une commande
-      const order = await req.user.createOrder();
-      // Puis à cette commande que l'utilisateur a créer on va y ajouter des produit dans la table orderItem
-      await order.addProducts(
-        products.map((product) => {
-          product.orderItem = { quantity: product.cartItem.quantity };
-          return product;
-        })
-      );
-      // Une fois la commande passer on supprime les produits dans le panier
-      await cart.setProducts(null);
+      // On fait la commande
+      await req.user.addOrder();
       return res.redirect("/orders");
     } catch (error) {
       return console.log(error);
     }
-  } */
+  }
 }
