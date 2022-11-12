@@ -165,4 +165,21 @@ export default class UserMDL extends MDL {
       { $set: { cart: { items: updateCartItem } } }
     );
   }
+  /**
+   * @description Ajoute un panier à une commande de l'utilisateur
+   * @author NdekoCode
+   * @memberof UserMDL
+   */
+  addOrder() {
+    UserMDL.makeQueryOn("orders")
+      .insertOne(this.cart)
+      .then(() => {
+        // Une fois la commande passer on supprime les produits dans le panier
+        this.cart = { items: [] };
+        return UserMDL.query.updateOne(
+          { _id: this._id },
+          { $set: { cart: this.cart } }
+        );
+      });
+  }
 }
