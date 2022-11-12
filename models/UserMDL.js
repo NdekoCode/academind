@@ -84,8 +84,6 @@ export default class UserMDL extends MDL {
     } else {
       updateProducts = [{ productId: new ObjectId(product._id), quantity }];
     }
-    console.log(quantity);
-    // console.log(updateProducts);
     const updatedCart = {
       items: updateProducts,
     };
@@ -93,5 +91,20 @@ export default class UserMDL extends MDL {
       { _id: new ObjectId(this._id) },
       { $set: { cart: updatedCart } }
     );
+  }
+  async getCart() {
+    // On recupère uniquement les identifiant dans le tableau
+    const productIds = this.cart.items.map((item) => item.productId);
+    let products = await UserMDL.makeQueryOn("products")
+      .find({
+        _id: { $in: productIds },
+      })
+      .toArray();
+    return products.map((product) => ({
+      ...product,
+      quantity: this.cart.items.find(
+        (p) => p.productId.toString() === product._id.toString()
+      ).quantity,
+    }));
   }
 }

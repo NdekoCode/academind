@@ -20,7 +20,7 @@
                 <tbody>
 
                     <%products.forEach((productData) => {
-                        total += productData.price* productData.cartItem.quantity
+                        total += productData.price* productData.quantity
                         %>
                     <tr>
                         <td class="hidden pb-4 md:table-cell">
@@ -42,7 +42,7 @@
                         <td class="justify-center md:justify-end md:flex mt-6">
                             <div class="w-20 h-10">
                                 <div class="relative flex flex-row w-full h-8">
-                                    <input type="number" value="<%=productData.cartItem.quantity%>"
+                                    <input type="number" value="<%=productData.quantity%>"
                                         class="w-full font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black">
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                         <td class="text-right">
                             <span class="text-sm lg:text-base font-medium">
 
-                                <%= productData.price* productData.cartItem.quantity%>$
+                                <%= productData.price* productData.quantity%>$
                             </span>
                         </td>
                     </tr>

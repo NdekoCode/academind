@@ -58,24 +58,24 @@ export default class ShopCTRL {
     });
   }
 
-  async getCart(req, res, _) {
-    try {
-      const cart = await req.user.cart;
-      // const products = await cart.getProducts();
-      return res.render("pages/shop/cart", {
-        path: "/cart",
-        pageTitle: "Your cart",
-        activeLink,
-        products: [],
+  getCart(req, res, _) {
+    req.user
+      .getCart()
+      .then((products) => {
+        return res.render("pages/shop/cart", {
+          path: "/cart",
+          pageTitle: "Your cart",
+          activeLink,
+          products: products,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    } catch (err) {
-      console.log(err);
-    }
   }
   async postCart(req, res, _) {
     try {
       const prodId = req.body.productId;
-      let newQuantity = 1;
       const product = await ProductMDL.findById(prodId);
       if (product) {
         req.user.addToCart(product);
@@ -85,31 +85,8 @@ export default class ShopCTRL {
     } catch (error) {
       return console.log(error);
     }
-    /*  try {
-      const cart = await req.user.getCart();
-      const products = await cart.getProducts({ where: { id: prodId } });
-      if (products && products.length > 0) {
-        product = products[0];
-      }
-      if (product) {
-        const oldQuantity = product.cartItem.quantity;
-        newQuantity = oldQuantity + 1;
-        // ...
-      }
-      const postProduct = await ProductMDL.findByPk(prodId);
-      console.log(postProduct);
-      // addProduct est une methode magique qui est ajouter avec la relation que nous avont definit entre la carte (Panier) et les produit
-      await cart.addProduct(postProduct, {
-        // Si le produit existe déjà dans la carte alors on va juste augmenter la quantité
-        through: { quantity: newQuantity },
-      });
-
-      return res.redirect("/cart");
-    } catch (err) {
-      console.log(err);
-    } */
   }
-  async postCartDelete(req, res, _) {
+  /* async postCartDelete(req, res, _) {
     try {
       const prodId = parseInt(req.body.productId);
       const cart = await req.user.getCart();
@@ -122,7 +99,7 @@ export default class ShopCTRL {
     } catch (error) {
       console.log(error);
     }
-  }
+  } */
 
   async getOrders(req, res, _) {
     try {
@@ -145,7 +122,7 @@ export default class ShopCTRL {
    * @param {Function} next
    * @returns
    */
-  async postOrder(req, res, next) {
+  /*  async postOrder(req, res, next) {
     try {
       // On récupère le panier
       const cart = await req.user.getCart();
@@ -166,5 +143,5 @@ export default class ShopCTRL {
     } catch (error) {
       return console.log(error);
     }
-  }
+  } */
 }
