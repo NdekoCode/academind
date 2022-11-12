@@ -86,20 +86,16 @@ export default class ShopCTRL {
       return console.log(error);
     }
   }
-  /* async postCartDelete(req, res, _) {
+  async postCartDelete(req, res, _) {
     try {
-      const prodId = parseInt(req.body.productId);
-      const cart = await req.user.getCart();
-      const products = await cart.getProducts({ where: { id: prodId } });
-      if (products && products.length > 0) {
-        const product = products[0];
-        await product.cartItem.destroy();
-        return res.redirect("/cart");
-      }
+      const prodId = req.body.productId;
+      await req.user.deleteItemFromCart(prodId);
+
+      return res.redirect("/cart");
     } catch (error) {
       console.log(error);
     }
-  } */
+  }
 
   async getOrders(req, res, _) {
     try {
