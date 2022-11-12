@@ -3,15 +3,16 @@ import Product from "../data/Product.js";
 import ProductMDL from "../models/ProductMDL.js";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
-export default class ProductCTRL {
+export default class ShopCTRL {
   /**
+   *
    * @description Recupère tous les produits et les envois à la vues
    * @author NdekoCode
    * @param {IncomingMessage} req L'objet requete
    * @param {ServerResponse} res L'objet reponse
    * @param {Function} next La methode pour passer au middleware suivant
    * @return {HTML}
-   * @memberof ProductCTRL
+   * @memberof ShopCTRL
    */
   getProducts(_, res, next) {
     return ProductMDL.fetchAll()
@@ -59,23 +60,32 @@ export default class ProductCTRL {
 
   async getCart(req, res, _) {
     try {
-      const cart = await req.user.getCart();
-      const products = await cart.getProducts();
+      const cart = await req.user.cart;
+      // const products = await cart.getProducts();
       return res.render("pages/shop/cart", {
         path: "/cart",
         pageTitle: "Your cart",
         activeLink,
-        products,
+        products: [],
       });
     } catch (err) {
       console.log(err);
     }
   }
   async postCart(req, res, _) {
-    const prodId = parseInt(req.body.productId);
-    let product;
-    let newQuantity = 1;
     try {
+      const prodId = req.body.productId;
+      let newQuantity = 1;
+      const product = await ProductMDL.findById(prodId);
+      if (product) {
+        req.user.addToCart(product);
+        return res.redirect("/cart");
+      }
+      return new ErrorsCTRL().getError404(req, res);
+    } catch (error) {
+      return console.log(error);
+    }
+    /*  try {
       const cart = await req.user.getCart();
       const products = await cart.getProducts({ where: { id: prodId } });
       if (products && products.length > 0) {
@@ -97,7 +107,7 @@ export default class ProductCTRL {
       return res.redirect("/cart");
     } catch (err) {
       console.log(err);
-    }
+    } */
   }
   async postCartDelete(req, res, _) {
     try {

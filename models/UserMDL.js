@@ -28,8 +28,8 @@ export default class UserMDL extends MDL {
     this.lastname = user.lastname;
     this.address = user.address;
     this.slug = user.slug;
-    if (user.id) {
-      this._id = new ObjectId(user.id);
+    if (user._id) {
+      this._id = new ObjectId(user._id);
     }
     if (user.cart) {
       // this.cart = {items:[]}
@@ -69,8 +69,26 @@ export default class UserMDL extends MDL {
     }
   }
   addToCart(product) {
-    // const productIndex = this.cart.items.findIndex(item => item.id === product.id);
-    const updatedCart = { items: [{ ...product, quantity: 1 }] };
+    let updateProducts;
+    let quantity = 1;
+    if (this.cart) {
+      const productIndex = this.cart.items.findIndex(
+        (cp) => cp.productId.toString() === product._id.toString()
+      );
+      updateProducts = [...this.cart.items];
+      if (productIndex >= 0) {
+        updateProducts[productIndex].quantity += 1;
+      } else {
+        updateProducts.push({ productId: new ObjectId(product._id), quantity });
+      }
+    } else {
+      updateProducts = [{ productId: new ObjectId(product._id), quantity }];
+    }
+    console.log(quantity);
+    // console.log(updateProducts);
+    const updatedCart = {
+      items: updateProducts,
+    };
     UserMDL.query.updateOne(
       { _id: new ObjectId(this._id) },
       { $set: { cart: updatedCart } }

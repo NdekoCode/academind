@@ -11,7 +11,7 @@ export default class ProductMDL extends MDL {
    * @param {Product} product
    * @memberof ProductMDL
    */
-  collection = "products";
+  static collection = "products";
   constructor(product) {
     super("products");
     this.title = product.title;

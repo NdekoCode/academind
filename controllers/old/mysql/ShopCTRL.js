@@ -2,7 +2,7 @@ import CartMDL from "../models/CartMDL.js";
 import ProductMDL from "../models/ProductMDL.js";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
-export default class ProductCTRL {
+export default class ShopCTRL {
   /**
    * @description Recupère tous les produits et les envois à la vues
    * @author NdekoCode
@@ -10,7 +10,7 @@ export default class ProductCTRL {
    * @param {ServerResponse} res L'objet reponse
    * @param {Function} next La methode pour passer au middleware suivant
    * @return {HTML}
-   * @memberof ProductCTRL
+   * @memberof ShopCTRL
    */
   getProducts(_, res, next) {
     return ProductMDL.fetchAll()

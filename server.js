@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
   UserMDL.findById("636e8a5cd34b1b05392d227d")
     .then((user) => {
-      req.user = user;
+      req.user = new UserMDL(user);
       next();
     })
     .catch((err) => {
