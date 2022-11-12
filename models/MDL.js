@@ -2,7 +2,7 @@ import { getDB } from "../utils/database.js";
 
 export default class MDL {
   static collection;
-  static query;
+  static query = getDB().collection(MDL.collection);
   /**
    * @param {any} newCollection
    */

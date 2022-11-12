@@ -31,6 +31,10 @@ export default class UserMDL extends MDL {
     if (user.id) {
       this._id = new ObjectId(user.id);
     }
+    if (user.cart) {
+      // this.cart = {items:[]}
+      this.cart = user.cart;
+    }
   }
   async save() {
     try {
@@ -63,5 +67,13 @@ export default class UserMDL extends MDL {
     } catch (error) {
       return console.log(error);
     }
+  }
+  addToCart(product) {
+    // const productIndex = this.cart.items.findIndex(item => item.id === product.id);
+    const updatedCart = { items: [{ ...product, quantity: 1 }] };
+    UserMDL.query.updateOne(
+      { _id: new ObjectId(this._id) },
+      { $set: { cart: updatedCart } }
+    );
   }
 }
