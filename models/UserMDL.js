@@ -166,20 +166,34 @@ export default class UserMDL extends MDL {
     );
   }
   /**
-   * @description Ajoute un panier à une commande de l'utilisateur
+   * @description Ajoute une commande de l'utilisateur et supprime les produit du panier
    * @author NdekoCode
    * @memberof UserMDL
    */
   addOrder() {
-    UserMDL.makeQueryOn("orders")
-      .insertOne(this.cart)
-      .then(() => {
-        // Une fois la commande passer on supprime les produits dans le panier
-        this.cart = { items: [] };
-        return UserMDL.query.updateOne(
-          { _id: this._id },
-          { $set: { cart: this.cart } }
-        );
-      });
+    this.getCart().then((products) => {
+      /** Pour eviter la duplication des données */
+      const order = {
+        items: products,
+        user: {
+          _id: this._id,
+          username: this.username,
+        },
+      };
+
+      UserMDL.makeQueryOn("orders")
+        .insertOne(order)
+        .then(() => {
+          // Une fois la commande passer on supprime les produits dans le panier
+          this.cart = { items: [] };
+          return UserMDL.query.updateOne(
+            { _id: this._id },
+            { $set: { cart: this.cart } }
+          );
+        });
+    });
+  }
+  async getOrders() {
+    const orders = await UserMDL.makeQueryOn("orders").find().toArray();
   }
 }
