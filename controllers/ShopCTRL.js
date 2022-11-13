@@ -15,7 +15,7 @@ export default class ShopCTRL {
    * @memberof ShopCTRL
    */
   getProducts(_, res, next) {
-    return ProductMDL.fetchAll()
+    return ProductMDL.find()
       .then((products) => {
         products = products.map((p) => new Product(p));
         return res.render("pages/shop/product-list", {
@@ -30,7 +30,7 @@ export default class ShopCTRL {
   }
 
   getIndex(req, res, _) {
-    return ProductMDL.findAll({ order: [["createdAt", "DESC"]] })
+    return ProductMDL.find()
       .then((products) => {
         products = products.map((p) => new Product(p));
         return res.render("pages/shop/product-list", {
@@ -46,7 +46,7 @@ export default class ShopCTRL {
   async getProduct(req, res, _) {
     // On va verifier le produit qui correctement au slug du qui se trouve dans l'URL
     const params = { slug: req.params.productTitle };
-    const product = await ProductMDL.findOneBy(params);
+    const product = await ProductMDL.findOne(params);
     if (!product) {
       return new ErrorsCTRL().getError404(req, res);
     }

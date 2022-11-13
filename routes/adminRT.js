@@ -13,6 +13,6 @@ productRT.post("/add-product", adminCTRL.postAddProduct);
 // productRT.post("/edit-product", adminCTRL.postEditProduct);
 // productRT.post("/delete-product", adminCTRL.postDeleteProduct);
 // /admin/product => GET
-// productRT.get("/products", adminCTRL.getProducts);
+productRT.get("/products", adminCTRL.getProducts);
 
 export default productRT;
