@@ -46,7 +46,7 @@ export default class ShopCTRL {
   async getProduct(req, res, _) {
     // On va verifier le produit qui correctement au slug du qui se trouve dans l'URL
     const params = { slug: req.params.productTitle };
-    const product = await ProductMDL.findOneBy(params);
+    const product = await ProductMDL.findOne(params);
     if (!product) {
       return new ErrorsCTRL().getError404(req, res);
     }
