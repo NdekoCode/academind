@@ -15,7 +15,7 @@ export default class ShopCTRL {
    * @memberof ShopCTRL
    */
   getProducts(_, res, next) {
-    return ProductMDL.fetchAll()
+    return ProductMDL.find()
       .then((products) => {
         products = products.map((p) => new Product(p));
         return res.render("pages/shop/product-list", {
@@ -30,7 +30,7 @@ export default class ShopCTRL {
   }
 
   getIndex(req, res, _) {
-    return ProductMDL.findAll({ order: [["createdAt", "DESC"]] })
+    return ProductMDL.find()
       .then((products) => {
         products = products.map((p) => new Product(p));
         return res.render("pages/shop/product-list", {

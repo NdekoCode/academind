@@ -45,7 +45,7 @@ export default class AdminCTRL {
       .catch((err) => console.log(err));
   }
   async getProducts(req, res, _) {
-    ProductMDL.fetchAll()
+    ProductMDL.find()
       .then((products) => {
         products = products.map((p) => new Product(p));
         return res.render("pages/admin/products", {
