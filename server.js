@@ -27,15 +27,16 @@ app.use("/images", express.static(path.join(rootDir, "public/img")));
 app.use(express.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
-  UserMDL.findById("636e8a5cd34b1b05392d227d")
-    .then((user) => {
-      req.user = new UserMDL(user);
-      next();
-    })
-    .catch((err) => {
-      console.log(err);
-      next();
-    });
+  // UserMDL.findById("636e8a5cd34b1b05392d227d")
+  //   .then((user) => {
+  //     req.user = new UserMDL(user);
+  //     next();
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     next();
+  //   });
+  next();
 });
 // Nos routes et nos middleware
 app.use("/admin", adminrouter);
