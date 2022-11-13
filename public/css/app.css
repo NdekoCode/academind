@@ -787,6 +787,10 @@ video {
   margin: 0.75rem;
 }
 
+.m-1{
+  margin: 0.25rem;
+}
+
 .mx-1{
   margin-left: 0.25rem;
   margin-right: 0.25rem;
@@ -1124,20 +1128,12 @@ video {
   height: 6rem;
 }
 
-.h-60{
-  height: 15rem;
-}
-
 .max-h-60{
   max-height: 15rem;
 }
 
 .min-h-screen{
   min-height: 100vh;
-}
-
-.min-h-\[375px\]{
-  min-height: 375px;
 }
 
 .min-h-\[425px\]{
@@ -2855,8 +2851,8 @@ video {
   padding-top: 1.5rem;
 }
 
-.pt-8{
-  padding-top: 2rem;
+.pt-3{
+  padding-top: 0.75rem;
 }
 
 .pb-5{
@@ -2865,10 +2861,6 @@ video {
 
 .pr-10{
   padding-right: 2.5rem;
-}
-
-.pt-3{
-  padding-top: 0.75rem;
 }
 
 .text-left{

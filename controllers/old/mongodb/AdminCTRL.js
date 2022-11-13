@@ -34,6 +34,7 @@ export default class AdminCTRL {
     const product = {
       ...req.body,
       slug: slugify(req.body.title, { lower: true }),
+      userId: req.user._id,
     };
     const prodMDL = new ProductMDL(product);
     prodMDL
@@ -49,7 +50,7 @@ export default class AdminCTRL {
       .then((products) => {
         products = products.map((p) => new Product(p));
         return res.render("pages/admin/products", {
-          pageTitle: "Administration products",
+          pageTitle: "administration products",
           prods: products,
           path: "/admin/products",
           hasProducts: products.length > 0,

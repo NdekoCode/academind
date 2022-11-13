@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+import { connect } from "mongoose";
 // Template engine : === Moteur de templateimport express from "express";
 import adminrouter from "./routes/adminRT.js";
 import shopRouter from "./routes/shopRT.js";
@@ -7,7 +10,7 @@ import express from "express";
 import ejsLayouts from "express-ejs-layouts";
 import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
 // import fakeData from "./utils/fakeData.js";
-import mongoConnect from "./utils/database.js";
+// import mongoConnect from "./utils/database.js";
 import fakeData from "./utils/fakeData.js";
 import UserMDL from "./models/UserMDL.js";
 const app = express();
@@ -24,15 +27,16 @@ app.use("/images", express.static(path.join(rootDir, "public/img")));
 app.use(express.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
-  UserMDL.findById("636e8a5cd34b1b05392d227d")
-    .then((user) => {
-      req.user = new UserMDL(user);
-      next();
-    })
-    .catch((err) => {
-      console.log(err);
-      next();
-    });
+  // UserMDL.findById("636e8a5cd34b1b05392d227d")
+  //   .then((user) => {
+  //     req.user = new UserMDL(user);
+  //     next();
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     next();
+  //   });
+  next();
 });
 // Nos routes et nos middleware
 app.use("/admin", adminrouter);
@@ -44,10 +48,15 @@ app.use(errorsCTRL.getError404);
 const PORT = process.env.PORT || 3500;
 app.set("port", PORT);
 
-mongoConnect(() => {
-  // Ainsi on ne va se connecter à la base de donnée qu'une seule fois, au moment où le serveur est lancer: => !GOOD PATTERN
-  // fakeData();
-  app.listen(PORT, () => {
-    console.log("Running server at " + PORT);
+connect(process.env.DB_URL)
+  .then(() => {
+    // Ainsi on ne va se connecter à la base de donnée qu'une seule fois, au moment où le serveur est lancer: => !GOOD PATTERN
+    // fakeData();
+    app.listen(PORT, () => {
+      console.log("Running server at " + PORT);
+      console.log("Connection to the database is establish successfully");
+    });
+  })
+  .catch((err) => {
+    console.log("Connection to the database failed", err.message);
   });
-});
