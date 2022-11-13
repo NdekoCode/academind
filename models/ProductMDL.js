@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import ErrorsCTRL from "../controllers/ErrorsCTRL.js";
-import MDL from "./MDL.js";
+// import MDL from "./MDL.js";
+/** @type {Schema} */
 const ProductSchema = new Schema({
   title: {
     type: String,
@@ -106,5 +107,6 @@ const ProductSchema = new Schema({
 //     }
 //   }
 // }
-const ProductMDL = new model("Product", ProductSchema, "products");
+/** @type {Model} */
+const ProductMDL = new model("Product", ProductSchema);
 export default ProductMDL;
