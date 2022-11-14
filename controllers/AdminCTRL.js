@@ -96,18 +96,18 @@ export default class AdminCTRL {
   postEditProduct(req, res, _) {
     const prodId = req.body.productId;
     const updateProduct = {
-      id: prodId,
       ...req.body,
       slug: slugify(req.body.title, { lower: true }),
     };
 
     ProductMDL.findById(prodId)
       .then((product) => {
-        console.log(product, updateProduct);
         if (product) {
-          const updateProd = new ProductMDL(updateProduct);
-          updateProd.save();
-          return res.status(201).redirect("/admin/products");
+          return ProductMDL.updateOne({ _id: prodId }, updateProduct).then(
+            () => {
+              return res.status(201).redirect("/admin/products");
+            }
+          );
         }
         return new ErrorsCTRL().getError404(req, res);
       })
