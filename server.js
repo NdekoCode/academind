@@ -1,13 +1,14 @@
 import dotenv from "dotenv";
 dotenv.config();
+import express from "express";
 import { connect } from "mongoose";
+import session from "express-session";
 // Template engine : === Moteur de templateimport express from "express";
 import authRouter from "./routes/auth.routes.js";
 import adminRouter from "./routes/admin.routes.js";
 import shopRouter from "./routes/shop.routes.js";
 import { rootDir } from "./utils/utils.js";
 import path from "node:path";
-import express from "express";
 import ejsLayouts from "express-ejs-layouts";
 import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
 // import fakeData from "./utils/fakeData.js";
@@ -15,6 +16,17 @@ import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
 import fakeData from "./utils/fakeData.js";
 import UserMDL from "./models/UserMDL.js";
 const app = express();
+app.use(
+  session({
+    // Le mot secret pour hasher la session mais en production ça doit etre une très longue chaine de caractère
+    secret: "Ndekocode",
+    // Ca veut dire que notre session ne sera pas enregistrer pour chaque requete de l'utilisateur et donc il le sera une seule fois, c'est bien pour les performances.
+    resave: false,
+    //  Assure que la session ne sera de nouveau enregistrer que lorsqu'il aura de changement et pas autrement
+    saveUninitialized: false,
+    // On peut aussi ajouter d'autres paramètres comme: cookie:{maxAge: dateinMillisecond,expires}
+  })
+);
 // On fait la configuration des fichiers static: Pour le styles, les scripts et les images lors des upload
 // On definit les configuration des notre moteur de template et des views
 app.set("view engine", "ejs");
