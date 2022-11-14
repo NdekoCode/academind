@@ -57,7 +57,29 @@ const UserSchema = Schema({
     ],
   },
 });
+UserSchema.methods.addToCart = function (product) {
+  let updateProducts;
+  let quantity = 1;
+  if (this.cart) {
+    const productIndex = this.cart.items.findIndex(
+      (cp) => cp.productId.toString() === product._id.toString()
+    );
+    updateProducts = [...this.cart.items];
+    if (productIndex >= 0) {
+      updateProducts[productIndex].quantity += 1;
+    } else {
+      updateProducts.push({ productId: product._id, quantity });
+    }
+  } else {
+    updateProducts = [{ productId: product._id, quantity }];
+  }
+  this.cart = {
+    items: updateProducts,
+  };
+  this.save();
+};
 const UserMDL = new model("User", UserSchema);
+
 export default UserMDL;
 // export default class UserMDL extends MDL {
 //   /**
@@ -137,30 +159,6 @@ export default UserMDL;
 //     } catch (error) {
 //       return console.log(error);
 //     }
-//   }
-//   addToCart(product) {
-//     let updateProducts;
-//     let quantity = 1;
-//     if (this.cart) {
-//       const productIndex = this.cart.items.findIndex(
-//         (cp) => cp.productId.toString() === product._id.toString()
-//       );
-//       updateProducts = [...this.cart.items];
-//       if (productIndex >= 0) {
-//         updateProducts[productIndex].quantity += 1;
-//       } else {
-//         updateProducts.push({ productId: new ObjectId(product._id), quantity });
-//       }
-//     } else {
-//       updateProducts = [{ productId: new ObjectId(product._id), quantity }];
-//     }
-//     const updatedCart = {
-//       items: updateProducts,
-//     };
-//     UserMDL.query.updateOne(
-//       { _id: new ObjectId(this._id) },
-//       { $set: { cart: updatedCart } }
-//     );
 //   }
 //   /**
 //    * @description Recupere tous les produits d'un panier

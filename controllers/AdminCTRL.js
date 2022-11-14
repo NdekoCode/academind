@@ -47,7 +47,10 @@ export default class AdminCTRL {
   }
   async getProducts(req, res, _) {
     ProductMDL.find()
+      // .select("title price imageUrl _id rating")
+      // .populate("userId", "user")
       .then((products) => {
+        console.log(products);
         products = products.map((p) => new Product(p));
         return res.render("pages/admin/products", {
           pageTitle: "Administration products",
@@ -122,8 +125,10 @@ export default class AdminCTRL {
     ProductMDL.findById(prodId)
       .then((product) => {
         if (product) {
-          ProductMDL.deleteById(prodId);
-          return res.status(201).redirect("/admin/products");
+          return (async () => {
+            await ProductMDL.deleteOne({ _id: prodId });
+            return res.status(201).redirect("/admin/products");
+          })();
         }
         return new ErrorsCTRL().getError404(req, res);
       })

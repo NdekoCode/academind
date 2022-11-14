@@ -1,6 +1,7 @@
 import Product from "../data/Product.js";
 // import CartMDL from "../models/CartMDL.js";
 import ProductMDL from "../models/ProductMDL.js";
+import UserMDL from "../models/UserMDL.js";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
 export default class ShopCTRL {
