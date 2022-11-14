@@ -27,6 +27,12 @@ const ProductSchema = new Schema({
     type: String,
     required: true,
   },
+  userId: {
+    type: Schema.Types.ObjectId,
+    // Le nom en minuscule de la collection que fait reference ce document
+    ref: "User",
+    required: true,
+  },
 });
 /**
  * Represente le produit à vendre lui-meme
