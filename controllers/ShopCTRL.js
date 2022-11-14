@@ -141,6 +141,8 @@ export default class ShopCTRL {
       });
       // On fait la commande
       await order.save();
+      await req.user.clearCart();
+
       return res.redirect("/orders");
     } catch (error) {
       return console.log(error);

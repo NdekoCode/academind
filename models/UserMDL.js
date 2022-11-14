@@ -85,6 +85,11 @@ UserSchema.methods.deleteItemFromCart = function (prodId) {
   this.cart.items = updateCartItems;
   this.save();
 };
+
+UserSchema.methods.clearCart = function () {
+  this.cart = { items: [] };
+  return this.save();
+};
 const UserMDL = new model("User", UserSchema);
 
 export default UserMDL;
