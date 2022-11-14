@@ -43,6 +43,18 @@ const UserSchema = Schema({
     type: String,
     required: false,
   },
+  cart: {
+    items: [
+      {
+        productId: {
+          // On dit à mongoose que cette partie contiendra un ObjectID
+          type: Schema.Types.ObjectId,
+          required: true,
+        },
+        quantity: { type: Number, required: true },
+      },
+    ],
+  },
 });
 const UserMDL = new model("User", UserSchema);
 export default UserMDL;
