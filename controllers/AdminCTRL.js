@@ -47,7 +47,10 @@ export default class AdminCTRL {
   }
   async getProducts(req, res, _) {
     ProductMDL.find()
+      // .select("title price imageUrl _id rating")
+      // .populate("userId", "user")
       .then((products) => {
+        console.log(products);
         products = products.map((p) => new Product(p));
         return res.render("pages/admin/products", {
           pageTitle: "Administration products",
