@@ -1,13 +1,14 @@
 import dotenv from "dotenv";
 dotenv.config();
+import express from "express";
 import { connect } from "mongoose";
+import session from "express-session";
 // Template engine : === Moteur de templateimport express from "express";
 import authRouter from "./routes/auth.routes.js";
 import adminRouter from "./routes/admin.routes.js";
 import shopRouter from "./routes/shop.routes.js";
 import { rootDir } from "./utils/utils.js";
 import path from "node:path";
-import express from "express";
 import ejsLayouts from "express-ejs-layouts";
 import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
 // import fakeData from "./utils/fakeData.js";
@@ -15,6 +16,13 @@ import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
 import fakeData from "./utils/fakeData.js";
 import UserMDL from "./models/UserMDL.js";
 const app = express();
+app.use(
+  session({
+    secret: "Ndekocode",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 // On fait la configuration des fichiers static: Pour le styles, les scripts et les images lors des upload
 // On definit les configuration des notre moteur de template et des views
 app.set("view engine", "ejs");
