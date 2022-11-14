@@ -1,11 +1,11 @@
 <header>
     <%locals.navLinks = [ 
-    {link:"/",name:"Shop"}, {link:"/products",name:"Products"}, 
-    {link:"/cart",name:'Cart'},
-    {link:"/orders",name:'Orders'},
-    {link:"/admin/add-product",name:"Add product"},
+    {link:"/",name:"Shop",logRequired:false}, {link:"/products",name:"Products",logRequired:false}, 
+    {link:"/cart",name:'Cart',logRequired:false},
+    {link:"/orders",name:'Orders',logRequired:false},
+    {link:"/admin/add-product",name:"Add product",logRequired:true},
     // {link:"/checkout",name:"Checkout"},
-    {link:"/admin/products",name:"Admin Product"}
+    {link:"/admin/products",name:"Admin Product",logRequired:true}
     ]%>
 
     <nav class="bg-gray-800">
@@ -53,43 +53,55 @@
                         <ul class="flex space-x-4">
                             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
 
-                            <% for(let {link,name} of locals.navLinks) {%>
+                            <% for(let {link,name,logRequired} of locals.navLinks) {%>
+                            <% if(logRequired) {%>
+                            <% if(isAuthenticated) {%>
+
                             <li>
 
-                                <a href="<%=link%>" class="cursor-pointer text-white px-3 py-2 rounded-md text-sm font-medium
+                                <a href="<%=link%>" class="cursor-pointer text-white px-3 py-2 rounded-md text-sm
+                            font-medium
                             <%= activeLink(path===link)%>" aria-current="page"><%=name%></a>
                             </li>
                             <%}%>
+                             <%}else {%>
+
+                            <li>
+
+                                <a href="<%=link%>" class="cursor-pointer text-white px-3 py-2 rounded-md text-sm
+                                font-medium
+                                <%= activeLink(path===link)%>" aria-current="page"><%=name%></a>
+                            </li>
+                            <%}%>
+                            <%}%>
 
 
-        </ul>
-    </div>
-    </div>
-    <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-        <button type="button"
-            class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-            <span class="sr-only">View notifications</span>
-            <!-- Heroicon name: outline/bell -->
-            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-            </svg>
-        </button>
+                        </ul>
+                    </div>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    <button type="button"
+                        class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                        <span class="sr-only">View notifications</span>
+                        <!-- Heroicon name: outline/bell -->
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                        </svg>
+                    </button>
 
-        <!-- Profile dropdown -->
-            <div>
-                <button type="button"
-                    class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                    <span class="sr-only">Open user menu</span>
-                    <img class="h-8 w-8 rounded-full"
-                        src="/images/profile.jpeg"
-                        alt="">
-                </button>
-            </div>
+                    <!-- Profile dropdown -->
+                    <div>
+                        <button type="button"
+                            class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                            id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <span class="sr-only">Open user menu</span>
+                            <img class="h-8 w-8 rounded-full" src="/images/profile.jpeg" alt="">
+                        </button>
+                    </div>
 
-        <%#  <div class="relative ml-3">
+                    <%#  <div class="relative ml-3">
             <!--
                   Dropdown menu, show/hide based on menu state.
       
@@ -112,9 +124,9 @@
             </div>
 
         %>
-                    </div>
                 </div>
             </div>
+        </div>
         </div>
 
         <!-- Mobile menu, show/hide based on menu state. -->

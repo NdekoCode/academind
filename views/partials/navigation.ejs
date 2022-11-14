@@ -1,12 +1,13 @@
 <%locals.navLinks = [ 
-    {link:"/",name:"Shop"}, {link:"/products",name:"Products"}, 
-    {link:"/cart",name:'Cart'},
-    {link:"/orders",name:'Orders'},
-    {link:"/admin/add-product",name:"Add product"},
-    // {link:"/checkout",name:"Checkout"},
-    {link:"/admin/products",name:"Admin Product"}
-    ]%>
-
+{link:"/",name:"Shop",logRequired:false}, {link:"/products",name:"Products",logRequired:false}, 
+{link:"/cart",name:'Cart',logRequired:false},
+{link:"/orders",name:'Orders',logRequired:false},
+{link:"/admin/add-product",name:"Add product",logRequired:true},
+// {link:"/checkout",name:"Checkout"},
+{link:"/admin/products",name:"Admin Product",logRequired:true}
+]%>
+<%locals.authLinks= [
+{link:"/login",name:"Login"}, {link:"/signup",name:"Sign Up"}]%>
 <nav class="bg-white border-gray-200 shadow-sm px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
     <div class="container flex flex-wrap justify-between items-center mx-auto">
         <a href="/" class="flex items-center">
@@ -23,10 +24,45 @@
                     clip-rule="evenodd"></path>
             </svg>
         </button>
-        <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+        <div class="hidden w-full md:flex md:justify-between items-center" id="navbar-default">
+
             <ul
                 class="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                <% for(let {link,name} of locals.navLinks) {%>
+                <% for(let {link,name,logRequired} of locals.navLinks) {%>
+                <% if(logRequired){%>
+                <% if(isAuthenticated){%>
+
+                <li>
+
+                    <a href="<%=link%>"
+                        class="cursor-pointer block px-3 py-2 rounded-md font-medium md:border-0 transition md:dark:hover:bg-transparent <%= activeLink(path===link)%>"
+                        aria-current="page">
+                        <%=name%>
+                    </a>
+
+                </li>
+                <%}%>
+                        
+                    <%} else {%>
+
+                <li>
+
+                    <a href="<%=link%>"
+                        class="cursor-pointer block px-3 py-2 rounded-md font-medium md:border-0 transition md:dark:hover:bg-transparent <%= activeLink(path===link)%>"
+                        aria-current="page">
+                        <%=name%>
+                    </a>
+
+                </li>
+                <%}%>
+
+
+                        <%}%>
+
+
+            </ul>
+            <ul class="ml-auto flex items-center">
+                <% for(let {link,name} of locals.authLinks) {%>
                 <li>
                     <a href="<%=link%>"
                         class="cursor-pointer block px-3 py-2 rounded-md font-medium md:border-0 transition md:dark:hover:bg-transparent <%= activeLink(path===link)%>"
@@ -36,7 +72,8 @@
 
                 </li>
                 <%}%>
-                </ul>
-            </div>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
+<%=JSON.stringify(isAuthenticated)%>

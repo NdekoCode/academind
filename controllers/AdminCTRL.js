@@ -50,7 +50,6 @@ export default class AdminCTRL {
       // .select("title price imageUrl _id rating")
       // .populate("userId", "user")
       .then((products) => {
-        console.log(products);
         products = products.map((p) => new Product(p));
         return res.render("pages/admin/products", {
           pageTitle: "Administration products",
@@ -59,6 +58,7 @@ export default class AdminCTRL {
           hasProducts: products.length > 0,
           activeLink,
           layout: "layouts/admin",
+          isAuthenticated: req.isLoggedIn,
         });
       })
       .catch((err) => console.log(err));
@@ -85,6 +85,7 @@ export default class AdminCTRL {
         prodId,
         product: product,
         activeLink,
+        isAuthenticated: req.isLoggedIn,
       });
     });
   }

@@ -5,6 +5,7 @@ export default class ErrorsCTRL {
       pageTitle: "Page Not Found",
       activeLink,
       path: "",
+      isAuthenticated: req.isLoggedIn,
     });
   }
   error500(req, res) {
@@ -12,6 +13,7 @@ export default class ErrorsCTRL {
       pageTitle: "Internal Server Error",
       activeLink,
       path: "",
+      isAuthenticated: req.isLoggedIn,
     });
   }
 }

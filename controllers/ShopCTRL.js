@@ -16,7 +16,7 @@ export default class ShopCTRL {
    * @return {HTML}
    * @memberof ShopCTRL
    */
-  getProducts(_, res, next) {
+  getProducts(req, res, next) {
     return ProductMDL.find()
       .then((products) => {
         products = products.map((p) => new Product(p));
@@ -26,6 +26,7 @@ export default class ShopCTRL {
           path: "/products",
           hasProducts: products.length > 0,
           activeLink,
+          isAuthenticated: req.isLoggedIn,
         });
       })
       .catch((err) => console.log(err));
@@ -41,6 +42,7 @@ export default class ShopCTRL {
           path: "/",
           hasProducts: products.length > 0,
           activeLink,
+          isAuthenticated: req.isLoggedIn,
         });
       })
       .catch((err) => console.log(err));
@@ -57,6 +59,7 @@ export default class ShopCTRL {
       prod: new Product(product),
       path: "/products",
       activeLink,
+      isAuthenticated: req.isLoggedIn,
     });
   }
 
@@ -71,6 +74,7 @@ export default class ShopCTRL {
           pageTitle: "Your cart",
           activeLink, // On envois les produits à la vues
           products: products,
+          isAuthenticated: req.isLoggedIn,
         });
       })
       .catch((err) => {
@@ -82,7 +86,7 @@ export default class ShopCTRL {
       const prodId = req.body.productId;
       const product = await ProductMDL.findById(prodId);
       if (product) {
-        req.user.addToCart(product);
+        await req.user.addToCart(product);
         return res.redirect("/cart");
       }
       return new ErrorsCTRL().getError404(req, res);
@@ -111,6 +115,7 @@ export default class ShopCTRL {
         path: "/orders",
         orders,
         activeLink,
+        isAuthenticated: req.isLoggedIn,
       });
     } catch (error) {
       return console.log(error);
