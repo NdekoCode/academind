@@ -60,13 +60,15 @@ export default class ShopCTRL {
   }
 
   getCart(req, res, _) {
+    // On recupère les produits dans le panier
     req.user
-      .getCart()
-      .then((products) => {
+      .populate("cart.items.productId") // On aura un champ productId qui va contenir les produit
+      .then((user) => {
+        const products = user.cart.items;
         return res.render("pages/shop/cart", {
           path: "/cart",
           pageTitle: "Your cart",
-          activeLink,
+          activeLink, // On envois les produits à la vues
           products: products,
         });
       })

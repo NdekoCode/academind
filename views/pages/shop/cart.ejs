@@ -19,20 +19,20 @@
                 </thead>
                 <tbody>
 
-                    <%products.forEach((productData) => {
-                        total += productData.price* productData.quantity
+                    <%products.forEach(({productId,quantity}) => {
+                        total += productId.price* quantity
                         %>
                     <tr>
                         <td class="hidden pb-4 md:table-cell">
                             <a href="#">
-                                <img src="<%=productData.imageUrl%>" class="w-20 rounded" alt="<%=productData.title%>">
+                                <img src="<%=productId.imageUrl%>" class="w-20 rounded" alt="<%=productId.title%>">
                             </a>
                         </td>
                         <td>
                             <a href="#">
-                                <p class="mb-2 md:ml-4"><%=productData.title%></p>
+                                <p class="mb-2 md:ml-4"><%=productId.title%></p>
                                 <form action="/cart-delete-item" method="POST">
-                                    <input type="hidden" name="productId" value="<%=productData._id%>">
+                                    <input type="hidden" name="productId" value="<%=productId._id%>">
                                     <button type="submit" class="text-red-500 md:ml-4">
                                         <small>(Remove item)</small>
                                     </button>
@@ -42,20 +42,20 @@
                         <td class="justify-center md:justify-end md:flex mt-6">
                             <div class="w-20 h-10">
                                 <div class="relative flex flex-row w-full h-8">
-                                    <input type="number" value="<%=productData.quantity%>"
+                                    <input type="number" value="<%=quantity%>"
                                         class="w-full font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black">
                                 </div>
                             </div>
                         </td>
                         <td class="hidden text-right md:table-cell">
                             <span class="text-sm lg:text-base font-medium">
-                                <%=productData.price%>$
+                                <%=productId.price%>$
                             </span>
                         </td>
                         <td class="text-right">
                             <span class="text-sm lg:text-base font-medium">
 
-                                <%= productData.price* productData.quantity%>$
+                                <%= productId.price* quantity%>$
                             </span>
                         </td>
                     </tr>
