@@ -7,9 +7,9 @@
         <% orders.forEach(order=>{%>
         <ul>
             <li class="shadow p-5 m-3">
-                <h3 class="text-3xl"># <%=order._id%></h3>
+                <h3 class="text-3xl">Order: # <%=order._id%></h3>
                 <ul class="relative">
-                    <%order.items.forEach(product=>{%>
+                    <%order.products.forEach(({product,quantity})=>{%>
 
                     <li>
                         <div class="flex item-center justify-between">
@@ -17,7 +17,7 @@
                             <p class="m-3">
                                 <%=product.title%>
                             </p>
-                            <p class="text-base font-bold">Quantity: <%=product.quantity%></p>
+                            <p class="text-base font-bold">Quantity: <%=quantity%></p>
 
                         </div>
                     </li>

@@ -1,4 +1,5 @@
 import Product from "../data/Product.js";
+import OrderMDL from "../models/OrderMDL.js";
 // import CartMDL from "../models/CartMDL.js";
 import ProductMDL from "../models/ProductMDL.js";
 import UserMDL from "../models/UserMDL.js";
@@ -60,13 +61,15 @@ export default class ShopCTRL {
   }
 
   getCart(req, res, _) {
+    // On recupère les produits dans le panier
     req.user
-      .getCart()
-      .then((products) => {
+      .populate("cart.items.productId") // On aura un champ productId qui va contenir les produit
+      .then((user) => {
+        const products = user.cart.items;
         return res.render("pages/shop/cart", {
           path: "/cart",
           pageTitle: "Your cart",
-          activeLink,
+          activeLink, // On envois les produits à la vues
           products: products,
         });
       })
@@ -101,7 +104,7 @@ export default class ShopCTRL {
   async getOrders(req, res, _) {
     try {
       // On veut recuper les commandes de l'utilisateurs mais aussi les produits qui sont dans la commande
-      const orders = await req.user.getOrders();
+      const orders = await OrderMDL.find({ "user.userId": req.user._id });
       console.log(orders);
       return res.render("pages/shop/orders", {
         pageTitle: "Your Orders",
@@ -122,8 +125,24 @@ export default class ShopCTRL {
    */
   async postOrder(req, res, next) {
     try {
+      // On recupère le produit dont l'utilisateur connecté est propriétaire
+      const user = await req.user.populate("cart.items.productId");
+      const products = user.cart.items.map((item) => ({
+        // On veut recuperer les produit et non l'identifiant de la reference
+        product: { ...item.productId._doc },
+        quantity: item.quantity,
+      }));
+      const order = new OrderMDL({
+        user: {
+          username: req.user.username,
+          userId: req.user._id,
+        },
+        products,
+      });
       // On fait la commande
-      await req.user.addOrder();
+      await order.save();
+      await req.user.clearCart();
+
       return res.redirect("/orders");
     } catch (error) {
       return console.log(error);
