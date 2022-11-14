@@ -10,6 +10,6 @@ router.get("/cart", shopCTRL.getCart);
 router.post("/cart", shopCTRL.postCart);
 router.post("/cart-delete-item", shopCTRL.postCartDelete);
 router.post("/create-order", shopCTRL.postOrder);
-// // router.get("/checkout", shopCTRL.getCheckout);
-// router.get("/orders", shopCTRL.getOrders);
+// router.get("/checkout", shopCTRL.getCheckout);
+router.get("/orders", shopCTRL.getOrders);
 export default router;

@@ -104,7 +104,7 @@ export default class ShopCTRL {
   async getOrders(req, res, _) {
     try {
       // On veut recuper les commandes de l'utilisateurs mais aussi les produits qui sont dans la commande
-      const orders = await req.user.getOrders();
+      const orders = await OrderMDL.find({ "user.userId": req.user._id });
       console.log(orders);
       return res.render("pages/shop/orders", {
         pageTitle: "Your Orders",
