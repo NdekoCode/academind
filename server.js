@@ -28,6 +28,7 @@ app.use("/images", express.static(path.join(rootDir, "public/img")));
 app.use(express.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
+  console.log(req.isLoggedIn);
   UserMDL.findById("6371167715fd4e0cd219c160")
     .then((user) => {
       req.user = new UserMDL(user);
