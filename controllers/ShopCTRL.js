@@ -1,4 +1,5 @@
 import Product from "../data/Product.js";
+import OrderMDL from "../models/OrderMDL.js";
 // import CartMDL from "../models/CartMDL.js";
 import ProductMDL from "../models/ProductMDL.js";
 import UserMDL from "../models/UserMDL.js";
@@ -124,8 +125,22 @@ export default class ShopCTRL {
    */
   async postOrder(req, res, next) {
     try {
+      // On recupère le produit dont l'utilisateur connecté est propriétaire
+      const user = await req.user.populate("cart.items.productId");
+      const products = user.cart.items.map((item) => ({
+        // On veut recuperer les produit et non l'identifiant de la reference
+        product: { ...item.productId._doc },
+        quantity: item.quantity,
+      }));
+      const order = new OrderMDL({
+        user: {
+          username: req.user.username,
+          userId: req.user._id,
+        },
+        products,
+      });
       // On fait la commande
-      await req.user.addOrder();
+      await order.save();
       return res.redirect("/orders");
     } catch (error) {
       return console.log(error);
