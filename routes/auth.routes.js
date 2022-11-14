@@ -1,18 +1,7 @@
 import { Router } from "express";
-import { activeLink } from "../utils/utils.js";
+import AuthCTRL from "../controllers/AuthCTRL.js";
 const authRouter = Router();
-authRouter.get("/login", (req, res, next) => {
-  return res.render("pages/login", {
-    pageTitle: "Login page",
-    path: "/signin",
-    activeLink,
-  });
-});
-authRouter.get("/signin", (req, res, next) => {
-  return res.render("pages/signin", {
-    pageTitle: "Signin page",
-    path: "/signin",
-    activeLink,
-  });
-});
+const authCTRL = new AuthCTRL();
+authRouter.get("/login", authCTRL.login);
+authRouter.get("/signup", authCTRL.signup);
 export default authRouter;

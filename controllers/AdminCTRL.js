@@ -50,7 +50,6 @@ export default class AdminCTRL {
       // .select("title price imageUrl _id rating")
       // .populate("userId", "user")
       .then((products) => {
-        console.log(products);
         products = products.map((p) => new Product(p));
         return res.render("pages/admin/products", {
           pageTitle: "Administration products",

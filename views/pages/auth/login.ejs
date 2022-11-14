@@ -1,0 +1,58 @@
+<!-- Container -->
+<div class="flex flex-wrap min-h-screen w-full content-center justify-center py-5">
+
+    <!-- Login component -->
+    <div class="flex shadow-lg">
+        <!-- Login form -->
+        <div class="flex flex-wrap content-center justify-center rounded-l-md bg-white"
+            style="width: 24rem; height: 32rem;">
+            <div class="w-72">
+                <!-- Heading -->
+                <h1 class="text-xl font-semibold">Welcome back</h1>
+                <small class="text-gray-400">Welcome back! Please enter your details</small>
+
+                <!-- Form -->
+                <form class="mt-4" action="/login" method="POST">
+                    <div class="mb-3">
+                        <label class="mb-2 block text-xs font-semibold" for="email">E-Mail</label>
+                        <input type="email" placeholder="Enter your email" name="email" id="email"
+                            class="block w-full rounded-md border border-gray-300 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700 py-2 px-1.5 text-gray-500" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="mb-2 block text-xs font-semibold" for="password">Password</label>
+                        <input type="password" placeholder="*****" id="password" name="password"
+                            class="block w-full rounded-md border border-gray-300 focus:border-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-700 py-2 px-1.5 text-gray-500" />
+                    </div>
+
+                    <div class="mb-3 flex flex-wrap content-center">
+                        <input id="remember" name="remember" type="checkbox" class="mr-1 checked:bg-blue-700" /> <label
+                            for="remember" class="mr-auto text-xs font-semibold">Remember for 30 days</label>
+                        <a href="#" class="text-xs font-semibold text-blue-700">Forgot password?</a>
+                    </div>
+
+                    <div class="mb-3">
+                        <button
+                            class="mb-1.5 block w-full text-center text-white bg-blue-700 hover:bg-blue-900 px-2 py-1.5 rounded-md">Sign
+                            in</button>
+                    </div>
+                </form>
+
+                <!-- Footer -->
+                <div class="text-center">
+                    <span class="text-xs text-gray-400 font-semibold">Don't have account?</span>
+                    <a href="/signup" class="text-xs font-semibold text-blue-700">Sign Up</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login banner -->
+        <div class="flex flex-wrap content-center justify-center rounded-r-md" style="width: 24rem; height: 32rem;">
+            <img class="w-full h-full bg-center bg-no-repeat bg-cover object-cover rounded-r-md"
+                src="https://images.unsplash.com/photo-1509822929063-6b6cfc9b42f2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bG9naW58ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
+                alt="image">
+        </div>
+
+    </div>
+
+</div>

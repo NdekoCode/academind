@@ -82,7 +82,7 @@ export default class ShopCTRL {
       const prodId = req.body.productId;
       const product = await ProductMDL.findById(prodId);
       if (product) {
-        req.user.addToCart(product);
+        await req.user.addToCart(product);
         return res.redirect("/cart");
       }
       return new ErrorsCTRL().getError404(req, res);
