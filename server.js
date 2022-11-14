@@ -2,8 +2,9 @@ import dotenv from "dotenv";
 dotenv.config();
 import { connect } from "mongoose";
 // Template engine : === Moteur de templateimport express from "express";
-import adminrouter from "./routes/adminRT.js";
-import shopRouter from "./routes/shopRT.js";
+import authRouter from "./routes/auth.routes.js";
+import adminRouter from "./routes/admin.routes.js";
+import shopRouter from "./routes/shop.routes.js";
 import { rootDir } from "./utils/utils.js";
 import path from "node:path";
 import express from "express";
@@ -37,8 +38,9 @@ app.use((req, res, next) => {
       next();
     });
 });
+app.use(authRouter);
 // Nos routes et nos middleware
-app.use("/admin", adminrouter);
+app.use("/admin", adminRouter);
 app.use(shopRouter);
 const errorsCTRL = new ErrorsCTRL();
 // Le middleware par defaut pour les requetes 404

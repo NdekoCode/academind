@@ -1,12 +1,13 @@
 <%locals.navLinks = [ 
-    {link:"/",name:"Shop"}, {link:"/products",name:"Products"}, 
-    {link:"/cart",name:'Cart'},
-    {link:"/orders",name:'Orders'},
-    {link:"/admin/add-product",name:"Add product"},
-    // {link:"/checkout",name:"Checkout"},
-    {link:"/admin/products",name:"Admin Product"}
-    ]%>
-
+{link:"/",name:"Shop"}, {link:"/products",name:"Products"}, 
+{link:"/cart",name:'Cart'},
+{link:"/orders",name:'Orders'},
+{link:"/admin/add-product",name:"Add product"},
+// {link:"/checkout",name:"Checkout"},
+{link:"/admin/products",name:"Admin Product"}
+]%>
+<%locals.authLinks= [
+{link:"/login",name:"Login"}, {link:"/signin",name:"Sign In"}]%>
 <nav class="bg-white border-gray-200 shadow-sm px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
     <div class="container flex flex-wrap justify-between items-center mx-auto">
         <a href="/" class="flex items-center">
@@ -38,15 +39,17 @@
                 </li>
                 <%}%>
                 </ul>
-            <ul class="ml-auto">
+            <ul class="ml-auto flex items-center">
+                <% for(let {link,name} of locals.authLinks) {%>
                 <li>
-                    <a href="/login"
-                        class="cursor-pointer block px-3 py-2 rounded-md font-medium md:border-0 transition md:dark:hover:bg-transparent text-gray-600"
+                    <a href="<%=link%>"
+                        class="cursor-pointer block px-3 py-2 rounded-md font-medium md:border-0 transition md:dark:hover:bg-transparent <%= activeLink(path===link)%>"
                         aria-current="page">
-                        Login
+                        <%=name%>
                     </a>
 
                 </li>
+                <%}%>
             </ul>
         </div>
     </div>
