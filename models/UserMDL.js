@@ -50,6 +50,7 @@ const UserSchema = Schema({
           // On dit à mongoose que cette partie contiendra un ObjectID
           type: Schema.Types.ObjectId,
           required: true,
+          ref: "Product",
         },
         quantity: { type: Number, required: true },
       },

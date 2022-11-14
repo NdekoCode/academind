@@ -34,6 +34,7 @@ export default class AdminCTRL {
     const product = {
       ...req.body,
       slug: slugify(req.body.title, { lower: true }),
+      userId: req.user._id,
     };
     const prodMDL = new ProductMDL(product);
     prodMDL
