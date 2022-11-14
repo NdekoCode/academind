@@ -125,8 +125,10 @@ export default class AdminCTRL {
     ProductMDL.findById(prodId)
       .then((product) => {
         if (product) {
-          ProductMDL.deleteById(prodId);
-          return res.status(201).redirect("/admin/products");
+          return (async () => {
+            await ProductMDL.deleteOne({ _id: prodId });
+            return res.status(201).redirect("/admin/products");
+          })();
         }
         return new ErrorsCTRL().getError404(req, res);
       })
