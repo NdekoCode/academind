@@ -78,6 +78,13 @@ UserSchema.methods.addToCart = function (product) {
   };
   this.save();
 };
+UserSchema.methods.deleteItemFromCart = function (prodId) {
+  const updateCartItems = this.cart.items.filter(
+    (item) => item.productId.toString() === prodId.toString()
+  );
+  this.cart.items = updateCartItems;
+  this.save();
+};
 const UserMDL = new model("User", UserSchema);
 
 export default UserMDL;
