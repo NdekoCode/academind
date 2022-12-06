@@ -1,32 +1,28 @@
 import dotenv from "dotenv";
-dotenv.config();
 import express from "express";
 import { connect } from "mongoose";
-import session from "express-session";
+dotenv.config();
 // Template engine : === Moteur de templateimport express from "express";
-import authRouter from "./routes/auth.routes.js";
+import mongoStore from "connect-mongo";
+import ejsLayouts from "express-ejs-layouts";
+import session from "express-session";
+import path from "node:path";
+import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
 import adminRouter from "./routes/admin.routes.js";
+import authRouter from "./routes/auth.routes.js";
 import shopRouter from "./routes/shop.routes.js";
 import { rootDir } from "./utils/utils.js";
-import path from "node:path";
-import ejsLayouts from "express-ejs-layouts";
-import ErrorsCTRL from "./controllers/ErrorsCTRL.js";
+
 // import fakeData from "./utils/fakeData.js";
 // import mongoConnect from "./utils/database.js";
-import fakeData from "./utils/fakeData.js";
 import UserMDL from "./models/UserMDL.js";
+/* const MongodbStore = new mongoStore(session);
+const store = new MongodbStore({
+  uri: "mongodb+srv://node-discovery:7oTDxpZxx5DmF3R7@mycluster.q6bzft9.mongodb.net/node-complete-shop",
+  collection: "mySessions",
+}); */
 const app = express();
-app.use(
-  session({
-    // Le mot secret pour hasher la session mais en production ça doit etre une très longue chaine de caractère
-    secret: "Ndekocode",
-    // Ca veut dire que notre session ne sera pas enregistrer pour chaque requete de l'utilisateur et donc il le sera une seule fois, c'est bien pour les performances.
-    resave: false,
-    //  Assure que la session ne sera de nouveau enregistrer que lorsqu'il aura de changement et pas autrement
-    saveUninitialized: false,
-    // On peut aussi ajouter d'autres paramètres comme: cookie:{maxAge: dateinMillisecond,expires}
-  })
-);
+
 // On fait la configuration des fichiers static: Pour le styles, les scripts et les images lors des upload
 // On definit les configuration des notre moteur de template et des views
 app.set("view engine", "ejs");
@@ -35,6 +31,17 @@ app.set("views", rootDir + "views");
 app.set("layout", "layouts/layout");
 app.use(express.static(path.join(rootDir, "public")));
 app.use("/images", express.static(path.join(rootDir, "public/img")));
+app.use(
+  session({
+    store: mongoStore.create({ mongoUrl: process.env.DB_URL }),
+    secret: process.env.SECRET_WORD_SESSION,
+    // La session ne sera pas enregistrer pour chaque requete
+    resave: false,
+    // Nous rassure que une session ne sera pas enregister si ce n'est pas nécessaire
+    // ne créez pas de session jusqu'à ce que quelque chose soit stocké
+    saveUninitialized: false,
+  })
+);
 // await fakeData();
 // On definit la configuration pour que les requetes de l'utilisateur soit transmises dans le corps de la requete
 app.use(express.urlencoded({ extended: false }));
@@ -48,7 +55,7 @@ app.use((req, res, next) => {
     })
     .catch((err) => {
       console.log(err);
-      next();
+      next(err);
     });
 });
 app.use(authRouter);
@@ -67,7 +74,7 @@ connect(process.env.DB_URL)
     // Ainsi on ne va se connecter à la base de donnée qu'une seule fois, au moment où le serveur est lancer: => !GOOD PATTERN
     // fakeData();
     app.listen(PORT, () => {
-      console.log("Running server at " + PORT);
+      console.log("Running server at http://localhost:" + PORT);
       console.log("Connection to the database is establish successfully");
     });
   })

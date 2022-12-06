@@ -2,7 +2,6 @@ import Product from "../data/Product.js";
 import OrderMDL from "../models/OrderMDL.js";
 // import CartMDL from "../models/CartMDL.js";
 import ProductMDL from "../models/ProductMDL.js";
-import UserMDL from "../models/UserMDL.js";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
 export default class ShopCTRL {
@@ -16,36 +15,40 @@ export default class ShopCTRL {
    * @return {HTML}
    * @memberof ShopCTRL
    */
-  getProducts(req, res, next) {
-    return ProductMDL.find()
-      .then((products) => {
-        products = products.map((p) => new Product(p));
-        return res.render("pages/shop/product-list", {
-          pageTitle: "My products",
-          prods: products,
-          path: "/products",
-          hasProducts: products.length > 0,
-          activeLink,
-          isAuthenticated: req.isLoggedIn,
-        });
-      })
-      .catch((err) => console.log(err));
+  async getProducts(req, res, next) {
+    try {
+      let products = await ProductMDL.find();
+      products = products.map((p) => new Product(p));
+
+      return res.render("pages/shop/product-list", {
+        pageTitle: "My products",
+        prods: products,
+        path: "/products",
+        hasProducts: products.length > 0,
+        activeLink,
+        isAuthenticated: req.isLoggedIn,
+      });
+    } catch (error) {
+      return console.log(error);
+    }
   }
 
-  getIndex(req, res, _) {
-    return ProductMDL.find()
-      .then((products) => {
-        products = products.map((p) => new Product(p));
-        return res.render("pages/shop/product-list", {
-          pageTitle: "Ours products",
-          prods: products,
-          path: "/",
-          hasProducts: products.length > 0,
-          activeLink,
-          isAuthenticated: req.isLoggedIn,
-        });
-      })
-      .catch((err) => console.log(err));
+  async getIndex(req, res, _) {
+    try {
+      let products = await ProductMDL.find();
+      products = products.map((p) => new Product(p));
+
+      return res.render("pages/shop/product-list", {
+        pageTitle: "Ours products",
+        prods: products,
+        path: "/",
+        hasProducts: products.length > 0,
+        activeLink,
+        isAuthenticated: req.isLoggedIn,
+      });
+    } catch (error) {
+      return console.log(error);
+    }
   }
   async getProduct(req, res, _) {
     // On va verifier le produit qui correctement au slug du qui se trouve dans l'URL

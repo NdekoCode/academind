@@ -30,7 +30,7 @@
                 class="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 <% for(let {link,name,logRequired} of locals.navLinks) {%>
                 <% if(logRequired){%>
-                <% if(isAuthenticated){%>
+                <% if(locals.isAuthenticated){%>
 
                 <li>
 
@@ -61,7 +61,7 @@
 
 
             </ul>
-            <ul class="ml-auto flex items-center">
+            <ul class="ml-auto flex items-center gap-x-3">
                 <% for(let {link,name} of locals.authLinks) {%>
                 <li>
                     <a href="<%=link%>"
@@ -76,4 +76,4 @@
         </div>
     </div>
 </nav>
-<%=JSON.stringify(isAuthenticated)%>
+<%=JSON.stringify(locals.isAuthenticated)%>

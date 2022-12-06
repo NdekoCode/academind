@@ -1,15 +1,19 @@
 import { activeLink } from "../utils/utils.js";
 export default class AuthCTRL {
   login(req, res, next) {
+    console.log(req.session.isLoggedIn);
+    const loggedIn = req.get("Cookie").split("=")[1] === "true";
     return res.render("pages/auth/login", {
       pageTitle: "Login In page",
       path: "/login",
       activeLink,
-      isAuthenticated: req.session.isLoggedIn,
+      isAuthenticated: loggedIn,
     });
   }
   postLogin(req, res, ext) {
+    // res.setHeader("Set-Cookie", "isLoggedIn=true; HttpOnly");
     req.session.isLoggedIn = true;
+    req.isLoggedIn = true;
     console.log(req.body);
     res.redirect("/products");
   }
@@ -18,7 +22,7 @@ export default class AuthCTRL {
       pageTitle: "Signup page",
       path: "/signup",
       activeLink,
-      isAuthenticated: req.session.isLoggedIn,
+      isAuthenticated: req.isLoggedIn,
     });
   }
 }
