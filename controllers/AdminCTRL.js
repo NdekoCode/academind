@@ -1,8 +1,8 @@
-import ProductMDL from "../models/ProductMDL.js";
 import slugify from "slugify";
+import Product from "../data/Product.js";
+import ProductMDL from "../models/ProductMDL.js";
 import { activeLink } from "../utils/utils.js";
 import ErrorsCTRL from "./ErrorsCTRL.js";
-import Product from "../data/Product.js";
 export default class AdminCTRL {
   /**
    * @description Nous amène vers le formulaire d'ajout d l'article
@@ -13,12 +13,13 @@ export default class AdminCTRL {
    * @return {HTML}
    * @memberof AdminCTRL
    */
-  getAddProduct(_, res) {
+  getAddProduct(req, res) {
     return res.render("pages/admin/edit-product", {
       pageTitle: "Add a product",
       path: "/admin/add-product",
       layout: "layouts/insert",
       activeLink,
+      isAuthenticated: req.isLoggedIn,
     });
   }
   /**
@@ -71,12 +72,15 @@ export default class AdminCTRL {
    * @return {HTML}
    * @memberof AdminCTRL
    */
-  getEditProduct(req, res) {
+  async getEditProduct(req, res) {
     const editMode = Boolean(req.query.edit);
     if (!editMode) return res.redirect("/");
     const prodId = req.params.productId;
-    ProductMDL.findById(prodId).then((product) => {
-      if (!product) return new ErrorsCTRL().getError404(req, res);
+    try {
+      const product = await findById(prodId);
+      if (!product) {
+        return new ErrorsCTRL().getError404(req, res);
+      }
       return res.render("pages/admin/edit-product", {
         pageTitle: "Edit a product",
         path: "/products",
@@ -87,7 +91,9 @@ export default class AdminCTRL {
         activeLink,
         isAuthenticated: req.isLoggedIn,
       });
-    });
+    } catch (error) {
+      return new ErrorsCTRL().error500(req, res);
+    }
   }
 
   /**
@@ -98,41 +104,38 @@ export default class AdminCTRL {
    * @return {HTML}
    * @memberof AdminCTRL
    */
-  postEditProduct(req, res, _) {
+  async postEditProduct(req, res, _) {
     const prodId = req.body.productId;
     const updateProduct = {
       ...req.body,
       slug: slugify(req.body.title, { lower: true }),
     };
+    try {
+      const product = await ProductMDL.findById(prodId);
 
-    ProductMDL.findById(prodId)
-      .then((product) => {
-        if (product) {
-          return ProductMDL.updateOne({ _id: prodId }, updateProduct).then(
-            () => {
-              return res.status(201).redirect("/admin/products");
-            }
-          );
-        }
-        return new ErrorsCTRL().getError404(req, res);
-      })
-      .catch(() => {
-        return new ErrorsCTRL().error500(req, res);
-      });
+      if (product) {
+        return ProductMDL.updateOne({ _id: prodId }, updateProduct).then(() => {
+          return res.status(201).redirect("/admin/products");
+        });
+      }
+
+      return new ErrorsCTRL().getError404(req, res);
+    } catch (error) {
+      return new ErrorsCTRL().error500(req, res);
+    }
   }
 
-  postDeleteProduct(req, res, next) {
+  async postDeleteProduct(req, res, next) {
     const prodId = req.body.productId;
-    ProductMDL.findById(prodId)
-      .then((product) => {
-        if (product) {
-          return (async () => {
-            await ProductMDL.deleteOne({ _id: prodId });
-            return res.status(201).redirect("/admin/products");
-          })();
-        }
-        return new ErrorsCTRL().getError404(req, res);
-      })
-      .catch((err) => new ErrorsCTRL().error500(req, res));
+    try {
+      const product = await ProductMDL.findById(prodId);
+      if (product) {
+        await ProductMDL.deleteOne({ _id: prodId });
+        return res.status(201).redirect("/admin/products");
+      }
+      return new ErrorsCTRL().getError404(req, res);
+    } catch (error) {
+      return new ErrorsCTRL().error500(req, res);
+    }
   }
 }

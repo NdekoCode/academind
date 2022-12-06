@@ -1,5 +1,5 @@
-import { fileURLToPath } from "url";
 import path from "path";
+import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 export const rootDir = path.dirname(__dirname) + path.sep;
@@ -16,6 +16,7 @@ export const indexRand = parseInt(Math.random() * 100);
  */
 export function loadFile(filePath) {
   let regex = /[\/|\\]/gi;
+  // path.sep est le separateur et il change selon le système utiliser donc on l'utilise pour un changement dynamique
   filePath = filePath.replaceAll(regex, path.sep);
   return path.join(rootDir, filePath);
 }
